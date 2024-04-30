@@ -6,9 +6,11 @@ abstract class LightThemeColors {
   static const Color mdThemeLightOnPrimary = Color(0xFFFFFFFF);
   static const Color mdThemeLightPrimaryContainer = Color(0xFFFFDADA);
   static const Color mdThemeLightOnPrimaryContainer = Color(0x40000B);
-  static const Color mdThemeLightSecondary = Color(0xFF9C4049);
+  static const Color mdThemeLightErrorContainermdThemeLightSecondary = Color(0xFF9C4049);
   static const Color mdThemeLightOnSecondary = Color(0xFFFFFFFF);
-  static const Color mdThemeLightSecondaryContainer = Color(0x4D8C9CFB);
+  static const Color mdThemeLightSecondaryContainer = Color(0x4D4C62E7);
+  static const Color mdThemeLightSecondaryTwoContainer = Color(0x4D6676D2);
+  static const Color mdThemeLightSecondaryThirdContainer = Color(0xFF0C3EA9);
   static const Color mdThemeLightOnSecondaryContainer = Color(0x40000C);
   static const Color mdThemeLightTertiary = Color(0xFF9C4049);
   static const Color mdThemeLightOnTertiary = Color(0xFFFFFFFF);
@@ -18,9 +20,9 @@ abstract class LightThemeColors {
   static const Color mdThemeLightErrorContainer = Color(0xFFFFDAD6);
   static const Color mdThemeLightOnError = Color(0xFFFFFFFF);
   static const Color mdThemeLightOnErrorContainer = Color(0xFF410002);
-  static const Color mdThemeLightBackground = Color(0xFFFFFBFF);
+  static const Color mdThemeLightBackground = Color(0xFFFFFFFF);
   static const Color mdThemeLightOnBackground = Color(0xFF201A1A);
-  static const Color mdThemeLightSurface = Color(0xFFFFFBFF);
+  static const Color mdThemeLightSurface = Color(0xFFFFFFFF);
   static const Color mdThemeLightOnSurface = Color(0xFF201A1A);
   static const Color mdThemeLightSurfaceVariant = Color(0xFFF4DDDD);
   static const Color mdThemeLightOnSurfaceVariant = Color(0xFF524343);

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/domain/router/router.gr.dart';
+import '../../../../theme/theme_colors.dart';
 
 @RoutePage()
 class AnimeNewReleasesPage extends StatefulWidget {
@@ -14,17 +15,28 @@ class AnimeNewReleasesPage extends StatefulWidget {
 }
 
 class _AnimeNewReleasesPageState extends State<AnimeNewReleasesPage> {
+  AppBar get _profileAppBar => AppBar(
+    title: Text("Просмотр"),
+    actions: [
+      IconButton(
+          icon: const Icon(
+            Icons.search,
+            color: LightThemeColors.mdThemeLightOnSurfaceVariant,
+          ),
+          onPressed: () { }),
+      IconButton(
+          icon: const Icon(
+            Icons.settings,
+            color: LightThemeColors.mdThemeLightOnSurfaceVariant,
+          ),
+          onPressed: () { }),
+    ],
+  );
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      appBar: _profileAppBar,
       body: Container(
-        color: Colors.green,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          AutoRouter.of(context).push(const FavoriteAnimeRoute());
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }

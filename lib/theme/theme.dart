@@ -7,12 +7,12 @@ final lightTheme = ThemeData(
       brightness: Brightness.light,
       primary: LightThemeColors.mdThemeLightPrimary,
       onPrimary: LightThemeColors.mdThemeLightOnPrimary,
-      secondary: LightThemeColors.mdThemeLightSecondary,
+      secondary: LightThemeColors.mdThemeLightOnSecondary,
       onSecondary: LightThemeColors.mdThemeLightOnSecondary,
       background: LightThemeColors.mdThemeLightBackground,
       onBackground: LightThemeColors.mdThemeLightOnBackground,
       surface: LightThemeColors.mdThemeLightSurface,
-      onSurface: LightThemeColors.mdThemeLightOnSurface,
+      onSurface: LightThemeColors.mdThemeLightShadow, //2242
       error: LightThemeColors.mdThemeLightError,
       onError: LightThemeColors.mdThemeLightOnError,
       primaryContainer: LightThemeColors.mdThemeLightPrimaryContainer,
@@ -30,8 +30,8 @@ final lightTheme = ThemeData(
       outline: LightThemeColors.mdThemeLightOutline,
     ),
   navigationBarTheme: const NavigationBarThemeData(
-     // surfaceTintColor: LightThemeColors.backgroundColorBottomSheet ,
-     // indicatorColor: LightThemeColors.secondaryContainerColorS90
+      surfaceTintColor: LightThemeColors.mdThemeLightPrimary ,
+      indicatorColor: LightThemeColors.mdThemeLightSecondaryTwoContainer
   ),
   dropdownMenuTheme:
       const DropdownMenuThemeData(inputDecorationTheme: InputDecorationTheme()),
@@ -45,6 +45,106 @@ final lightTheme = ThemeData(
       style: TextButton.styleFrom(
     padding: EdgeInsets.zero,
   )),
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(
+        fontSize: 57,
+        fontFamily: 'Roboto',
+        fontWeight: FontWeight.w400,
+        height: 64 / 57,
+        letterSpacing: -.25),
+    displayMedium: TextStyle(
+      fontSize: 45,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      height: 52 / 45,
+    ),
+    displaySmall: TextStyle(
+      fontSize: 36,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      height: 44 / 36,
+    ),
+    headlineLarge: TextStyle(
+      fontSize: 32,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w500,
+      height: 40 / 32,
+    ),
+    headlineMedium: TextStyle(
+      fontSize: 28,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w500,
+      height: 36 / 28,
+    ),
+    headlineSmall: TextStyle(
+      fontSize: 24,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w500,
+      height: 32 / 24,
+    ),
+    titleLarge: TextStyle(
+      fontSize: 22,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w500,
+      height: 28 / 22,
+    ),
+    titleMedium: TextStyle(
+        fontSize: 16,
+        fontFamily: 'Roboto',
+        fontWeight: FontWeight.w500,
+        height: 24 / 16,
+        letterSpacing: .15),
+    titleSmall: TextStyle(
+      fontSize: 14,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w500,
+      height: 20 / 14,
+      letterSpacing: .1,
+    ),
+    labelLarge: TextStyle(
+      fontSize: 14,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w500,
+      height: 20 / 14,
+      letterSpacing: .1,
+    ),
+    labelMedium: TextStyle(
+      fontSize: 12,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w600,
+      color: LightThemeColors.mdThemeLightOnSurfaceVariant,
+      height: 16 / 12,
+      letterSpacing: .5,
+    ),
+    labelSmall: TextStyle(
+      fontSize: 11,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w500,
+      height: 16 / 11,
+      letterSpacing: .5,
+    ),
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      height: 24 / 16,
+      letterSpacing: .5,
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 14,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      height: 20 / 14,
+      letterSpacing: .25,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w400,
+      height: 16 / 12,
+      letterSpacing: .4,
+    ),
+  ),
   //dividerColor: LightThemeColors.outlineVariantColorNV80,
   appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(
