@@ -10,6 +10,7 @@ import 'package:reactive_variables/reactive_variables.dart';
 import '../../../core/domain/router/router.gr.dart';
 import '../../../theme/svg_image_collection.dart';
 import '../../../theme/theme_colors.dart';
+import '../widget/scroll_to_hide_widget.dart';
 
 @RoutePage()
 class MainScreen extends StatefulWidget {
@@ -20,75 +21,83 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late FavoriteAnimeRoute _favoriteAnimeRoute;
-  late AnimeNewReleasesRoute _animeNewReleasesRoute;
-  late AuthRoute _authRoute;
   final initialRouteObs = false.rv;
+  late ScrollController controller;
 
   @override
   void initState() {
     super.initState();
-    _favoriteAnimeRoute = FavoriteAnimeRoute(
-        vmFactory: (context) => FavoriteAnimeViewModel(context));
-    _animeNewReleasesRoute = AnimeNewReleasesRoute(
-        vmFactory: (context) => AnimeReleasesViewModel(context));
-    _authRoute = AuthRoute(vmFactory: (context) => AuthViewModel(context));
+    controller = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final selectIndex = 1.rv;
     return AutoTabsRouter(
-      routes: [_favoriteAnimeRoute, _animeNewReleasesRoute, _authRoute],
+      routes: [
+        FavoriteAnimeRoute(vmFactory: (context) => FavoriteAnimeViewModel(context)),
+        AnimeNewReleasesRoute(vmFactory: (context) => AnimeReleasesViewModel(context, controller: controller,)),
+        AuthRoute(vmFactory: (context) => AuthViewModel(context))
+      ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,
         //пришлось прибегнуть к костылю из-за того, что autoRoute отказывается делать initial виджет с required параметром
         child: initialRouteObs.observer((context, value) => value
             ? child
             : AnimeNewReleasesPage(
-                vmFactory: (context) => AnimeReleasesViewModel(context))),
+                vmFactory: (context) => AnimeReleasesViewModel(context, controller: controller))),
       ),
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
         return selectIndex.observer((context, value) => Scaffold(
               body: child,
-              bottomNavigationBar: NavigationBar(
-                elevation: 0,
-                onDestinationSelected: (value) {
-                  selectIndex.value = value;
-                  initialRouteObs.value = true;
-                  return tabsRouter.setActiveIndex(value);
-                },
-                selectedIndex: selectIndex.value,
-                destinations: [
-                  const NavigationDestination(
-                    icon: Icon(Icons.favorite_border,
-                        color: LightThemeColors.mdThemeLightOnSurfaceVariant),
-                    selectedIcon: Icon(Icons.favorite,
-                        color: LightThemeColors.mdThemeLightOnSurface),
-                    label: "Фавориты",
-                  ),
-                  const NavigationDestination(
-                      icon: Icon(Icons.tv,
+              bottomNavigationBar: ScrollToHideWidget(
+                controller: controller,
+                child: NavigationBar(
+                  elevation: 0,
+                  onDestinationSelected: (value) {
+                    selectIndex.value = value;
+                    initialRouteObs.value = true;
+                    return tabsRouter.setActiveIndex(value);
+                  },
+                  selectedIndex: selectIndex.value,
+                  destinations: [
+                    const NavigationDestination(
+                      icon: Icon(Icons.favorite_border,
                           color: LightThemeColors.mdThemeLightOnSurfaceVariant),
-                      selectedIcon: Icon(Icons.tv,
+                      selectedIcon: Icon(Icons.favorite,
                           color: LightThemeColors.mdThemeLightOnSurface),
-                      label: "Просмотр"),
-                  NavigationDestination(
-                    icon: SvgPicture.asset(ImageCollectionSVG.chatIcon,
-                        colorFilter: const ColorFilter.mode(
-                          LightThemeColors.mdThemeLightOnSurfaceVariant,
-                          BlendMode.srcIn,
-                        )),
-                    selectedIcon:
-                        SvgPicture.asset(ImageCollectionSVG.chatOutlineIcon,
-                            colorFilter: const ColorFilter.mode(
-                              LightThemeColors.mdThemeLightOnSurface,
-                              BlendMode.srcIn,
-                            )),
-                    label: "Чат",
-                  ),
-                ],
+                      label: "Фавориты",
+                    ),
+                    const NavigationDestination(
+                        icon: Icon(Icons.tv,
+                            color:
+                                LightThemeColors.mdThemeLightOnSurfaceVariant),
+                        selectedIcon: Icon(Icons.tv,
+                            color: LightThemeColors.mdThemeLightOnSurface),
+                        label: "Просмотр"),
+                    NavigationDestination(
+                      icon: SvgPicture.asset(ImageCollectionSVG.chatIcon,
+                          colorFilter: const ColorFilter.mode(
+                            LightThemeColors.mdThemeLightOnSurfaceVariant,
+                            BlendMode.srcIn,
+                          )),
+                      selectedIcon:
+                          SvgPicture.asset(ImageCollectionSVG.chatOutlineIcon,
+                              colorFilter: const ColorFilter.mode(
+                                LightThemeColors.mdThemeLightOnSurface,
+                                BlendMode.srcIn,
+                              )),
+                      label: "Чат",
+                    ),
+                  ],
+                ),
               ),
             ));
       },

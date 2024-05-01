@@ -9,8 +9,7 @@ import '../../../../theme/theme_colors.dart';
 
 @RoutePage()
 class AnimeNewReleasesPage extends BaseView<AnimeReleasesViewModel> {
-  AnimeNewReleasesPage({super.key, required super.vmFactory});
-
+  const AnimeNewReleasesPage({super.key, required super.vmFactory});
 
   AppBar get _profileAppBar => AppBar(
     title: Text("Просмотр"),
@@ -33,8 +32,22 @@ class AnimeNewReleasesPage extends BaseView<AnimeReleasesViewModel> {
   Widget build(AnimeReleasesViewModel vm) {
     return  Scaffold(
       appBar: _profileAppBar,
-      body: Container(
-      ),
+      body: GridView.builder(
+        controller: vm.controller,
+        itemCount: 20,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.all(8),
+            child: Container(
+              height: 70,
+              width: 50,
+              color: Colors.red,
+            ),
+          );
+        },
+      )
     );
   }
 }

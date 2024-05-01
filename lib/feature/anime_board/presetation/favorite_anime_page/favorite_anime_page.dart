@@ -9,31 +9,30 @@ import '../../../../theme/theme_colors.dart';
 
 @RoutePage()
 class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
-  FavoriteAnimePage({super.key, required super.vmFactory});
+  const FavoriteAnimePage({super.key, required super.vmFactory});
 
   AppBar get _profileAppBar => AppBar(
-    title: Text("Любимые"),
-    actions: [
-      IconButton(
-          icon: const Icon(
-            Icons.search,
-            color: LightThemeColors.mdThemeLightOnSurfaceVariant,
-          ),
-          onPressed: () { }),
-      IconButton(
-          icon: const Icon(
-            Icons.settings,
-            color: LightThemeColors.mdThemeLightOnSurfaceVariant,
-          ),
-          onPressed: () { }),
-    ],
-  );
+        title: Text("Любимые"),
+        actions: [
+          IconButton(
+              icon: const Icon(
+                Icons.search,
+                color: LightThemeColors.mdThemeLightOnSurfaceVariant,
+              ),
+              onPressed: () {}),
+          IconButton(
+              icon: const Icon(
+                Icons.settings,
+                color: LightThemeColors.mdThemeLightOnSurfaceVariant,
+              ),
+              onPressed: () {}),
+        ],
+      );
+
   @override
   Widget build(FavoriteAnimeViewModel vm) {
-    return  Scaffold(
-      appBar:_profileAppBar ,
-      body: Container(
-      ),
-    );
+    return Scaffold(
+        appBar: _profileAppBar,
+        body: Container());
   }
 }
