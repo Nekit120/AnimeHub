@@ -47,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,
-        //пришлось прибегнуть к костылю из-за того, что autoRoute отказывается делать initial виджет с required параметром
+        //пришлось прибегнуть к костылю из-за того, что autoRoute отказывается делать initial виджет с required параметром,а vm required
         child: initialRouteObs.observer((context, value) => value
             ? child
             : AnimeNewReleasesPage(

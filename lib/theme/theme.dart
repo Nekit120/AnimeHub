@@ -133,22 +133,23 @@ final lightTheme = ThemeData(
     bodyMedium: TextStyle(
       fontSize: 14,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w600,
+      color: LightThemeColors.mdThemeLightOnSurfaceVariant,
       height: 20 / 14,
       letterSpacing: .25,
     ),
     bodySmall: TextStyle(
       fontSize: 12,
-      fontFamily: 'Roboto',
+    //  fontFamily: 'Italic', // Убедитесь, что у вас есть шрифт 'Italic' в вашем проекте
       fontWeight: FontWeight.w400,
       height: 16 / 12,
-      letterSpacing: .4,
-    ),
+      letterSpacing: 0.4,
+    )
   ),
   //dividerColor: LightThemeColors.outlineVariantColorNV80,
   appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(
-  //    color: LightThemeColors.outlineColorNV50,
+      color: LightThemeColors.mdThemeLightOnSurfaceVariant,
     ),
     elevation: 0,
     backgroundColor: Colors.white,

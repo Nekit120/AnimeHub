@@ -17,13 +17,11 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
           IconButton(
               icon: const Icon(
                 Icons.search,
-                color: LightThemeColors.mdThemeLightOnSurfaceVariant,
               ),
               onPressed: () {}),
           IconButton(
               icon: const Icon(
                 Icons.settings,
-                color: LightThemeColors.mdThemeLightOnSurfaceVariant,
               ),
               onPressed: () {}),
         ],
