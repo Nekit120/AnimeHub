@@ -1,9 +1,6 @@
 import 'package:auto_route/annotations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../theme/theme_colors.dart';
 import '../../anime_board/domain/model/anime_api_item.dart';
 
 @RoutePage()
@@ -70,7 +67,7 @@ class AnimeInfoPage extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 140,),
+            const SizedBox(height: 140,),
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(_animeApiItem.materialData?.description?? "Подробная информация пока не добавлена",style: GoogleFonts.manrope(

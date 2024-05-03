@@ -10,9 +10,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:anime_hub/feature/anime_board/domain/model/anime_api_item.dart'
     as _i8;
-import 'package:anime_hub/feature/anime_board/presetation/anime_new_item_page/anime_new_releases_page.dart'
+import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_page.dart'
     as _i2;
-import 'package:anime_hub/feature/anime_board/presetation/anime_new_item_page/anime_releases_vm.dart'
+import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_vm.dart'
     as _i9;
 import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_page.dart'
     as _i4;
@@ -42,11 +42,11 @@ abstract class $AppRouter extends _i6.RootStackRouter {
         ),
       );
     },
-    AnimeNewReleasesRoute.name: (routeData) {
-      final args = routeData.argsAs<AnimeNewReleasesRouteArgs>();
+    AnimeReleasesRoute.name: (routeData) {
+      final args = routeData.argsAs<AnimeReleasesRouteArgs>();
       return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i2.AnimeNewReleasesPage(
+        child: _i2.AnimeReleasesPage(
           key: args.key,
           vmFactory: args.vmFactory,
         ),
@@ -120,30 +120,29 @@ class AnimeInfoRouteArgs {
 }
 
 /// generated route for
-/// [_i2.AnimeNewReleasesPage]
-class AnimeNewReleasesRoute
-    extends _i6.PageRouteInfo<AnimeNewReleasesRouteArgs> {
-  AnimeNewReleasesRoute({
+/// [_i2.AnimeReleasesPage]
+class AnimeReleasesRoute extends _i6.PageRouteInfo<AnimeReleasesRouteArgs> {
+  AnimeReleasesRoute({
     _i7.Key? key,
     required _i9.AnimeReleasesViewModel Function(_i7.BuildContext) vmFactory,
     List<_i6.PageRouteInfo>? children,
   }) : super(
-          AnimeNewReleasesRoute.name,
-          args: AnimeNewReleasesRouteArgs(
+          AnimeReleasesRoute.name,
+          args: AnimeReleasesRouteArgs(
             key: key,
             vmFactory: vmFactory,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'AnimeNewReleasesRoute';
+  static const String name = 'AnimeReleasesRoute';
 
-  static const _i6.PageInfo<AnimeNewReleasesRouteArgs> page =
-      _i6.PageInfo<AnimeNewReleasesRouteArgs>(name);
+  static const _i6.PageInfo<AnimeReleasesRouteArgs> page =
+      _i6.PageInfo<AnimeReleasesRouteArgs>(name);
 }
 
-class AnimeNewReleasesRouteArgs {
-  const AnimeNewReleasesRouteArgs({
+class AnimeReleasesRouteArgs {
+  const AnimeReleasesRouteArgs({
     this.key,
     required this.vmFactory,
   });
@@ -154,7 +153,7 @@ class AnimeNewReleasesRouteArgs {
 
   @override
   String toString() {
-    return 'AnimeNewReleasesRouteArgs{key: $key, vmFactory: $vmFactory}';
+    return 'AnimeReleasesRouteArgs{key: $key, vmFactory: $vmFactory}';
   }
 }
 

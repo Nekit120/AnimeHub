@@ -1,15 +1,15 @@
-import 'package:anime_hub/feature/anime_board/presetation/anime_new_item_page/anime_new_releases_page.dart';
-import 'package:anime_hub/feature/anime_board/presetation/anime_new_item_page/anime_releases_vm.dart';
+import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_vm.dart';
 import 'package:anime_hub/feature/auth/presetation/auth_vm.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 import '../../../core/domain/router/router.gr.dart';
 import '../../../theme/svg_image_collection.dart';
 import '../../../theme/theme_colors.dart';
+import '../../anime_board/presetation/anime_releses_page/anime_releases_page.dart';
+import '../../anime_board/presetation/anime_releses_page/anime_releases_vm.dart';
 import '../widget/scroll_to_hide_widget.dart';
 
 @RoutePage()
@@ -42,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
     return AutoTabsRouter(
       routes: [
         FavoriteAnimeRoute(vmFactory: (context) => FavoriteAnimeViewModel(context)),
-        AnimeNewReleasesRoute(vmFactory: (context) => AnimeReleasesViewModel(context, controller: controller,)),
+        AnimeReleasesRoute(vmFactory: (context) => AnimeReleasesViewModel(context, controller: controller,animeBoardRepository: AppContainer().repositoryScope.animeBoardRepository)),
         AuthRoute(vmFactory: (context) => AuthViewModel(context))
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
@@ -50,8 +50,8 @@ class _MainScreenState extends State<MainScreen> {
         //пришлось прибегнуть к костылю из-за того, что autoRoute отказывается делать initial виджет с required параметром,а vm required
         child: initialRouteObs.observer((context, value) => value
             ? child
-            : AnimeNewReleasesPage(
-                vmFactory: (context) => AnimeReleasesViewModel(context, controller: controller))),
+            : AnimeReleasesPage(
+                vmFactory: (context) => AnimeReleasesViewModel(context, controller: controller, animeBoardRepository: AppContainer().repositoryScope.animeBoardRepository))),
       ),
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);

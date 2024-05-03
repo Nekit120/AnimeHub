@@ -1,20 +1,18 @@
 import 'package:anime_hub/core/presentation/view/view_model.dart';
-import 'package:anime_hub/feature/anime_board/presetation/anime_new_item_page/anime_releases_vm.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/domain/router/router.gr.dart';
 import '../../../../main.dart';
+import 'anime_releases_vm.dart';
 
 
 
 @RoutePage()
-class AnimeNewReleasesPage extends BaseView<AnimeReleasesViewModel> {
-  const AnimeNewReleasesPage({super.key, required super.vmFactory});
+class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
+  const AnimeReleasesPage({super.key, required super.vmFactory});
   AppBar  _profileAppBar({required AnimeReleasesViewModel vm}) => AppBar(
-        title: Text("Просмотр"),
+        title: const Text("Просмотр"),
         actions: [
           IconButton(
               icon: const Icon(
@@ -31,7 +29,6 @@ class AnimeNewReleasesPage extends BaseView<AnimeReleasesViewModel> {
 
   @override
   Widget build(AnimeReleasesViewModel vm) {
-    double containerWidth = MediaQuery.of(vm.context).size.width / 2 - 24;
     return Scaffold(
       appBar: _profileAppBar(vm: vm),
       body: Consumer(
@@ -70,7 +67,7 @@ class AnimeNewReleasesPage extends BaseView<AnimeReleasesViewModel> {
                           ),
                         ),
                         Text(
-                            animeApiList.results[index].title ?? "",
+                            animeApiList.results[index].title,
                             maxLines: 2,
                             textAlign: TextAlign.center)
                       ],
