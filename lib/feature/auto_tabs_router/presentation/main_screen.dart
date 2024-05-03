@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 import '../../../core/domain/router/router.gr.dart';
+import '../../../generated/l10n.dart';
 import '../../../theme/svg_image_collection.dart';
 import '../../../theme/theme_colors.dart';
 import '../../anime_board/presetation/anime_releses_page/anime_releases_page.dart';
@@ -68,20 +69,20 @@ class _MainScreenState extends State<MainScreen> {
                   },
                   selectedIndex: selectIndex.value,
                   destinations: [
-                    const NavigationDestination(
-                      icon: Icon(Icons.favorite_border,
+                     NavigationDestination(
+                      icon: const Icon(Icons.favorite_border,
                           color: LightThemeColors.mdThemeLightOnSurfaceVariant),
-                      selectedIcon: Icon(Icons.favorite,
+                      selectedIcon: const Icon(Icons.favorite,
                           color: LightThemeColors.mdThemeLightOnSurface),
-                      label: "Фавориты",
+                      label: S.of(context).title_favorite,
                     ),
-                    const NavigationDestination(
-                        icon: Icon(Icons.tv,
+                     NavigationDestination(
+                        icon: const Icon(Icons.tv,
                             color:
                                 LightThemeColors.mdThemeLightOnSurfaceVariant),
-                        selectedIcon: Icon(Icons.tv,
+                        selectedIcon: const Icon(Icons.tv,
                             color: LightThemeColors.mdThemeLightOnSurface),
-                        label: "Просмотр"),
+                        label: S.of(context).title_watch),
                     NavigationDestination(
                       icon: SvgPicture.asset(ImageCollectionSVG.chatIcon,
                           colorFilter: const ColorFilter.mode(
@@ -94,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
                                 LightThemeColors.mdThemeLightOnSurface,
                                 BlendMode.srcIn,
                               )),
-                      label: "Чат",
+                      label: S.of(context).title_chat,
                     ),
                   ],
                 ),

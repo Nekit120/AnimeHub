@@ -1,0 +1,17 @@
+{
+  "title_favorite": "Favorite",
+  "title_watch": "Watch",
+  "title_chat": "Chat",
+  "app_name": "AnimeHub",
+  "title_search": "Search",
+  "title_settings": "Settings",
+  "anime_error_request": "A data access error has occurred, you may need to check your Internet connection!",
+  "select_episode": "Select episode",
+  "play_text": "Play",
+  "description_error": "Unfortunately, the description has not been added yet, but you can always contact us and let us know about it!",
+  "not_in_player": "Perhaps this anime is not in our player!",
+  "internet_error": "You do not have an Internet connection!",
+  "empty_bd": "You don\\'t have any favorite anime yet, but you can add them!",
+  "empty_answer_after_search": "Nothing was found for your request!",
+  "title_detailed_information": "Detailed information"
+}

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:anime_hub/feature/anime_board/data/data_source/remote/remote_data_provider.dart';
 import 'package:anime_hub/feature/anime_board/data/repository/anime_board_repository_impl.dart';
 import 'package:anime_hub/feature/anime_board/domain/repository/anime_board_repository.dart';
 import 'package:get_it/get_it.dart';
@@ -18,12 +19,9 @@ class AppContainer {
 
   Future<bool> initDependencies() async {
     try {
-      final animeBoardRepository = AnimeBoardRepositoryImpl();
+      final animeBoardRepository = AnimeBoardRepositoryImpl(remoteDataProvider: RemoteDataProvider());
 
-      repositoryScope = RepositoryScope(
-          animeBoardRepository: animeBoardRepository );
-
-
+      repositoryScope = RepositoryScope(animeBoardRepository: animeBoardRepository);
 
       return true;
     } catch (e, st) {
@@ -33,12 +31,8 @@ class AppContainer {
   }
 }
 
-
-
-
 class RepositoryScope {
   final AnimeBoardRepository animeBoardRepository;
 
-  RepositoryScope(
-      {required this.animeBoardRepository});
+  RepositoryScope({required this.animeBoardRepository});
 }

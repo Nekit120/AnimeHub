@@ -1,3 +1,5 @@
+import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
+
 import '../model/anime_api_list.dart';
 import '../repository/anime_board_repository.dart';
 
@@ -6,7 +8,7 @@ class GetAnimeListUseCase{
 
   GetAnimeListUseCase({required AnimeBoardRepository animeBoardRepository}): _animeBoardRepository = animeBoardRepository;
 
-  Future<AnimeApiList> getAnimeList() async {
+  Future<Result<AnimeApiList>> call() async {
     return _animeBoardRepository.getAnimeList();
   }
 

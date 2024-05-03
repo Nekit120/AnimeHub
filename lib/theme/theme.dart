@@ -89,10 +89,10 @@ final lightTheme = ThemeData(
       height: 28 / 22,
     ),
     titleMedium: TextStyle(
-        fontSize: 16,
+        fontSize: 18,
         fontFamily: 'Roboto',
-        fontWeight: FontWeight.w500,
-        height: 24 / 16,
+        fontWeight: FontWeight.w600,
+        height: 22 / 16,
         letterSpacing: .15),
     titleSmall: TextStyle(
       fontSize: 14,
@@ -140,7 +140,6 @@ final lightTheme = ThemeData(
     ),
     bodySmall: TextStyle(
       fontSize: 12,
-    //  fontFamily: 'Italic', // Убедитесь, что у вас есть шрифт 'Italic' в вашем проекте
       fontWeight: FontWeight.w400,
       height: 16 / 12,
       letterSpacing: 0.4,

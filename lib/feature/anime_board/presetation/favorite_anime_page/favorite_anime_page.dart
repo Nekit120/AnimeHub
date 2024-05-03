@@ -4,12 +4,14 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../generated/l10n.dart';
+
 @RoutePage()
 class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
   const FavoriteAnimePage({super.key, required super.vmFactory});
 
-  AppBar get _profileAppBar => AppBar(
-        title: Text("Любимые"),
+  AppBar _profileAppBar({required FavoriteAnimeViewModel vm}) => AppBar(
+        title: Text(S.of(vm.context).title_favorite),
         actions: [
           IconButton(
               icon: const Icon(
@@ -27,7 +29,7 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
   @override
   Widget build(FavoriteAnimeViewModel vm) {
     return Scaffold(
-        appBar: _profileAppBar,
+        appBar: _profileAppBar(vm:vm),
         body: Container());
   }
 }

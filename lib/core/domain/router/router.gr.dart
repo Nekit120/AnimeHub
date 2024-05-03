@@ -13,19 +13,22 @@ import 'package:anime_hub/feature/anime_board/domain/model/anime_api_item.dart'
 import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_page.dart'
     as _i2;
 import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_vm.dart'
-    as _i9;
+    as _i11;
 import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_page.dart'
     as _i4;
 import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_vm.dart'
-    as _i11;
+    as _i13;
 import 'package:anime_hub/feature/anime_info/presetration/anime_info_page.dart'
     as _i1;
+import 'package:anime_hub/feature/anime_info/presetration/anime_info_vm.dart'
+    as _i9;
 import 'package:anime_hub/feature/auth/presetation/auth_page.dart' as _i3;
-import 'package:anime_hub/feature/auth/presetation/auth_vm.dart' as _i10;
+import 'package:anime_hub/feature/auth/presetation/auth_vm.dart' as _i12;
 import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
     as _i5;
 import 'package:auto_route/auto_route.dart' as _i6;
 import 'package:flutter/cupertino.dart' as _i7;
+import 'package:flutter/material.dart' as _i10;
 
 abstract class $AppRouter extends _i6.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -39,6 +42,7 @@ abstract class $AppRouter extends _i6.RootStackRouter {
         child: _i1.AnimeInfoPage(
           key: args.key,
           animeItem: args.animeItem,
+          vmFactory: args.vmFactory,
         ),
       );
     },
@@ -87,12 +91,14 @@ class AnimeInfoRoute extends _i6.PageRouteInfo<AnimeInfoRouteArgs> {
   AnimeInfoRoute({
     _i7.Key? key,
     required _i8.AnimeApiItem animeItem,
+    required _i9.AnimeInfoViewModel Function(_i7.BuildContext) vmFactory,
     List<_i6.PageRouteInfo>? children,
   }) : super(
           AnimeInfoRoute.name,
           args: AnimeInfoRouteArgs(
             key: key,
             animeItem: animeItem,
+            vmFactory: vmFactory,
           ),
           initialChildren: children,
         );
@@ -107,15 +113,18 @@ class AnimeInfoRouteArgs {
   const AnimeInfoRouteArgs({
     this.key,
     required this.animeItem,
+    required this.vmFactory,
   });
 
   final _i7.Key? key;
 
   final _i8.AnimeApiItem animeItem;
 
+  final _i9.AnimeInfoViewModel Function(_i7.BuildContext) vmFactory;
+
   @override
   String toString() {
-    return 'AnimeInfoRouteArgs{key: $key, animeItem: $animeItem}';
+    return 'AnimeInfoRouteArgs{key: $key, animeItem: $animeItem, vmFactory: $vmFactory}';
   }
 }
 
@@ -123,8 +132,8 @@ class AnimeInfoRouteArgs {
 /// [_i2.AnimeReleasesPage]
 class AnimeReleasesRoute extends _i6.PageRouteInfo<AnimeReleasesRouteArgs> {
   AnimeReleasesRoute({
-    _i7.Key? key,
-    required _i9.AnimeReleasesViewModel Function(_i7.BuildContext) vmFactory,
+    _i10.Key? key,
+    required _i11.AnimeReleasesViewModel Function(_i10.BuildContext) vmFactory,
     List<_i6.PageRouteInfo>? children,
   }) : super(
           AnimeReleasesRoute.name,
@@ -147,9 +156,9 @@ class AnimeReleasesRouteArgs {
     required this.vmFactory,
   });
 
-  final _i7.Key? key;
+  final _i10.Key? key;
 
-  final _i9.AnimeReleasesViewModel Function(_i7.BuildContext) vmFactory;
+  final _i11.AnimeReleasesViewModel Function(_i10.BuildContext) vmFactory;
 
   @override
   String toString() {
@@ -162,7 +171,7 @@ class AnimeReleasesRouteArgs {
 class AuthRoute extends _i6.PageRouteInfo<AuthRouteArgs> {
   AuthRoute({
     _i7.Key? key,
-    required _i10.AuthViewModel Function(_i7.BuildContext) vmFactory,
+    required _i12.AuthViewModel Function(_i7.BuildContext) vmFactory,
     List<_i6.PageRouteInfo>? children,
   }) : super(
           AuthRoute.name,
@@ -187,7 +196,7 @@ class AuthRouteArgs {
 
   final _i7.Key? key;
 
-  final _i10.AuthViewModel Function(_i7.BuildContext) vmFactory;
+  final _i12.AuthViewModel Function(_i7.BuildContext) vmFactory;
 
   @override
   String toString() {
@@ -199,8 +208,8 @@ class AuthRouteArgs {
 /// [_i4.FavoriteAnimePage]
 class FavoriteAnimeRoute extends _i6.PageRouteInfo<FavoriteAnimeRouteArgs> {
   FavoriteAnimeRoute({
-    _i7.Key? key,
-    required _i11.FavoriteAnimeViewModel Function(_i7.BuildContext) vmFactory,
+    _i10.Key? key,
+    required _i13.FavoriteAnimeViewModel Function(_i10.BuildContext) vmFactory,
     List<_i6.PageRouteInfo>? children,
   }) : super(
           FavoriteAnimeRoute.name,
@@ -223,9 +232,9 @@ class FavoriteAnimeRouteArgs {
     required this.vmFactory,
   });
 
-  final _i7.Key? key;
+  final _i10.Key? key;
 
-  final _i11.FavoriteAnimeViewModel Function(_i7.BuildContext) vmFactory;
+  final _i13.FavoriteAnimeViewModel Function(_i10.BuildContext) vmFactory;
 
   @override
   String toString() {

@@ -1,13 +1,15 @@
 import 'package:anime_hub/feature/anime_board/domain/model/anime_api_list.dart';
 import 'package:dio/dio.dart';
 
+import '../../../../core/domain/use_case_result/use_case_result.dart';
 import '../../domain/repository/anime_board_repository.dart';
+import '../data_source/remote/remote_data_provider.dart';
 
 class AnimeBoardRepositoryImpl implements AnimeBoardRepository {
+  final RemoteDataProvider _remoteDataProvider;
+  AnimeBoardRepositoryImpl({required RemoteDataProvider remoteDataProvider}):_remoteDataProvider = remoteDataProvider;
   @override
-  Future<AnimeApiList> getAnimeList() async {
-    final response = await Dio().get(
-        "https://kodikapi.com/list?token=405c66c107c8a27b0064e1506d2ded9f&types=anime-serial&with_episodes=true&with_material_data=true&limit=30");
-    return AnimeApiList.fromJson(response.data);
+  Future<Result<AnimeApiList>> getAnimeList() async {
+    return _remoteDataProvider.getAnimeList();
   }
 }

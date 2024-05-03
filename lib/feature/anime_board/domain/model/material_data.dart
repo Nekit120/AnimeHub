@@ -4,6 +4,8 @@ part 'material_data.g.dart';
 
 @JsonSerializable()
 class MaterialData {
+  @JsonKey(name: 'title')
+  final String? title;
   @JsonKey(name: 'anime_title')
   final String? titleEn;
   @JsonKey(name: 'anime_kind')
@@ -30,6 +32,7 @@ class MaterialData {
   final int? episodesAired;
 
   MaterialData({
+    this.title,
     this.titleEn,
     this.animeKind,
     this.allStatus,

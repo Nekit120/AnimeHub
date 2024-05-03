@@ -7,6 +7,7 @@ part of 'material_data.dart';
 // **************************************************************************
 
 MaterialData _$MaterialDataFromJson(Map<String, dynamic> json) => MaterialData(
+      title: json['title'] as String?,
       titleEn: json['anime_title'] as String?,
       animeKind: json['anime_kind'] as String?,
       allStatus: json['all_status'] as String?,
@@ -28,6 +29,7 @@ MaterialData _$MaterialDataFromJson(Map<String, dynamic> json) => MaterialData(
 
 Map<String, dynamic> _$MaterialDataToJson(MaterialData instance) =>
     <String, dynamic>{
+      'title': instance.title,
       'anime_title': instance.titleEn,
       'anime_kind': instance.animeKind,
       'all_status': instance.allStatus,

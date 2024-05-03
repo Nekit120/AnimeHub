@@ -9,8 +9,6 @@ class AnimeReleasesViewModel extends ViewModel {
   final ScrollController controller;
   final GetAnimeListUseCase getAnimeListUseCase;
   late final AnimeApiList animeApiList;
-  final AnimeBoardRepositoryImpl animeBoardRepositoryImpl =
-      AnimeBoardRepositoryImpl();
 
   AnimeReleasesViewModel(super.context,
       {required this.controller,
