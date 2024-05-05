@@ -3,7 +3,6 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../generated/l10n.dart';
 import '../../../theme/theme_colors.dart';
 import '../../anime_board/domain/model/anime_api_item.dart';
@@ -86,18 +85,25 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                ClipRRect(
-                  child: Image.network(
-                    _animeApiItem.materialData?.posterUrl ??
-                        "https://shikimori.one/system/animes/original/56838.jpg",
-                    height: 180,
-                    width: MediaQuery.of(vm.context).size.width,
-                    fit: BoxFit.cover,
-                  ),
+                Column(
+                  children: [
+                    ClipRRect(
+                      child: Image.network(
+                        _animeApiItem.materialData?.posterUrl ??
+                            "https://shikimori.one/system/animes/original/56838.jpg",
+                        height: 180,
+                        width: MediaQuery.of(vm.context).size.width,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      height: 142,
+                    ),
+                  ],
                 ),
                 Positioned(
                   left: 16,
-                  bottom: -130,
+                  bottom: 0,
                   child: Card(
                     elevation: 1,
                     shape: RoundedRectangleBorder(
@@ -118,7 +124,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                 ),
                 Positioned(
                   left: 146,
-                  bottom: -208,
+                  bottom: -64,
                   child: SizedBox(
                     width: 260,
                     height: 200,
@@ -128,6 +134,10 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                         Text(
                           _animeApiItem.materialData?.title?? "Без имени",
                           style: Theme.of(vm.context).textTheme.titleMedium,
+                          maxLines: 4,
+                        ),
+                        Text(
+                          _animeApiItem.materialData?.allStatus?? "Без имени",
                           maxLines: 4,
                         ),
                         const SizedBox(height: 6),
@@ -142,19 +152,12 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
             //   height:136,
             // ),
             // Center(child: genresItem(genres: _animeApiItem.materialData?.allGenres??[], vm: vm)),
-            const SizedBox(
-              height: 136,
-            ),
+
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(
                 _animeApiItem.materialData?.description ??
-                    "Подробная информация пока не добавлена",
-                style: GoogleFonts.manrope(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 0.4,
-                ),
+                    S.of(vm.context).description_error,
               ),
             )
           ],

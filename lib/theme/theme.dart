@@ -92,7 +92,7 @@ final lightTheme = ThemeData(
         fontSize: 18,
         fontFamily: 'Roboto',
         fontWeight: FontWeight.w600,
-        height: 22 / 16,
+        height: 20 / 16,
         letterSpacing: .15),
     titleSmall: TextStyle(
       fontSize: 14,
