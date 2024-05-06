@@ -59,40 +59,72 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
     );
   }
 
-  Widget _genresItem({required List<String> genres,required AnimeInfoViewModel vm }) {
+  Widget _genresItem(
+      {required List<String> genres, required AnimeInfoViewModel vm}) {
     return SizedBox(
         height: 28,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: List.generate(
             genres.length,
-                (index) => GestureDetector(
-              child: _citiItem(
-                  citiName: genres[index],
-                  context: vm.context),
+            (index) => GestureDetector(
+              child: _citiItem(citiName: genres[index], context: vm.context),
             ),
           ),
         ));
   }
 
-  Widget _customActionButton({required IconData iconData,required String actionStr, required Function onTapCallback}) {
+  Widget _customActionButton(
+      {required IconData iconData,
+      required String actionStr,
+      required Function onTapCallback,
+      required BuildContext context}) {
     return Material(
       child: InkWell(
-        onTap: onTapCallback as void Function()? ,
+        onTap: onTapCallback as void Function()?,
         borderRadius: BorderRadius.circular(12),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 14.5,vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(iconData),
-              Text(actionStr),
+              Text(actionStr, style: Theme.of(context).textTheme.titleSmall),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget _customFavoriteButton(
+      {required String actionStr,
+      required Function onTapCallback,
+      required bool active,
+      required BuildContext context}) {
+    return Material(
+      child: InkWell(
+        onTap: onTapCallback as void Function()?,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              active
+                  ? const Icon(Icons.favorite)
+                  : const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
+              Text(actionStr, style: Theme.of(context).textTheme.titleSmall),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   void _playTabCallback() {
     print("object");
   }
@@ -154,16 +186,20 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _animeApiItem.materialData?.title?? "Без имени",
+                          _animeApiItem.materialData?.title ?? "Без имени",
                           style: Theme.of(vm.context).textTheme.titleMedium,
                           maxLines: 4,
                         ),
                         Text(
-                          _animeApiItem.materialData?.allStatus?? "Без имени",
+                          _animeApiItem.materialData?.allStatus ?? "Без имени",
                           maxLines: 4,
                         ),
                         const SizedBox(height: 6),
-                        SizedBox(child: _genresItem(genres: _animeApiItem.materialData?.allGenres??[], vm: vm))
+                        SizedBox(
+                            child: _genresItem(
+                                genres:
+                                    _animeApiItem.materialData?.allGenres ?? [],
+                                vm: vm))
                       ],
                     ),
                   ),
@@ -171,21 +207,41 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 15.0),
+              padding:
+                  const EdgeInsets.only(left: 13.0, right: 13.0, top: 7.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _customActionButton(iconData: Icons.favorite, actionStr: S.of(vm.context).title_favorite, onTapCallback: _playTabCallback),
-                  _customActionButton(iconData: Icons.menu, actionStr: S.of(vm.context).select_episode, onTapCallback: _playTabCallback),
-                  _customActionButton(iconData: Icons.play_arrow, actionStr: S.of(vm.context).play_text, onTapCallback: _playTabCallback),
+                  _customFavoriteButton(
+                      actionStr: S.of(vm.context).title_favorite,
+                      onTapCallback: _playTabCallback,
+                      active: false,
+                      context: vm.context),
+                  _customActionButton(
+                      iconData: Icons.menu_sharp,
+                      actionStr: S.of(vm.context).select_episode,
+                      onTapCallback: _playTabCallback,
+                      context: vm.context),
+                  _customActionButton(
+                      iconData: Icons.play_arrow,
+                      actionStr: S.of(vm.context).play_text,
+                      onTapCallback: _playTabCallback,
+                      context: vm.context),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 16),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
               child: Text(
                 _animeApiItem.materialData?.description ??
                     S.of(vm.context).description_error,
+                style: Theme.of(vm.context).textTheme.labelLarge!.apply(
+                  fontStyle:  FontStyle.italic
+                ),
+                // style: const TextStyle(
+                //   fontStyle: FontStyle.italic
+                // ),
               ),
             )
           ],
