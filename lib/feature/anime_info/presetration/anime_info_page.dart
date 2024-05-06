@@ -1,5 +1,7 @@
+import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -125,8 +127,9 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
     );
   }
 
-  void _playTabCallback() {
-    print("object");
+  void _playTabCallback(
+      {required BuildContext context, required String animeStreamUrl}) {
+    AutoRouter.of(context).push(PlayerRoute(animeStreamUrl: animeStreamUrl));
   }
 
   @override
@@ -180,7 +183,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                   left: 150,
                   bottom: -65,
                   child: SizedBox(
-                    width: 260,
+                    width: 257,
                     height: 200,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,38 +210,43 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
               ],
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 13.0, right: 13.0, top: 7.0),
+              padding: const EdgeInsets.only(left: 13.0, right: 13.0, top: 4.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _customFavoriteButton(
                       actionStr: S.of(vm.context).title_favorite,
-                      onTapCallback: _playTabCallback,
+                      onTapCallback: () {},
                       active: false,
                       context: vm.context),
                   _customActionButton(
                       iconData: Icons.menu_sharp,
                       actionStr: S.of(vm.context).select_episode,
-                      onTapCallback: _playTabCallback,
+                      onTapCallback: () {},
                       context: vm.context),
                   _customActionButton(
                       iconData: Icons.play_arrow,
                       actionStr: S.of(vm.context).play_text,
-                      onTapCallback: _playTabCallback,
+                      onTapCallback: () {
+                        _playTabCallback(
+                          context: vm.context,
+                          animeStreamUrl: _animeApiItem.link,
+                        );
+                      },
                       context: vm.context),
                 ],
               ),
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 7),
               child: Text(
                 _animeApiItem.materialData?.description ??
                     S.of(vm.context).description_error,
-                style: Theme.of(vm.context).textTheme.labelLarge!.apply(
-                  fontStyle:  FontStyle.italic
-                ),
+                style: Theme.of(vm.context)
+                    .textTheme
+                    .labelLarge!
+                    .apply(fontStyle: FontStyle.italic),
                 // style: const TextStyle(
                 //   fontStyle: FontStyle.italic
                 // ),

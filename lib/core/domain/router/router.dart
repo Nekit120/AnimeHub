@@ -10,6 +10,7 @@ class AppRouter extends $AppRouter {
           AutoRoute(page: AnimeReleasesRoute.page),
           AutoRoute(page: AuthRoute.page)
         ]),
-        AutoRoute(page: AnimeInfoRoute.page)
+        AutoRoute(page: AnimeInfoRoute.page),
+        AutoRoute(page: PlayerRoute.page)
       ];
 }
