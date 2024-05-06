@@ -1,5 +1,6 @@
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
+import 'package:anime_hub/core/presentation/widget/customAppBar.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,21 +19,6 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
       {super.key, required AnimeApiItem animeItem, required super.vmFactory})
       : _animeApiItem = animeItem;
 
-  AppBar _profileAppBar({required AnimeInfoViewModel vm}) => AppBar(
-        title: Text(S.of(vm.context).title_detailed_information),
-        actions: [
-          IconButton(
-              icon: const Icon(
-                Icons.search,
-              ),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(
-                Icons.settings,
-              ),
-              onPressed: () {}),
-        ],
-      );
 
   Widget _citiItem({required String citiName, required BuildContext context}) {
     return Container(
@@ -135,7 +121,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
   @override
   Widget build(AnimeInfoViewModel vm) {
     return Scaffold(
-      appBar: _profileAppBar(vm: vm),
+      appBar: CustomAppBar(titleAppBar:S.of(vm.context).title_detailed_information , context: vm.context,),
       body: SingleChildScrollView(
         child: Column(
           children: [

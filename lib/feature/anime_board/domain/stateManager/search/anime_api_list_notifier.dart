@@ -3,16 +3,13 @@ import 'package:anime_hub/feature/anime_board/data/data_source/remote/remote_dat
 import 'package:anime_hub/feature/anime_board/data/repository/anime_board_repository_impl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/domain/app_error/app_error.dart';
-import '../model/anime_api_list.dart';
+import '../../../../../core/domain/app_error/app_error.dart';
+import '../../model/anime_api_list.dart';
 
-final animeApiListProvider = StateNotifierProvider<AnimeApiListNotifier, Result<AnimeApiList>?>((ref) {
+final animeSearchApiProvider = StateNotifierProvider<AnimeApiListNotifier, Result<AnimeApiList>?>((ref) {
 
   return AnimeApiListNotifier();
 });
-
-//Немного не подошёл
-//final fetchAnimeApiListProvider = FutureProvider((ref) =>);
 
 class AnimeApiListNotifier extends StateNotifier<Result<AnimeApiList>?> {
 

@@ -32,6 +32,11 @@ class _PlayerPageState extends State<PlayerPage> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     super.dispose();
   }
 

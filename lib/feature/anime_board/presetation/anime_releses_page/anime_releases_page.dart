@@ -1,36 +1,23 @@
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/feature/anime_board/domain/model/anime_api_list.dart';
+import 'package:anime_hub/feature/anime_board/presetation/anime_search/anime_search_vm.dart';
 import 'package:anime_hub/feature/anime_info/presetration/anime_info_vm.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/domain/router/router.gr.dart';
 import '../../../../core/domain/use_case_result/use_case_result.dart';
+import '../../../../core/presentation/widget/customAppBar.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../main.dart';
 import '../../../../theme/theme_colors.dart';
-import '../../domain/stateManager/anime_api_list_notifier.dart';
+import '../../domain/stateManager/releases/anime_api_list_notifier.dart';
 import 'anime_releases_vm.dart';
 
 @RoutePage()
 class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
   const AnimeReleasesPage({super.key, required super.vmFactory});
 
-  AppBar _profileAppBar({required AnimeReleasesViewModel vm}) => AppBar(
-        title: Text(S.of(vm.context).title_watch),
-        actions: [
-          IconButton(
-              icon: const Icon(
-                Icons.search,
-              ),
-              onPressed: () {}),
-          IconButton(
-              icon: const Icon(
-                Icons.settings,
-              ),
-              onPressed: () {}),
-        ],
-      );
   Widget _errorFavoritesBoard({required BuildContext context}) => Center(
     child: Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -62,23 +49,30 @@ class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
 
   @override
   Widget build(AnimeReleasesViewModel vm) {
+    final isNotHorizontal = MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
-      appBar: _profileAppBar(vm: vm),
+      appBar: isNotHorizontal? CustomAppBar(titleAppBar:S.of(vm.context).title_watch, context: vm.context,): null,
       body: Consumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          ref.read(animeApiListProvider.notifier).fetchData(getAnimeListFunction: vm.getAnimeListUseCase.call);
+          ref.read(animeReleasesApiProvider.notifier).fetchData(getAnimeListFunction: vm.getAnimeListUseCase.call);
           return Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final animeApiList = ref.watch(animeApiListProvider);
+              final animeApiList = ref.watch(animeReleasesApiProvider);
               switch (animeApiList) {
                 case GoodUseCaseResult<AnimeApiList>(:final data):
                   return GridView.builder(
-                    controller: vm.controller,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    controller: isNotHorizontal ? vm.controller: null,
+                    gridDelegate: isNotHorizontal ? const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 0,
                       childAspectRatio: 0.67,
+                    ) :
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 0,
+                      childAspectRatio: 0.65,
                     ),
                     itemCount: data.results.length,
                     itemBuilder: (BuildContext context, int index) {
