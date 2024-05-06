@@ -15,9 +15,4 @@ class AnimeReleasesViewModel extends ViewModel {
       required AnimeBoardRepository animeBoardRepository})
       : getAnimeListUseCase = GetAnimeListUseCase(animeBoardRepository: animeBoardRepository);
 
-
-  @override
-  void initState() {
-    super.initState();
-  }
 }

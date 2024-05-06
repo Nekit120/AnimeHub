@@ -98,7 +98,8 @@ class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
                                           "https://shikimori.one/system/animes/original/56838.jpg",
                                       height: 255,
                                       fit: BoxFit.cover,
-                                    )),
+                                    )
+                                ),
                               ),
                             ),
                             Text(data.results[index].title,

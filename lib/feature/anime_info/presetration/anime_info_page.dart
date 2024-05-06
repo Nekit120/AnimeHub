@@ -59,7 +59,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
     );
   }
 
-  Widget genresItem({required List<String> genres,required AnimeInfoViewModel vm }) {
+  Widget _genresItem({required List<String> genres,required AnimeInfoViewModel vm }) {
     return SizedBox(
         height: 28,
         child: ListView(
@@ -73,6 +73,28 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
             ),
           ),
         ));
+  }
+
+  Widget _customActionButton({required IconData iconData,required String actionStr, required Function onTapCallback}) {
+    return Material(
+      child: InkWell(
+        onTap: onTapCallback as void Function()? ,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 14.5,vertical: 6),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(iconData),
+              Text(actionStr),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  void _playTabCallback() {
+    print("object");
   }
 
   @override
@@ -123,8 +145,8 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                   ),
                 ),
                 Positioned(
-                  left: 146,
-                  bottom: -64,
+                  left: 150,
+                  bottom: -65,
                   child: SizedBox(
                     width: 260,
                     height: 200,
@@ -141,20 +163,26 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                           maxLines: 4,
                         ),
                         const SizedBox(height: 6),
-                        SizedBox(child: genresItem(genres: _animeApiItem.materialData?.allGenres??[], vm: vm))
+                        SizedBox(child: _genresItem(genres: _animeApiItem.materialData?.allGenres??[], vm: vm))
                       ],
                     ),
                   ),
                 )
               ],
             ),
-            // const SizedBox(
-            //   height:136,
-            // ),
-            // Center(child: genresItem(genres: _animeApiItem.materialData?.allGenres??[], vm: vm)),
-
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _customActionButton(iconData: Icons.favorite, actionStr: S.of(vm.context).title_favorite, onTapCallback: _playTabCallback),
+                  _customActionButton(iconData: Icons.menu, actionStr: S.of(vm.context).select_episode, onTapCallback: _playTabCallback),
+                  _customActionButton(iconData: Icons.play_arrow, actionStr: S.of(vm.context).play_text, onTapCallback: _playTabCallback),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 16),
               child: Text(
                 _animeApiItem.materialData?.description ??
                     S.of(vm.context).description_error,
