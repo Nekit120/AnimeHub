@@ -102,10 +102,11 @@ final lightTheme = ThemeData(
       letterSpacing: .1,
     ),
     labelLarge: TextStyle(
-      fontSize: 14,
+      fontSize: 15,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w500,
       height: 20 / 14,
+      color: LightThemeColors.mdThemeLightOnSurfaceVariant,
       letterSpacing: .1,
     ),
     labelMedium: TextStyle(
@@ -153,5 +154,5 @@ final lightTheme = ThemeData(
     elevation: 0,
     backgroundColor: Colors.white,
   ),
-  iconTheme: const IconThemeData(color: Color(0xFF81737A)),
+  iconTheme: const IconThemeData(color: LightThemeColors.mdThemeLightOnSurfaceVariant),
 );
