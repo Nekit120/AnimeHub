@@ -89,10 +89,10 @@ final lightTheme = ThemeData(
       height: 28 / 22,
     ),
     titleMedium: TextStyle(
-        fontSize: 16,
+        fontSize: 18,
         fontFamily: 'Roboto',
-        fontWeight: FontWeight.w500,
-        height: 24 / 16,
+        fontWeight: FontWeight.w600,
+        height: 20 / 16,
         letterSpacing: .15),
     titleSmall: TextStyle(
       fontSize: 14,
@@ -133,22 +133,22 @@ final lightTheme = ThemeData(
     bodyMedium: TextStyle(
       fontSize: 14,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.w600,
+      color: LightThemeColors.mdThemeLightOnSurfaceVariant,
       height: 20 / 14,
       letterSpacing: .25,
     ),
     bodySmall: TextStyle(
       fontSize: 12,
-      fontFamily: 'Roboto',
       fontWeight: FontWeight.w400,
       height: 16 / 12,
-      letterSpacing: .4,
-    ),
+      letterSpacing: 0.4,
+    )
   ),
   //dividerColor: LightThemeColors.outlineVariantColorNV80,
   appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(
-  //    color: LightThemeColors.outlineColorNV50,
+      color: LightThemeColors.mdThemeLightOnSurfaceVariant,
     ),
     elevation: 0,
     backgroundColor: Colors.white,

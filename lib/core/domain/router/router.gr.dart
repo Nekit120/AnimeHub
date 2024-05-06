@@ -8,31 +8,49 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:anime_hub/feature/anime_board/presetation/anime_new_item_page/anime_new_releases_page.dart'
-    as _i1;
-import 'package:anime_hub/feature/anime_board/presetation/anime_new_item_page/anime_releases_vm.dart'
-    as _i7;
+import 'package:anime_hub/feature/anime_board/domain/model/anime_api_item.dart'
+    as _i8;
+import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_page.dart'
+    as _i2;
+import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_vm.dart'
+    as _i11;
 import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_page.dart'
-    as _i3;
-import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_vm.dart'
-    as _i9;
-import 'package:anime_hub/feature/auth/presetation/auth_page.dart' as _i2;
-import 'package:anime_hub/feature/auth/presetation/auth_vm.dart' as _i8;
-import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
     as _i4;
-import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/cupertino.dart' as _i6;
+import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_vm.dart'
+    as _i13;
+import 'package:anime_hub/feature/anime_info/presetration/anime_info_page.dart'
+    as _i1;
+import 'package:anime_hub/feature/anime_info/presetration/anime_info_vm.dart'
+    as _i9;
+import 'package:anime_hub/feature/auth/presetation/auth_page.dart' as _i3;
+import 'package:anime_hub/feature/auth/presetation/auth_vm.dart' as _i12;
+import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
+    as _i5;
+import 'package:auto_route/auto_route.dart' as _i6;
+import 'package:flutter/cupertino.dart' as _i7;
+import 'package:flutter/material.dart' as _i10;
 
-abstract class $AppRouter extends _i5.RootStackRouter {
+abstract class $AppRouter extends _i6.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i5.PageFactory> pagesMap = {
-    AnimeNewReleasesRoute.name: (routeData) {
-      final args = routeData.argsAs<AnimeNewReleasesRouteArgs>();
-      return _i5.AutoRoutePage<dynamic>(
+  final Map<String, _i6.PageFactory> pagesMap = {
+    AnimeInfoRoute.name: (routeData) {
+      final args = routeData.argsAs<AnimeInfoRouteArgs>();
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i1.AnimeNewReleasesPage(
+        child: _i1.AnimeInfoPage(
+          key: args.key,
+          animeItem: args.animeItem,
+          vmFactory: args.vmFactory,
+        ),
+      );
+    },
+    AnimeReleasesRoute.name: (routeData) {
+      final args = routeData.argsAs<AnimeReleasesRouteArgs>();
+      return _i6.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i2.AnimeReleasesPage(
           key: args.key,
           vmFactory: args.vmFactory,
         ),
@@ -40,9 +58,9 @@ abstract class $AppRouter extends _i5.RootStackRouter {
     },
     AuthRoute.name: (routeData) {
       final args = routeData.argsAs<AuthRouteArgs>();
-      return _i5.AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i2.AuthPage(
+        child: _i3.AuthPage(
           key: args.key,
           vmFactory: args.vmFactory,
         ),
@@ -50,69 +68,111 @@ abstract class $AppRouter extends _i5.RootStackRouter {
     },
     FavoriteAnimeRoute.name: (routeData) {
       final args = routeData.argsAs<FavoriteAnimeRouteArgs>();
-      return _i5.AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i3.FavoriteAnimePage(
+        child: _i4.FavoriteAnimePage(
           key: args.key,
           vmFactory: args.vmFactory,
         ),
       );
     },
     MainRoute.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i6.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.MainScreen(),
+        child: const _i5.MainScreen(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.AnimeNewReleasesPage]
-class AnimeNewReleasesRoute
-    extends _i5.PageRouteInfo<AnimeNewReleasesRouteArgs> {
-  AnimeNewReleasesRoute({
-    _i6.Key? key,
-    required _i7.AnimeReleasesViewModel Function(_i6.BuildContext) vmFactory,
-    List<_i5.PageRouteInfo>? children,
+/// [_i1.AnimeInfoPage]
+class AnimeInfoRoute extends _i6.PageRouteInfo<AnimeInfoRouteArgs> {
+  AnimeInfoRoute({
+    _i7.Key? key,
+    required _i8.AnimeApiItem animeItem,
+    required _i9.AnimeInfoViewModel Function(_i7.BuildContext) vmFactory,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
-          AnimeNewReleasesRoute.name,
-          args: AnimeNewReleasesRouteArgs(
+          AnimeInfoRoute.name,
+          args: AnimeInfoRouteArgs(
+            key: key,
+            animeItem: animeItem,
+            vmFactory: vmFactory,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'AnimeInfoRoute';
+
+  static const _i6.PageInfo<AnimeInfoRouteArgs> page =
+      _i6.PageInfo<AnimeInfoRouteArgs>(name);
+}
+
+class AnimeInfoRouteArgs {
+  const AnimeInfoRouteArgs({
+    this.key,
+    required this.animeItem,
+    required this.vmFactory,
+  });
+
+  final _i7.Key? key;
+
+  final _i8.AnimeApiItem animeItem;
+
+  final _i9.AnimeInfoViewModel Function(_i7.BuildContext) vmFactory;
+
+  @override
+  String toString() {
+    return 'AnimeInfoRouteArgs{key: $key, animeItem: $animeItem, vmFactory: $vmFactory}';
+  }
+}
+
+/// generated route for
+/// [_i2.AnimeReleasesPage]
+class AnimeReleasesRoute extends _i6.PageRouteInfo<AnimeReleasesRouteArgs> {
+  AnimeReleasesRoute({
+    _i10.Key? key,
+    required _i11.AnimeReleasesViewModel Function(_i10.BuildContext) vmFactory,
+    List<_i6.PageRouteInfo>? children,
+  }) : super(
+          AnimeReleasesRoute.name,
+          args: AnimeReleasesRouteArgs(
             key: key,
             vmFactory: vmFactory,
           ),
           initialChildren: children,
         );
 
-  static const String name = 'AnimeNewReleasesRoute';
+  static const String name = 'AnimeReleasesRoute';
 
-  static const _i5.PageInfo<AnimeNewReleasesRouteArgs> page =
-      _i5.PageInfo<AnimeNewReleasesRouteArgs>(name);
+  static const _i6.PageInfo<AnimeReleasesRouteArgs> page =
+      _i6.PageInfo<AnimeReleasesRouteArgs>(name);
 }
 
-class AnimeNewReleasesRouteArgs {
-  const AnimeNewReleasesRouteArgs({
+class AnimeReleasesRouteArgs {
+  const AnimeReleasesRouteArgs({
     this.key,
     required this.vmFactory,
   });
 
-  final _i6.Key? key;
+  final _i10.Key? key;
 
-  final _i7.AnimeReleasesViewModel Function(_i6.BuildContext) vmFactory;
+  final _i11.AnimeReleasesViewModel Function(_i10.BuildContext) vmFactory;
 
   @override
   String toString() {
-    return 'AnimeNewReleasesRouteArgs{key: $key, vmFactory: $vmFactory}';
+    return 'AnimeReleasesRouteArgs{key: $key, vmFactory: $vmFactory}';
   }
 }
 
 /// generated route for
-/// [_i2.AuthPage]
-class AuthRoute extends _i5.PageRouteInfo<AuthRouteArgs> {
+/// [_i3.AuthPage]
+class AuthRoute extends _i6.PageRouteInfo<AuthRouteArgs> {
   AuthRoute({
-    _i6.Key? key,
-    required _i8.AuthViewModel Function(_i6.BuildContext) vmFactory,
-    List<_i5.PageRouteInfo>? children,
+    _i7.Key? key,
+    required _i12.AuthViewModel Function(_i7.BuildContext) vmFactory,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
           AuthRoute.name,
           args: AuthRouteArgs(
@@ -124,8 +184,8 @@ class AuthRoute extends _i5.PageRouteInfo<AuthRouteArgs> {
 
   static const String name = 'AuthRoute';
 
-  static const _i5.PageInfo<AuthRouteArgs> page =
-      _i5.PageInfo<AuthRouteArgs>(name);
+  static const _i6.PageInfo<AuthRouteArgs> page =
+      _i6.PageInfo<AuthRouteArgs>(name);
 }
 
 class AuthRouteArgs {
@@ -134,9 +194,9 @@ class AuthRouteArgs {
     required this.vmFactory,
   });
 
-  final _i6.Key? key;
+  final _i7.Key? key;
 
-  final _i8.AuthViewModel Function(_i6.BuildContext) vmFactory;
+  final _i12.AuthViewModel Function(_i7.BuildContext) vmFactory;
 
   @override
   String toString() {
@@ -145,12 +205,12 @@ class AuthRouteArgs {
 }
 
 /// generated route for
-/// [_i3.FavoriteAnimePage]
-class FavoriteAnimeRoute extends _i5.PageRouteInfo<FavoriteAnimeRouteArgs> {
+/// [_i4.FavoriteAnimePage]
+class FavoriteAnimeRoute extends _i6.PageRouteInfo<FavoriteAnimeRouteArgs> {
   FavoriteAnimeRoute({
-    _i6.Key? key,
-    required _i9.FavoriteAnimeViewModel Function(_i6.BuildContext) vmFactory,
-    List<_i5.PageRouteInfo>? children,
+    _i10.Key? key,
+    required _i13.FavoriteAnimeViewModel Function(_i10.BuildContext) vmFactory,
+    List<_i6.PageRouteInfo>? children,
   }) : super(
           FavoriteAnimeRoute.name,
           args: FavoriteAnimeRouteArgs(
@@ -162,8 +222,8 @@ class FavoriteAnimeRoute extends _i5.PageRouteInfo<FavoriteAnimeRouteArgs> {
 
   static const String name = 'FavoriteAnimeRoute';
 
-  static const _i5.PageInfo<FavoriteAnimeRouteArgs> page =
-      _i5.PageInfo<FavoriteAnimeRouteArgs>(name);
+  static const _i6.PageInfo<FavoriteAnimeRouteArgs> page =
+      _i6.PageInfo<FavoriteAnimeRouteArgs>(name);
 }
 
 class FavoriteAnimeRouteArgs {
@@ -172,9 +232,9 @@ class FavoriteAnimeRouteArgs {
     required this.vmFactory,
   });
 
-  final _i6.Key? key;
+  final _i10.Key? key;
 
-  final _i9.FavoriteAnimeViewModel Function(_i6.BuildContext) vmFactory;
+  final _i13.FavoriteAnimeViewModel Function(_i10.BuildContext) vmFactory;
 
   @override
   String toString() {
@@ -183,9 +243,9 @@ class FavoriteAnimeRouteArgs {
 }
 
 /// generated route for
-/// [_i4.MainScreen]
-class MainRoute extends _i5.PageRouteInfo<void> {
-  const MainRoute({List<_i5.PageRouteInfo>? children})
+/// [_i5.MainScreen]
+class MainRoute extends _i6.PageRouteInfo<void> {
+  const MainRoute({List<_i6.PageRouteInfo>? children})
       : super(
           MainRoute.name,
           initialChildren: children,
@@ -193,5 +253,5 @@ class MainRoute extends _i5.PageRouteInfo<void> {
 
   static const String name = 'MainRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i6.PageInfo<void> page = _i6.PageInfo<void>(name);
 }
