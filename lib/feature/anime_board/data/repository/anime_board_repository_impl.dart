@@ -1,5 +1,4 @@
 import 'package:anime_hub/feature/anime_board/domain/model/anime_api_list.dart';
-import 'package:dio/dio.dart';
 
 import '../../../../core/domain/use_case_result/use_case_result.dart';
 import '../../domain/repository/anime_board_repository.dart';
@@ -12,4 +11,10 @@ class AnimeBoardRepositoryImpl implements AnimeBoardRepository {
   Future<Result<AnimeApiList>> getAnimeList() async {
     return _remoteDataProvider.getAnimeList();
   }
+
+  @override
+  Future<Result<AnimeApiList>> findAnimeByRequest(String title) {
+    return _remoteDataProvider.findAnimeByRequest(title);
+  }
+
 }

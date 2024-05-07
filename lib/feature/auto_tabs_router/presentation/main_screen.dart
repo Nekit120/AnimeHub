@@ -57,14 +57,14 @@ class _MainScreenState extends State<MainScreen> {
     return AutoTabsRouter(
       routes: [
         FavoriteAnimeRoute(
-            vmFactory: (context) => FavoriteAnimeViewModel(context)),
+            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: controller)),
         AnimeReleasesRoute(
             vmFactory: (context) => AnimeReleasesViewModel(context,
                 controller: controller,
                 animeBoardRepository:
                     AppContainer().repositoryScope.animeBoardRepository)),
         AuthRoute(vmFactory: (context) => AuthViewModel(context)),
-        AnimeSearch(vmFactory:(context) => AnimeSearchViewModel(context))
+        AnimeSearch(vmFactory:(context) => AnimeSearchViewModel(context, animeBoardRepository: AppContainer().repositoryScope.animeBoardRepository))
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,

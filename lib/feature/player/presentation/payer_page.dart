@@ -7,9 +7,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 @RoutePage()
 class PlayerPage extends StatefulWidget {
-  String animeStreamUrl;
+  final String animeStreamUrl;
 
-  PlayerPage({super.key, required this.animeStreamUrl});
+  const PlayerPage({super.key, required this.animeStreamUrl});
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();

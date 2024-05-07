@@ -117,11 +117,21 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
       {required BuildContext context, required String animeStreamUrl}) {
     AutoRouter.of(context).push(PlayerRoute(animeStreamUrl: animeStreamUrl));
   }
-
+  AppBar _infoAppBar({required BuildContext context}) {
+    return AppBar(
+      leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_outlined)),
+      title:
+      Text(S.of(context).title_detailed_information, style: Theme.of(context).textTheme.titleLarge),
+    );
+  }
   @override
   Widget build(AnimeInfoViewModel vm) {
     return Scaffold(
-      appBar: CustomAppBar(titleAppBar:S.of(vm.context).title_detailed_information , context: vm.context,),
+      appBar: CustomAppBar(titleAppBar:S.of(vm.context).title_detailed_information , context: vm.context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -177,11 +187,10 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                         Text(
                           _animeApiItem.materialData?.title ?? "Без имени",
                           style: Theme.of(vm.context).textTheme.titleMedium,
-                          maxLines: 4,
+                          maxLines: 3,
                         ),
                         Text(
                           _animeApiItem.materialData?.allStatus ?? "Без имени",
-                          maxLines: 4,
                         ),
                         const SizedBox(height: 6),
                         SizedBox(

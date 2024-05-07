@@ -16,7 +16,7 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
 
     final isNotHorizontal = MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
-        appBar: isNotHorizontal ? CustomAppBar(titleAppBar: S.of(vm.context).title_favorite , context: vm.context,): null,
+        appBar: isNotHorizontal ? CustomAppBar(titleAppBar: S.of(vm.context).title_favorite , context: vm.context, ): null,
         body: Container());
   }
 }
