@@ -24,4 +24,9 @@ class AnimeBoardRepositoryImpl implements AnimeBoardRepository {
   Future<Result<AnimeApiList>> findAnimeByRequest(String title) async {
     return await _remoteDataProvider.findAnimeByRequest(title);
   }
+
+  @override
+  Future<Result<List<AnimeApiItem>>> getAnimeListFromDb() async {
+    return  await _animeLocalDataSource.getAnimeListFromDb();
+  }
 }

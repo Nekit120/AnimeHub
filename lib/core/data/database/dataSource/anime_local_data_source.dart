@@ -21,10 +21,10 @@ class AnimeLocalDataSource {
     return seasonsMap;
   }
 
-  Future<void> getProfileUser() async {
+  Future<Result<List<AnimeApiItem>>> getAnimeListFromDb() async {
+    try{
     final db = await _dbProvider.database;
     final result = await db.rawQuery("SELECT * FROM AnimeApiItem");
-
     final List<AnimeApiItem> animeItemList = result.isNotEmpty
         ? result
             .map((e) => AnimeApiItem(
@@ -37,28 +37,37 @@ class AnimeLocalDataSource {
                   seasons: seasonFromJson(seasonsString: e['seasons'] as String),
                   materialData: MaterialData.fromJson(jsonDecode(e['materialData'] as String)),)).toList()
         : [];
-    print(animeItemList.toString());
+    return Result.good(animeItemList);
+    } catch (e) {
+      return Result.bad([SpecificError('Empty response data')]);
+    }
+
   }
 
-  Future<void> insertAnimeItem(AnimeApiItem animeApiItem) async {
-    final db = await _dbProvider.database;
-    final materialDataJsonEncode =
-        jsonEncode(animeApiItem.materialData?.toJson());
-    final seasonJsonEncode = jsonEncode(animeApiItem.seasons ?? {});
-    getProfileUser();
-    await db.insert(
-      'AnimeApiItem',
-      {
-        'id': animeApiItem.id,
-        'type': animeApiItem.type,
-        'link': animeApiItem.link,
-        'title': animeApiItem.title,
-        'titleOrig': animeApiItem.titleOrig,
-        'year': animeApiItem.year,
-        'seasons': seasonJsonEncode,
-        'materialData': materialDataJsonEncode,
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+  Future<Result<bool>> insertAnimeItem(AnimeApiItem animeApiItem) async {
+    try {
+      final db = await _dbProvider.database;
+      final materialDataJsonEncode =
+      jsonEncode(animeApiItem.materialData?.toJson());
+      final seasonJsonEncode = jsonEncode(animeApiItem.seasons ?? {});
+      getAnimeListFromDb();
+      await db.insert(
+        'AnimeApiItem',
+        {
+          'id': animeApiItem.id,
+          'type': animeApiItem.type,
+          'link': animeApiItem.link,
+          'title': animeApiItem.title,
+          'titleOrig': animeApiItem.titleOrig,
+          'year': animeApiItem.year,
+          'seasons': seasonJsonEncode,
+          'materialData': materialDataJsonEncode,
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      return const Result.good(true);
+    } catch (e) {
+      return Result.bad([SpecificError('Empty response data')]);
+    }
   }
 }

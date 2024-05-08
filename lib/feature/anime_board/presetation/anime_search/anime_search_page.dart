@@ -132,7 +132,7 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
                   Expanded(
                     child: AnimeListBuilderWidget(
                         isNotHorizontal: isNotHorizontal,
-                        animeList: data,
+                        animeList: data.results,
                         controller: null,
                         context: vm.context),
                   )

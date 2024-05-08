@@ -15,16 +15,16 @@ class AnimeReleasesApiNotifier extends StateNotifier<Result<AnimeApiList>?> {
 
   AnimeReleasesApiNotifier() : super(null);
 
-  Future<void> fetchData({required Future<Result<AnimeApiList>> Function() getAnimeListFunction}) async {
-    final data = await getAnimeListFunction();
-    switch (data) {
-      case GoodUseCaseResult<AnimeApiList>(:final data) : {
-        state = Result.good(data);
-      }
-      break;
-      case BadUseCaseResult<AnimeApiList>():
-        state = Result.bad([SpecificError('Server access error')]);
-        break;
-    }
+  Future<void> getDataFromApi({required Future<Result<AnimeApiList>> Function() getAnimeListFunction}) async {
+    state = await getAnimeListFunction();
+    // switch (data) {
+    //   case GoodUseCaseResult<AnimeApiList>(:final data) : {
+    //     state = Result.good(data);
+    //   }
+    //   break;
+    //   case BadUseCaseResult<AnimeApiList>():
+    //     state = Result.bad([SpecificError('Server access error')]);
+    //     break;
+    // }
   }
 }

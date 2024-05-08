@@ -26,16 +26,19 @@ class _MainScreenState extends State<MainScreen> {
   final selectIndex = 1.rv;
   final initialRouteObs = false.rv;
   late ScrollController controller;
+  late ScrollController secondController;
 
   @override
   void initState() {
     super.initState();
     controller = ScrollController();
+    secondController = ScrollController();
   }
 
   @override
   void dispose() {
     controller.dispose();
+    secondController.dispose();
     super.dispose();
   }
 
@@ -57,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
     return AutoTabsRouter(
       routes: [
         FavoriteAnimeRoute(
-            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: controller)),
+            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: secondController, animeBoardRepository:AppContainer().repositoryScope.animeBoardRepository )),
         AnimeReleasesRoute(
             vmFactory: (context) => AnimeReleasesViewModel(context,
                 controller: controller,
@@ -127,6 +130,7 @@ class _MainScreenState extends State<MainScreen> {
                     ],
                     selectedIndex: selectIndex.value,
                     onDestinationSelected: (value) {
+                      selectIndex.dispose();
                       selectIndex.value = value;
                       initialRouteObs.value = true;
                       return tabsRouter.setActiveIndex(value);
@@ -138,6 +142,7 @@ class _MainScreenState extends State<MainScreen> {
               bottomNavigationBar:  isNotHorizontal
                   ? ScrollToHideWidget(
                       controller: controller,
+                      secondController: secondController ,
                       child: NavigationBar(
                         elevation: 0,
                         onDestinationSelected: (value) {

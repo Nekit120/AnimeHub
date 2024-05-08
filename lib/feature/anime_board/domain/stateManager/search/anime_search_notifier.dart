@@ -13,15 +13,15 @@ class AnimeApiListNotifier extends StateNotifier<Result<AnimeApiList>?> {
   AnimeApiListNotifier() : super(null);
 
   Future<void> findDataByRequest({required Future<Result<AnimeApiList>> Function(String title) findAnimeListByRequest,required String title}) async {
-    final data = await findAnimeListByRequest(title);
-    switch (data) {
-      case GoodUseCaseResult<AnimeApiList>(:final data) : {
-        state = Result.good(data);
-      }
-      break;
-      case BadUseCaseResult<AnimeApiList>():
-        state = Result.bad([SpecificError('Server access error')]);
-        break;
-    }
+    state = await findAnimeListByRequest(title);
+    // switch (data) {
+    //   case GoodUseCaseResult<AnimeApiList>(:final data) : {
+    //     state = Result.good(data);
+    //   }
+    //   break;
+    //   case BadUseCaseResult<AnimeApiList>():
+    //     state = Result.bad([SpecificError('Server access error')]);
+    //     break;
+    // }
   }
 }

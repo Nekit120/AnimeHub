@@ -6,9 +6,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/domain/model/anime_api_item.dart';
 import '../../../generated/l10n.dart';
 import '../../../theme/theme_colors.dart';
+import '../../anime_board/domain/stateManager/favorites/anime_fovorites_notifier.dart';
 import 'anime_info_vm.dart';
 
 @RoutePage()
@@ -18,7 +20,6 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
   const AnimeInfoPage(
       {super.key, required AnimeApiItem animeItem, required super.vmFactory})
       : _animeApiItem = animeItem;
-
 
   Widget _citiItem({required String citiName, required BuildContext context}) {
     return Container(
@@ -117,22 +118,27 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
       {required BuildContext context, required String animeStreamUrl}) {
     AutoRouter.of(context).push(PlayerRoute(animeStreamUrl: animeStreamUrl));
   }
+
   AppBar _infoAppBar({required BuildContext context}) {
     return AppBar(
       leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_outlined)),
-      title:
-      Text(S.of(context).title_detailed_information, style: Theme.of(context).textTheme.titleLarge),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_outlined)),
+      title: Text(S.of(context).title_detailed_information,
+          style: Theme.of(context).textTheme.titleLarge),
     );
   }
+
   @override
   Widget build(AnimeInfoViewModel vm) {
-    final isNotHorizontal = MediaQuery.of(vm.context).orientation != Orientation.landscape;
+    final isNotHorizontal =
+        MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
-      appBar: CustomAppBar(titleAppBar:S.of(vm.context).title_detailed_information , context: vm.context),
+      appBar: CustomAppBar(
+          titleAppBar: S.of(vm.context).title_detailed_information,
+          context: vm.context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -180,7 +186,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                   left: 150,
                   bottom: -65,
                   child: SizedBox(
-                    width: isNotHorizontal? 257: 725,
+                    width: isNotHorizontal ? 257 : 725,
                     height: 200,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,11 +216,23 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _customFavoriteButton(
-                      actionStr: S.of(vm.context).title_favorite,
-                      onTapCallback: () {vm.insertAnimeItemInUseCase(_animeApiItem);},
-                      active: false,
-                      context: vm.context),
+                  Consumer(
+                    builder:
+                        (BuildContext context, WidgetRef ref, Widget? child) {
+                      return _customFavoriteButton(
+                          actionStr: S.of(vm.context).title_favorite,
+                          onTapCallback: () {
+                            vm.insertAnimeItemInUseCase(_animeApiItem);
+                            ref
+                                .read(animeFavoritesProvider.notifier)
+                                .getDataFromDb(
+                                    getAnimeListFunction:
+                                        vm.updateAnimeListFromDbUseCase.call);
+                          },
+                          active: false,
+                          context: vm.context);
+                    },
+                  ),
                   _customActionButton(
                       iconData: Icons.menu_sharp,
                       actionStr: S.of(vm.context).select_episode,

@@ -1,15 +1,14 @@
 import 'package:anime_hub/core/domain/container/app_container.dart';
+import 'package:anime_hub/core/domain/model/anime_api_item.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../core/domain/model/anime_api_list.dart';
 import '../../../../core/domain/router/router.gr.dart';
 import '../../../anime_info/presetration/anime_info_vm.dart';
 
 class AnimeListBuilderWidget extends StatelessWidget {
   final bool isNotHorizontal;
-  final AnimeApiList animeList;
+  final List<AnimeApiItem> animeList;
   final ScrollController? controller;
   final BuildContext context;
   const AnimeListBuilderWidget({super.key,required this.isNotHorizontal, required this.controller, required  this.animeList,required this.context});
@@ -31,7 +30,7 @@ class AnimeListBuilderWidget extends StatelessWidget {
               mainAxisSpacing: 0,
               childAspectRatio: 0.65,
             ),
-      itemCount: animeList.results.length,
+      itemCount: animeList.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           child: Column(
@@ -44,20 +43,20 @@ class AnimeListBuilderWidget extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       child: Image.network(
-                        animeList.results[index].materialData?.posterUrl ??
+                        animeList[index].materialData?.posterUrl ??
                             "https://shikimori.one/system/animes/original/56838.jpg",
                         height: 255,
                         fit: BoxFit.cover,
                       )),
                 ),
               ),
-              Text(animeList.results[index].title,
+              Text(animeList[index].title,
                   maxLines: 2, textAlign: TextAlign.center)
             ],
           ),
           onTap: () {
             AutoRouter.of(context).push(AnimeInfoRoute(
-                animeItem: animeList.results[index],
+                animeItem: animeList[index],
                 vmFactory: (context) => AnimeInfoViewModel(context, animeInfoRepository: AppContainer().repositoryScope.animeInfoRepository,)));
           },
         );
