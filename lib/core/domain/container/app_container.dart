@@ -1,12 +1,18 @@
 import 'dart:developer';
 
+import 'package:anime_hub/core/data/database/dataSource/anime_local_data_source.dart';
 import 'package:anime_hub/feature/anime_board/data/data_source/remote/remote_data_provider.dart';
 import 'package:anime_hub/feature/anime_board/data/repository/anime_board_repository_impl.dart';
 import 'package:anime_hub/feature/anime_board/domain/repository/anime_board_repository.dart';
+import 'package:anime_hub/feature/anime_info/domain/repository/anime_info_repository.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../../feature/anime_info/data/repository/anime_info_repository_impl.dart';
+import '../../data/database/database_provider.dart';
 
 class AppContainer {
   late final RepositoryScope repositoryScope;
+  // late final DataSourceScope dataSourceScope;
 
   AppContainer.init() {
     ready = initDependencies();
@@ -19,9 +25,14 @@ class AppContainer {
 
   Future<bool> initDependencies() async {
     try {
-      final animeBoardRepository = AnimeBoardRepositoryImpl(remoteDataProvider: RemoteDataProvider());
+      final dbProvider = DBProvider();
 
-      repositoryScope = RepositoryScope(animeBoardRepository: animeBoardRepository);
+      final animeBoardRepository = AnimeBoardRepositoryImpl(remoteDataProvider: RemoteDataProvider(), animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
+      final animeInfoRepository = AnimeInfoRepositoryImpl(dbProvider: dbProvider);
+
+      repositoryScope = RepositoryScope(animeBoardRepository: animeBoardRepository, animeInfoRepository: animeInfoRepository);
+
+      // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
 
       return true;
     } catch (e, st) {
@@ -33,6 +44,13 @@ class AppContainer {
 
 class RepositoryScope {
   final AnimeBoardRepository animeBoardRepository;
+  final AnimeInfoRepositoryImpl animeInfoRepository;
 
-  RepositoryScope({required this.animeBoardRepository});
+  RepositoryScope({required this.animeBoardRepository,required this.animeInfoRepository});
 }
+
+// class DataSourceScope {
+//   final DBProvider dbProvider;
+//
+//   DataSourceScope({required this.dbProvider});
+// }

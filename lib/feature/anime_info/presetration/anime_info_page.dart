@@ -6,9 +6,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import '../../../core/domain/model/anime_api_item.dart';
 import '../../../generated/l10n.dart';
 import '../../../theme/theme_colors.dart';
-import '../../anime_board/domain/model/anime_api_item.dart';
 import 'anime_info_vm.dart';
 
 @RoutePage()
@@ -130,6 +130,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
   }
   @override
   Widget build(AnimeInfoViewModel vm) {
+    final isNotHorizontal = MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
       appBar: CustomAppBar(titleAppBar:S.of(vm.context).title_detailed_information , context: vm.context),
       body: SingleChildScrollView(
@@ -179,7 +180,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                   left: 150,
                   bottom: -65,
                   child: SizedBox(
-                    width: 257,
+                    width: isNotHorizontal? 257: 725,
                     height: 200,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,7 +212,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                 children: [
                   _customFavoriteButton(
                       actionStr: S.of(vm.context).title_favorite,
-                      onTapCallback: () {},
+                      onTapCallback: () {vm.insertAnimeItemInUseCase(_animeApiItem);},
                       active: false,
                       context: vm.context),
                   _customActionButton(

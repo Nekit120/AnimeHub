@@ -8,8 +8,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:anime_hub/feature/anime_board/domain/model/anime_api_item.dart'
-    as _i10;
+import 'package:anime_hub/core/domain/model/anime_api_item.dart' as _i10;
 import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_page.dart'
     as _i2;
 import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_vm.dart'

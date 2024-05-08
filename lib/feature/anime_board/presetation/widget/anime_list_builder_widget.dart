@@ -1,10 +1,11 @@
+import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/domain/model/anime_api_list.dart';
 import '../../../../core/domain/router/router.gr.dart';
 import '../../../anime_info/presetration/anime_info_vm.dart';
-import '../../domain/model/anime_api_list.dart';
 
 class AnimeListBuilderWidget extends StatelessWidget {
   final bool isNotHorizontal;
@@ -57,7 +58,7 @@ class AnimeListBuilderWidget extends StatelessWidget {
           onTap: () {
             AutoRouter.of(context).push(AnimeInfoRoute(
                 animeItem: animeList.results[index],
-                vmFactory: (context) => AnimeInfoViewModel(context)));
+                vmFactory: (context) => AnimeInfoViewModel(context, animeInfoRepository: AppContainer().repositoryScope.animeInfoRepository,)));
           },
         );
       },

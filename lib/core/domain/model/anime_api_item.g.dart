@@ -20,9 +20,6 @@ AnimeApiItem _$AnimeApiItemFromJson(Map<String, dynamic> json) => AnimeApiItem(
           ? null
           : MaterialData.fromJson(
               json['material_data'] as Map<String, dynamic>),
-      screenshots: (json['screenshots'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
     );
 
 Map<String, dynamic> _$AnimeApiItemToJson(AnimeApiItem instance) =>
@@ -35,5 +32,4 @@ Map<String, dynamic> _$AnimeApiItemToJson(AnimeApiItem instance) =>
       'year': instance.year,
       'seasons': instance.seasons,
       'material_data': instance.materialData,
-      'screenshots': instance.screenshots,
     };

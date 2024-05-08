@@ -1,7 +1,7 @@
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/domain/app_error/app_error.dart';
-import '../../model/anime_api_list.dart';
+import '../../../../../core/domain/model/anime_api_list.dart';
 
 final animeReleasesApiProvider = StateNotifierProvider<AnimeReleasesApiNotifier, Result<AnimeApiList>?>((ref) {
 
