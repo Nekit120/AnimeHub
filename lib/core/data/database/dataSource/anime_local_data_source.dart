@@ -44,30 +44,54 @@ class AnimeLocalDataSource {
 
   }
 
-  Future<Result<bool>> insertAnimeItem(AnimeApiItem animeApiItem) async {
-    try {
-      final db = await _dbProvider.database;
-      final materialDataJsonEncode =
-      jsonEncode(animeApiItem.materialData?.toJson());
-      final seasonJsonEncode = jsonEncode(animeApiItem.seasons ?? {});
-      getAnimeListFromDb();
-      await db.insert(
-        'AnimeApiItem',
-        {
-          'id': animeApiItem.id,
-          'type': animeApiItem.type,
-          'link': animeApiItem.link,
-          'title': animeApiItem.title,
-          'titleOrig': animeApiItem.titleOrig,
-          'year': animeApiItem.year,
-          'seasons': seasonJsonEncode,
-          'materialData': materialDataJsonEncode,
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-      return const Result.good(true);
-    } catch (e) {
-      return Result.bad([SpecificError('Empty response data')]);
+    Future<Result<bool>> insertAnimeItem(AnimeApiItem animeApiItem) async {
+      try {
+        final db = await _dbProvider.database;
+        final materialDataJsonEncode =
+        jsonEncode(animeApiItem.materialData?.toJson());
+        final seasonJsonEncode = jsonEncode(animeApiItem.seasons ?? {});
+        getAnimeListFromDb();
+        await db.insert(
+          'AnimeApiItem',
+          {
+            'id': animeApiItem.id,
+            'type': animeApiItem.type,
+            'link': animeApiItem.link,
+            'title': animeApiItem.title,
+            'titleOrig': animeApiItem.titleOrig,
+            'year': animeApiItem.year,
+            'seasons': seasonJsonEncode,
+            'materialData': materialDataJsonEncode,
+          },
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+        return const Result.good(true);
+      } catch (e) {
+        return Result.bad([SpecificError('Empty response data')]);
+      }
     }
+    Future<void> deleteItemFromFavorite(String id) async {
+      try {
+        final db = await _dbProvider.database;
+          await db.delete(
+          'AnimeApiItem',
+          where: 'id = ?',
+          whereArgs: [id],
+        );
+      } catch (e) {
+      }
+    }
+    Future<bool> checkIfAnimeIsFavorite(String id) async {
+      try {
+        final db = await _dbProvider.database;
+        final List<Map<String, dynamic>> result = await db.query(
+          'AnimeApiItem',
+          where: 'id = ?',
+          whereArgs: [id],
+        );
+        return result.isNotEmpty;
+      } catch (e) {
+        return false;
+      }
   }
 }

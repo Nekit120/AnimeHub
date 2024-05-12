@@ -7,5 +7,9 @@ abstract interface class AnimeInfoRepository {
 
    Future<void> insertAnimeItemInDb(AnimeApiItem animeApiItem);
 
-   Future<Result<List<AnimeApiItem>>> updateStateManager() ;
+   Future<Result<List<AnimeApiItem>>>  updateStateManager() ;
+
+   Future<bool> checkIfAnimeIsFavorite(String id) ;
+
+   Future<void> deleteItemFromFavorite(String id) ;
 }

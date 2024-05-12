@@ -44,14 +44,14 @@ class _ScrollToHideWidgetState extends State<ScrollToHideWidget> {
     }
   }
 
-  void secondListen() {
-    final direction = widget.secondController.position.userScrollDirection;
-    if(direction == ScrollDirection.forward){
-      isVisible.value = true;
-    } else if (direction == ScrollDirection.reverse){
-      isVisible.value = false;
+    void secondListen() {
+      final direction = widget.secondController.position.userScrollDirection;
+      if(direction == ScrollDirection.forward){
+        isVisible.value = true;
+      } else if (direction == ScrollDirection.reverse){
+        isVisible.value = false;
+      }
     }
-  }
   @override
   Widget build(BuildContext context) => isVisible.observer((context, value) =>
       AnimatedContainer(

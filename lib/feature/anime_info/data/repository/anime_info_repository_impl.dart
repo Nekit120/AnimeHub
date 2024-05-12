@@ -6,17 +6,29 @@ import '../../../../core/data/database/dataSource/anime_local_data_source.dart';
 
 class AnimeInfoRepositoryImpl implements AnimeInfoRepository {
 
-  final AnimeLocalDataSource _animeLocalDataSource;
-  AnimeInfoRepositoryImpl({required DBProvider dbProvider }):_animeLocalDataSource = AnimeLocalDataSource(dbProvider: dbProvider);
+    final AnimeLocalDataSource _animeLocalDataSource;
+    AnimeInfoRepositoryImpl({required DBProvider dbProvider }):_animeLocalDataSource = AnimeLocalDataSource(dbProvider: dbProvider);
+
+    @override
+    Future<void> insertAnimeItemInDb(AnimeApiItem animeApiItem) async {
+      await _animeLocalDataSource.insertAnimeItem(animeApiItem);
+    }
+
+    @override
+    Future<Result<List<AnimeApiItem>>> updateStateManager() async {
+       return await _animeLocalDataSource.getAnimeListFromDb();
+    }
 
   @override
-  Future<void> insertAnimeItemInDb(AnimeApiItem animeApiItem) async {
-    await _animeLocalDataSource.insertAnimeItem(animeApiItem);
+  Future<bool> checkIfAnimeIsFavorite(String id) async {
+    return await _animeLocalDataSource.checkIfAnimeIsFavorite(id);
   }
 
   @override
-  Future<Result<List<AnimeApiItem>>> updateStateManager() async {
-     return await _animeLocalDataSource.getAnimeListFromDb();
+  Future<void> deleteItemFromFavorite(String id) async{
+      await _animeLocalDataSource.deleteItemFromFavorite(id);
   }
+
+
 
 }

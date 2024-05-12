@@ -154,5 +154,5 @@ final lightTheme = ThemeData(
     elevation: 0,
     backgroundColor: Colors.white,
   ),
-  iconTheme: const IconThemeData(color: LightThemeColors.mdThemeLightOnSurfaceVariant),
+  iconTheme: const IconThemeData(color: LightThemeColors.mdThemeLightOnSurfaceSecondVariant),
 );

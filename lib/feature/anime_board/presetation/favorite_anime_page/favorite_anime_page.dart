@@ -7,6 +7,7 @@ import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/fa
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../generated/l10n.dart';
 import '../widget/anime_list_builder_widget.dart';

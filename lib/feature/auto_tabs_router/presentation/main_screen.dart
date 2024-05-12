@@ -25,20 +25,21 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   final selectIndex = 1.rv;
   final initialRouteObs = false.rv;
-  late ScrollController controller;
-  late ScrollController secondController;
+  late ScrollController releasesController;
+  late ScrollController favoritesController;
 
   @override
   void initState() {
     super.initState();
-    controller = ScrollController();
-    secondController = ScrollController();
+    releasesController = ScrollController();
+    favoritesController = ScrollController();
+
   }
 
   @override
   void dispose() {
-    controller.dispose();
-    secondController.dispose();
+    releasesController.dispose();
+    favoritesController.dispose();
     super.dispose();
   }
 
@@ -47,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
       selectIndex.value = 1;
       AutoRouter.of(context).pushAndPopUntil(  AnimeReleasesRoute(
           vmFactory: (context) => AnimeReleasesViewModel(context,
-              controller: controller,
+              controller: releasesController,
               animeBoardRepository:
               AppContainer().repositoryScope.animeBoardRepository)), predicate:  (route) => false );
     }
@@ -60,12 +61,12 @@ class _MainScreenState extends State<MainScreen> {
     return AutoTabsRouter(
       routes: [
         FavoriteAnimeRoute(
-            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: secondController, animeBoardRepository:AppContainer().repositoryScope.animeBoardRepository )),
+            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: favoritesController, animeBoardRepository: AppContainer().repositoryScope.animeBoardRepository)),
         AnimeReleasesRoute(
             vmFactory: (context) => AnimeReleasesViewModel(context,
-                controller: controller,
+                controller: releasesController,
                 animeBoardRepository:
-                    AppContainer().repositoryScope.animeBoardRepository)),
+                AppContainer().repositoryScope.animeBoardRepository)),
         AuthRoute(vmFactory: (context) => AuthViewModel(context)),
         AnimeSearch(vmFactory:(context) => AnimeSearchViewModel(context, animeBoardRepository: AppContainer().repositoryScope.animeBoardRepository))
       ],
@@ -75,118 +76,117 @@ class _MainScreenState extends State<MainScreen> {
         child: initialRouteObs.observer((context, value) => value
             ? child
             : AnimeReleasesPage(
-                vmFactory: (context) => AnimeReleasesViewModel(context,
-                    controller: controller,
-                    animeBoardRepository:
-                        AppContainer().repositoryScope.animeBoardRepository))),
+            vmFactory: (context) => AnimeReleasesViewModel(context,
+                controller: releasesController,
+                animeBoardRepository:
+                AppContainer().repositoryScope.animeBoardRepository))),
       ),
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
         return selectIndex.observer((context, value) => Scaffold(
-              body: isNotHorizontal ? child : Row(
-                children: [
-                  NavigationRail(
-                    labelType: NavigationRailLabelType.all,
-                    destinations: <NavigationRailDestination>[
-                      NavigationRailDestination(
-                        icon: const Icon(Icons.favorite_border,
-                            color: LightThemeColors
-                                .mdThemeLightOnSurfaceVariant),
-                        selectedIcon: const Icon(Icons.favorite,
-                            color: LightThemeColors.mdThemeLightOnSurface),
-                        label: Text(S.of(context).title_favorite),
-                      ),
-                      NavigationRailDestination(
-                        icon: const Icon(Icons.tv,
-                            color: LightThemeColors
-                                .mdThemeLightOnSurfaceVariant),
-                        selectedIcon: const Icon(Icons.tv,
-                            color:
-                            LightThemeColors.mdThemeLightOnSurface),
-                        label: Text(S.of(context).title_watch),
-                      ),
-                      NavigationRailDestination(
-                        icon: SvgPicture.asset(ImageCollectionSVG.chatIcon,
-                            colorFilter: const ColorFilter.mode(
-                              LightThemeColors.mdThemeLightOnSurfaceVariant,
-                              BlendMode.srcIn,
-                            )),
-                        selectedIcon: SvgPicture.asset(
-                            ImageCollectionSVG.chatOutlineIcon,
-                            colorFilter: const ColorFilter.mode(
-                              LightThemeColors.mdThemeLightOnSurface,
-                              BlendMode.srcIn,
-                            )),
-                        label: Text(S.of(context).title_chat),
-                      ),
-                      NavigationRailDestination(
-                        icon: const Icon(Icons.search_outlined,
-                            color: LightThemeColors
-                                .mdThemeLightOnSurfaceVariant),
-                        selectedIcon: const Icon(Icons.search_outlined,
-                            color: LightThemeColors.mdThemeLightOnSurface),
-                        label: Text(S.of(context).title_search),
-                      ),
-                    ],
-                    selectedIndex: selectIndex.value,
-                    onDestinationSelected: (value) {
-                      selectIndex.dispose();
-                      selectIndex.value = value;
-                      initialRouteObs.value = true;
-                      return tabsRouter.setActiveIndex(value);
-                    },
+            body: isNotHorizontal ? child : Row(
+              children: [
+                NavigationRail(
+                  labelType: NavigationRailLabelType.all,
+                  destinations: <NavigationRailDestination>[
+                    NavigationRailDestination(
+                      icon: const Icon(Icons.favorite_border,
+                          color: LightThemeColors
+                              .mdThemeLightOnSurfaceVariant),
+                      selectedIcon: const Icon(Icons.favorite,
+                          color: LightThemeColors.mdThemeLightOnSurface),
+                      label: Text(S.of(context).title_favorite),
+                    ),
+                    NavigationRailDestination(
+                      icon: const Icon(Icons.tv,
+                          color: LightThemeColors
+                              .mdThemeLightOnSurfaceVariant),
+                      selectedIcon: const Icon(Icons.tv,
+                          color:
+                          LightThemeColors.mdThemeLightOnSurface),
+                      label: Text(S.of(context).title_watch),
+                    ),
+                    NavigationRailDestination(
+                      icon: SvgPicture.asset(ImageCollectionSVG.chatIcon,
+                          colorFilter: const ColorFilter.mode(
+                            LightThemeColors.mdThemeLightOnSurfaceVariant,
+                            BlendMode.srcIn,
+                          )),
+                      selectedIcon: SvgPicture.asset(
+                          ImageCollectionSVG.chatOutlineIcon,
+                          colorFilter: const ColorFilter.mode(
+                            LightThemeColors.mdThemeLightOnSurface,
+                            BlendMode.srcIn,
+                          )),
+                      label: Text(S.of(context).title_chat),
+                    ),
+                    NavigationRailDestination(
+                      icon: const Icon(Icons.search_outlined,
+                          color: LightThemeColors
+                              .mdThemeLightOnSurfaceVariant),
+                      selectedIcon: const Icon(Icons.search_outlined,
+                          color: LightThemeColors.mdThemeLightOnSurface),
+                      label: Text(S.of(context).title_search),
+                    ),
+                  ],
+                  selectedIndex: selectIndex.value,
+                  onDestinationSelected: (value) {
+                    selectIndex.value = value;
+                    initialRouteObs.value = true;
+                    return tabsRouter.setActiveIndex(value);
+                  },
+                ),
+                Expanded(child: child)
+              ],
+            ),
+            bottomNavigationBar:  isNotHorizontal
+                ? ScrollToHideWidget(
+              controller: releasesController,
+              secondController: favoritesController,
+              child: NavigationBar(
+                elevation: 0,
+                onDestinationSelected: (value) {
+                  selectIndex.value = value;
+                  initialRouteObs.value = true;
+                  return tabsRouter.setActiveIndex(value);
+                },
+                selectedIndex: selectIndex.value,
+                destinations: [
+                  NavigationDestination(
+                    icon: const Icon(Icons.favorite_border,
+                        color: LightThemeColors
+                            .mdThemeLightOnSurfaceVariant),
+                    selectedIcon: const Icon(Icons.favorite,
+                        color: LightThemeColors.mdThemeLightOnSurface),
+                    label: S.of(context).title_favorite,
                   ),
-                  Expanded(child: child)
+                  NavigationDestination(
+                      icon: const Icon(Icons.tv,
+                          color: LightThemeColors
+                              .mdThemeLightOnSurfaceVariant),
+                      selectedIcon: const Icon(Icons.tv,
+                          color:
+                          LightThemeColors.mdThemeLightOnSurface),
+                      label: S.of(context).title_watch),
+                  NavigationDestination(
+                    icon: SvgPicture.asset(ImageCollectionSVG.chatIcon,
+                        colorFilter: const ColorFilter.mode(
+                          LightThemeColors.mdThemeLightOnSurfaceVariant,
+                          BlendMode.srcIn,
+                        )),
+                    selectedIcon: SvgPicture.asset(
+                        ImageCollectionSVG.chatOutlineIcon,
+                        colorFilter: const ColorFilter.mode(
+                          LightThemeColors.mdThemeLightOnSurface,
+                          BlendMode.srcIn,
+                        )),
+                    label: S.of(context).title_chat,
+                  ),
                 ],
               ),
-              bottomNavigationBar:  isNotHorizontal
-                  ? ScrollToHideWidget(
-                      controller: controller,
-                      secondController: secondController ,
-                      child: NavigationBar(
-                        elevation: 0,
-                        onDestinationSelected: (value) {
-                          selectIndex.value = value;
-                          initialRouteObs.value = true;
-                          return tabsRouter.setActiveIndex(value);
-                        },
-                        selectedIndex: selectIndex.value,
-                        destinations: [
-                          NavigationDestination(
-                            icon: const Icon(Icons.favorite_border,
-                                color: LightThemeColors
-                                    .mdThemeLightOnSurfaceVariant),
-                            selectedIcon: const Icon(Icons.favorite,
-                                color: LightThemeColors.mdThemeLightOnSurface),
-                            label: S.of(context).title_favorite,
-                          ),
-                          NavigationDestination(
-                              icon: const Icon(Icons.tv,
-                                  color: LightThemeColors
-                                      .mdThemeLightOnSurfaceVariant),
-                              selectedIcon: const Icon(Icons.tv,
-                                  color:
-                                      LightThemeColors.mdThemeLightOnSurface),
-                              label: S.of(context).title_watch),
-                          NavigationDestination(
-                            icon: SvgPicture.asset(ImageCollectionSVG.chatIcon,
-                                colorFilter: const ColorFilter.mode(
-                                  LightThemeColors.mdThemeLightOnSurfaceVariant,
-                                  BlendMode.srcIn,
-                                )),
-                            selectedIcon: SvgPicture.asset(
-                                ImageCollectionSVG.chatOutlineIcon,
-                                colorFilter: const ColorFilter.mode(
-                                  LightThemeColors.mdThemeLightOnSurface,
-                                  BlendMode.srcIn,
-                                )),
-                            label: S.of(context).title_chat,
-                          ),
-                        ],
-                      ),
-                    )
-                  : null
-            ));
+            )
+                : null
+        ));
       },
     );
   }

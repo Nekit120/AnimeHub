@@ -26,6 +26,7 @@ abstract class LightThemeColors {
   static const Color mdThemeLightOnSurface = Color(0xFF201A1A);
   static const Color mdThemeLightSurfaceVariant = Color(0xFFF4DDDD);
   static const Color mdThemeLightOnSurfaceVariant = Color(0xFF524343);
+  static const Color mdThemeLightOnSurfaceSecondVariant = Color(0xFF525252);
   static const Color mdThemeLightOutline = Color(0xFF857373);
   static const Color mdThemeLightInverseOnSurface = Color(0xFFFBEEED);
   static const Color mdThemeLightInverseSurface = Color(0xFF362F2F);
