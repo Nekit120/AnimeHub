@@ -23,7 +23,7 @@ class AnimeListBuilderWidget extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 0,
               mainAxisSpacing: 0,
-              childAspectRatio: 0.67,
+              childAspectRatio: 0.66,
             )
           : const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,

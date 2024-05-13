@@ -13,5 +13,12 @@
   "internet_error": "У вас отсутствует подключение к интернету!",
   "empty_bd": "Пока что у вас нет любимых аниме, но вы можете их добавить!",
   "empty_answer_after_search": "По вашему запросу ничего не найдено!",
-  "title_detailed_information": "Подробная информация"
+  "title_detailed_information": "Подробная информация",
+  "title_error" : "Произошла ошибка",
+  "no_internet" : "Возможно вам стоит проверить подключение к интернету",
+  "favorites_error" : "You can add anime to your favorites after watching",
+  "empty_favorites_title" : "Любимые аниме отсутствуют",
+  "empty_favorites_description" : "Вы можете добавить любимые аниме после просмотра",
+  "anime_search_empty_title" : "Аниме не найдено",
+  "anime_search_empty_description" : "По вашему запросу ничего не найдено, проверьте ваш запрос и попробуйте ещё раз"
 }

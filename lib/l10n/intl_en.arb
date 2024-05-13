@@ -13,5 +13,12 @@
   "internet_error": "You do not have an Internet connection!",
   "empty_bd": "You don\\'t have any favorite anime yet, but you can add them!",
   "empty_answer_after_search": "Nothing was found for your request!",
-  "title_detailed_information": "Detailed information"
+  "title_detailed_information": "Detailed information",
+  "title_error": "An error has occurred",
+  "no_internet": "You might need to check your internet connection",
+  "favorites_error": "You can add anime to your favorites after watching",
+  "empty_favorites_title": "There are no favorite anime",
+  "empty_favorites_description": "You can add your favorite anime after watching",
+  "anime_search_empty_title": "No anime found",
+  "anime_search_empty_description": "Nothing was found for your request, check your request and try again"
 }

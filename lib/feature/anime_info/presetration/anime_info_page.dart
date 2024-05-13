@@ -1,6 +1,5 @@
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
-import 'package:anime_hub/core/presentation/widget/customAppBar.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reactive_variables/reactive_variables.dart';
 import '../../../generated/l10n.dart';
 import '../../../theme/theme_colors.dart';
 import '../../anime_board/domain/stateManager/favorites/anime_fovorites_notifier.dart';
@@ -224,13 +224,24 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                                     getAnimeListFunction:
                                         vm.updateAnimeListFromDbUseCase.call);
                           },
-                          iconWidget: vm.isFavorite.observer(
-                            (context, value) => value == false
-                                ? const Icon(Icons.favorite_outline)
-                                : const Icon(
-                                    Icons.favorite,
-                                    color: Colors.red,
-                                  ),
+                          iconWidget: Obs(
+                            rvList: [vm.checkRequest,vm.isFavorite],
+                            builder: (BuildContext context) {
+                              if(vm.checkRequest.value == true && vm.isFavorite == true) {
+                                return  const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                );
+                              } else if (vm.checkRequest.value == true && vm.isFavorite == false){
+                                return const Icon(Icons.favorite_outline);
+                              } else {
+                                return const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: SizedBox(height: 4,width: 24, child: LinearProgressIndicator(),),
+                              );
+                              }
+                            },
+
                           ),
                           context: vm.context);
                     },

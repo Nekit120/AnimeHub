@@ -1,10 +1,10 @@
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../../core/domain/app_error/app_error.dart';
 import '../../../../../core/domain/model/anime_api_list.dart';
 
-final animeReleasesApiProvider = StateNotifierProvider<AnimeReleasesApiNotifier, Result<AnimeApiList>?>((ref) {
-
+final animeReleasesApiProvider =
+    StateNotifierProvider<AnimeReleasesApiNotifier, Result<AnimeApiList>?>(
+        (ref) {
   return AnimeReleasesApiNotifier();
 });
 
@@ -12,10 +12,11 @@ final animeReleasesApiProvider = StateNotifierProvider<AnimeReleasesApiNotifier,
 //final fetchAnimeApiListProvider = FutureProvider((ref) =>);
 
 class AnimeReleasesApiNotifier extends StateNotifier<Result<AnimeApiList>?> {
-
   AnimeReleasesApiNotifier() : super(null);
 
-  Future<void> getDataFromApi({required Future<Result<AnimeApiList>> Function() getAnimeListFunction}) async {
+  Future<void> getDataFromApi(
+      {required Future<Result<AnimeApiList>> Function()
+          getAnimeListFunction}) async {
     state = await getAnimeListFunction();
     // switch (data) {
     //   case GoodUseCaseResult<AnimeApiList>(:final data) : {

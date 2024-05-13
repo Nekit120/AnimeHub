@@ -14,6 +14,7 @@ class AnimeInfoViewModel extends ViewModel {
   final CheckIfAnimeIsFavoriteUseCase checkIfAnimeIsFavoriteUseCase;
   final DeleteAnimeFromFavoriteUseCase deleteAnimeFromFavoriteUseCase;
   final isFavorite = false.rv;
+  final checkRequest = false.rv;
   final AnimeApiItem animeItem;
 
   AnimeInfoViewModel(super.context,
@@ -30,6 +31,7 @@ class AnimeInfoViewModel extends ViewModel {
 
   void checkIfAnimeIsFavorite() async {
     isFavorite.value = await checkIfAnimeIsFavoriteUseCase.call(animeItem.id);
+    checkRequest.value = true;
   }
 
   void addAnimeInFavorite(AnimeApiItem animeItem) async {
@@ -37,7 +39,7 @@ class AnimeInfoViewModel extends ViewModel {
       await deleteAnimeFromFavoriteUseCase.call(animeItem.id);
       checkIfAnimeIsFavorite();
     } else {
-     await insertAnimeItemInUseCase.call(animeItem);
+      await insertAnimeItemInUseCase.call(animeItem);
       checkIfAnimeIsFavorite();
     }
   }

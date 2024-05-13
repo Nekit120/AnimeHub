@@ -1,14 +1,13 @@
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/feature/anime_board/presetation/widget/anime_list_builder_widget.dart';
+import 'package:anime_hub/feature/anime_board/presetation/widget/error_list_widget.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/domain/model/anime_api_list.dart';
 import '../../../../core/domain/use_case_result/use_case_result.dart';
 import '../../../../core/presentation/widget/customAppBar.dart';
 import '../../../../generated/l10n.dart';
-import '../../../../theme/theme_colors.dart';
 import '../../domain/stateManager/releases/anime_releases_notifier.dart';
 import 'anime_releases_vm.dart';
 
@@ -16,35 +15,6 @@ import 'anime_releases_vm.dart';
 class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
   const AnimeReleasesPage({super.key, required super.vmFactory});
 
-  Widget _errorFavoritesBoard({required BuildContext context}) => Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16.0),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                const SizedBox(height: 100),
-                const SizedBox(
-                    width: 120.0,
-                    height: 120.0,
-                    child: Icon(Icons.error,
-                        color:
-                            LightThemeColors.mdThemeLightSecondaryTwoContainer,
-                        size: 120)),
-                const SizedBox(height: 16),
-                Text("Произошла ошибка",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 16),
-                Text("Возможно вам стоит проверить подключение к интернету",
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    style: Theme.of(context).textTheme.labelLarge),
-              ],
-            ),
-          ),
-        ),
-      );
 
   @override
   Widget build(AnimeReleasesViewModel vm) {
@@ -72,11 +42,10 @@ class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
                         animeList: data.results,
                         context: vm.context,
                       );
-                //AnimeListBuilderWidget(isNotHorizontal: isNotHorizontal, animeList: data.results, controller: vm.controller, context: vm.context );
                 case null:
                   return const Center(child: CircularProgressIndicator());
                 case BadUseCaseResult<AnimeApiList>():
-                  return _errorFavoritesBoard(context: vm.context);
+                  return ErrorListWidget(titleError: S.of(context).title_error, descriptionError: S.of(context).no_internet,);
                 default:
                   return const Center(child: CircularProgressIndicator());
               }
