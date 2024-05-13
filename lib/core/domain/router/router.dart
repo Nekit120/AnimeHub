@@ -8,9 +8,11 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: MainRoute.page, path: "/", children: [
           AutoRoute(page: FavoriteAnimeRoute.page),
           AutoRoute(page: AnimeReleasesRoute.page),
-          AutoRoute(page: AuthRoute.page)
+          AutoRoute(page: AuthRoute.page),
+          AutoRoute(page: AnimeSearch.page)
         ]),
         AutoRoute(page: AnimeInfoRoute.page),
-        AutoRoute(page: PlayerRoute.page)
+        AutoRoute(page: PlayerRoute.page),
+        AutoRoute(page: AnimeSearch.page)
       ];
 }

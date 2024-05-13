@@ -1,4 +1,4 @@
-import 'package:anime_hub/feature/anime_board/domain/model/season.dart';
+import 'package:anime_hub/core/domain/model/season.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'material_data.dart';
@@ -17,7 +17,6 @@ class AnimeApiItem {
   final Map<String, Season>? seasons;
   @JsonKey(name: 'material_data')
   final MaterialData? materialData;
-  final List<String> screenshots;
 
   AnimeApiItem({
     required this.id,
@@ -26,9 +25,8 @@ class AnimeApiItem {
     required this.title,
     required this.titleOrig,
     required this.year,
-    this.seasons,
-    this.materialData,
-    required this.screenshots,
+    required this.seasons,
+    required this.materialData,
   });
 
   factory AnimeApiItem.fromJson(Map<String, dynamic> json) => _$AnimeApiItemFromJson(json);

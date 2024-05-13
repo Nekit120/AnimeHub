@@ -7,9 +7,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 @RoutePage()
 class PlayerPage extends StatefulWidget {
-  String animeStreamUrl;
+  final String animeStreamUrl;
 
-  PlayerPage({super.key, required this.animeStreamUrl});
+  const PlayerPage({super.key, required this.animeStreamUrl});
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();
@@ -22,6 +22,7 @@ class _PlayerPageState extends State<PlayerPage> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
   }
 
@@ -31,6 +32,8 @@ class _PlayerPageState extends State<PlayerPage> {
         overlays: SystemUiOverlay.values);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
     super.dispose();
   }

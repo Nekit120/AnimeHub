@@ -24,6 +24,10 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "anime_error_request": MessageLookupByLibrary.simpleMessage(
             "Произошла ошибка доступа к данным, возможно Вам стоит проверить подключение к интернету!"),
+        "anime_search_empty_description": MessageLookupByLibrary.simpleMessage(
+            "По вашему запросу ничего не найдено, проверьте ваш запрос и попробуйте ещё раз"),
+        "anime_search_empty_title":
+            MessageLookupByLibrary.simpleMessage("Аниме не найдено"),
         "app_name": MessageLookupByLibrary.simpleMessage("AnimeHub"),
         "description_error": MessageLookupByLibrary.simpleMessage(
             "К сожалению описание ещё не добавленно, но Вы всегда можете связаться с нами и сообщить об этом!"),
@@ -31,8 +35,16 @@ class MessageLookup extends MessageLookupByLibrary {
             "По вашему запросу ничего не найдено!"),
         "empty_bd": MessageLookupByLibrary.simpleMessage(
             "Пока что у вас нет любимых аниме, но вы можете их добавить!"),
+        "empty_favorites_description": MessageLookupByLibrary.simpleMessage(
+            "Вы можете добавить любимые аниме после просмотра"),
+        "empty_favorites_title":
+            MessageLookupByLibrary.simpleMessage("Любимые аниме отсутствуют"),
+        "favorites_error": MessageLookupByLibrary.simpleMessage(
+            "You can add anime to your favorites after watching"),
         "internet_error": MessageLookupByLibrary.simpleMessage(
             "У вас отсутствует подключение к интернету!"),
+        "no_internet": MessageLookupByLibrary.simpleMessage(
+            "Возможно вам стоит проверить подключение к интернету"),
         "not_in_player": MessageLookupByLibrary.simpleMessage(
             "Возможно это аниме нет в нашем плеере!"),
         "play_text": MessageLookupByLibrary.simpleMessage("Воспроизвести"),
@@ -41,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "title_chat": MessageLookupByLibrary.simpleMessage("Чат"),
         "title_detailed_information":
             MessageLookupByLibrary.simpleMessage("Подробная информация"),
+        "title_error": MessageLookupByLibrary.simpleMessage("Произошла ошибка"),
         "title_favorite": MessageLookupByLibrary.simpleMessage("Любимые"),
         "title_search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "title_settings": MessageLookupByLibrary.simpleMessage("Настройки"),

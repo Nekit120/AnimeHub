@@ -5,11 +5,13 @@ import 'package:reactive_variables/reactive_variables.dart';
 class ScrollToHideWidget extends StatefulWidget {
   final Widget child;
   final ScrollController controller;
+  final ScrollController secondController;
 
   const ScrollToHideWidget(
       {super.key,
       required this.child,
-      required this.controller,}
+      required this.controller,
+      required this.secondController}
       );
 
   @override
@@ -23,11 +25,13 @@ class _ScrollToHideWidgetState extends State<ScrollToHideWidget> {
   void initState() {
     super.initState();
     widget.controller.addListener(listen);
+    widget.secondController.addListener(secondListen);
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(listen);
+    widget.secondController.removeListener(secondListen);
     super.dispose();
   }
 
@@ -39,6 +43,15 @@ class _ScrollToHideWidgetState extends State<ScrollToHideWidget> {
       isVisible.value = false;
     }
   }
+
+    void secondListen() {
+      final direction = widget.secondController.position.userScrollDirection;
+      if(direction == ScrollDirection.forward){
+        isVisible.value = true;
+      } else if (direction == ScrollDirection.reverse){
+        isVisible.value = false;
+      }
+    }
   @override
   Widget build(BuildContext context) => isVisible.observer((context, value) =>
       AnimatedContainer(

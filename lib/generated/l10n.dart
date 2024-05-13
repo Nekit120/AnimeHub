@@ -199,6 +199,76 @@ class S {
       args: [],
     );
   }
+
+  /// `An error has occurred`
+  String get title_error {
+    return Intl.message(
+      'An error has occurred',
+      name: 'title_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You might need to check your internet connection`
+  String get no_internet {
+    return Intl.message(
+      'You might need to check your internet connection',
+      name: 'no_internet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can add anime to your favorites after watching`
+  String get favorites_error {
+    return Intl.message(
+      'You can add anime to your favorites after watching',
+      name: 'favorites_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There are no favorite anime`
+  String get empty_favorites_title {
+    return Intl.message(
+      'There are no favorite anime',
+      name: 'empty_favorites_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You can add your favorite anime after watching`
+  String get empty_favorites_description {
+    return Intl.message(
+      'You can add your favorite anime after watching',
+      name: 'empty_favorites_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No anime found`
+  String get anime_search_empty_title {
+    return Intl.message(
+      'No anime found',
+      name: 'anime_search_empty_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nothing was found for your request, check your request and try again`
+  String get anime_search_empty_description {
+    return Intl.message(
+      'Nothing was found for your request, check your request and try again',
+      name: 'anime_search_empty_description',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
