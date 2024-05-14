@@ -42,4 +42,9 @@ class AnimeBoardRepositoryImpl implements AnimeBoardRepository {
   Future<Result<List<AnimeApiItem>>> getAnimeListFromDb() async {
     return  await _animeLocalDataSource.getAnimeListFromDb();
   }
+
+  @override
+  Future<Result<List<AnimeApiItem>>> findAnimeFromFavorites(String excerptTitle) async{
+    return await _animeLocalDataSource.searchAnimeInFavorites(excerptTitle: excerptTitle);
+  }
 }

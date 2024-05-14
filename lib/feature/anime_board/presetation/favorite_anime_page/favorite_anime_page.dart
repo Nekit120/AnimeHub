@@ -1,8 +1,10 @@
 import 'package:anime_hub/core/domain/model/anime_api_item.dart';
+import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/core/presentation/widget/customAppBar.dart';
 import 'package:anime_hub/feature/anime_board/domain/stateManager/favorites/anime_fovorites_notifier.dart';
+import 'package:anime_hub/feature/anime_board/presetation/anime_favorites_search/anime_favorites_search_vm.dart';
 import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_vm.dart';
 import 'package:anime_hub/feature/anime_board/presetation/widget/empty_list_widget.dart';
 import 'package:anime_hub/feature/anime_board/presetation/widget/error_list_widget.dart';
@@ -10,13 +12,22 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/domain/container/app_container.dart';
 import '../../../../generated/l10n.dart';
 import '../widget/anime_list_builder_widget.dart';
 
 @RoutePage()
 class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
   const FavoriteAnimePage({super.key, required super.vmFactory});
-
+  
+  void _customAppBarOnPressed({required BuildContext context}) {
+      AutoRouter.of(context).push(AnimeFavoritesSearch(
+          vmFactory: (context) => AnimeFavoritesSearchViewModel(
+            context,
+            animeBoardRepository:
+            AppContainer().repositoryScope.animeBoardRepository,
+          )));
+  }
   @override
   Widget build(FavoriteAnimeViewModel vm) {
     final isNotHorizontal =
@@ -25,7 +36,7 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
         appBar: isNotHorizontal
             ? CustomAppBar(
                 titleAppBar: S.of(vm.context).title_favorite,
-                context: vm.context,
+                context: vm.context, onPressesCallBack: () { _customAppBarOnPressed(context: vm.context ); },
               )
             : null,
         body: Consumer(

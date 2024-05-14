@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../feature/anime_board/presetation/anime_search/anime_search_vm.dart';
 import '../../domain/router/router.gr.dart';
 
-class CustomAppBar extends AppBar {
+class SearchCustomAppBar extends AppBar {
   final String titleAppBar;
   final BuildContext context;
   final VoidCallback onPressesCallBack;
@@ -12,7 +12,7 @@ class CustomAppBar extends AppBar {
   @override
   final Widget? leading;
 
-  CustomAppBar(
+  SearchCustomAppBar(
       {super.key,
       required this.titleAppBar,
       required this.context,
@@ -27,21 +27,13 @@ class CustomAppBar extends AppBar {
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back_outlined)),
-          title:
-              Text(titleAppBar, style: Theme.of(context).textTheme.titleLarge),
+          title: Text(titleAppBar, style: Theme.of(context).textTheme.titleLarge),
           actions: [
-            IconButton(
-                icon: const Icon(
-                  Icons.search,
-                ),
-                onPressed: (){
-                  onPressesCallBack();
-                } ),
             IconButton(
                 icon: const Icon(
                   Icons.settings,
                 ),
-                onPressed: () {}),
+                onPressed: () {onPressesCallBack();}),
           ],
         );
 }

@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/domain/model/anime_api_list.dart';
+import '../../../../core/presentation/widget/searchCustomAppBar.dart';
 import '../../../../generated/l10n.dart';
 import '../../domain/stateManager/search/anime_search_notifier.dart';
 import 'anime_search_vm.dart';
@@ -61,10 +62,7 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
         MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
         appBar: isNotHorizontal
-            ? CustomAppBar(
-                titleAppBar: S.of(vm.context).title_search,
-                context: vm.context,
-              )
+            ? SearchCustomAppBar(titleAppBar:  S.of(vm.context).title_search, context: vm.context, onPressesCallBack: () {  },)
             : null,
         body: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
