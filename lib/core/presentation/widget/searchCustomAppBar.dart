@@ -1,8 +1,4 @@
-import 'package:anime_hub/core/domain/container/app_container.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import '../../../feature/anime_board/presetation/anime_search/anime_search_vm.dart';
-import '../../domain/router/router.gr.dart';
 
 class SearchCustomAppBar extends AppBar {
   final String titleAppBar;

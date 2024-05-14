@@ -8,26 +8,26 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:anime_hub/feature/anime_board/presetation/anime_favorites_search/anime_favorites_search_page.dart'
+import 'package:anime_hub/feature/anime/presetation/anime_favorites_search/anime_favorites_search_page.dart'
     as _i1;
-import 'package:anime_hub/feature/anime_board/presetation/anime_favorites_search/anime_favorites_search_vm.dart'
+import 'package:anime_hub/feature/anime/presetation/anime_favorites_search/anime_favorites_search_vm.dart'
     as _i11;
-import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_page.dart'
-    as _i3;
-import 'package:anime_hub/feature/anime_board/presetation/anime_releses_page/anime_releases_vm.dart'
-    as _i14;
-import 'package:anime_hub/feature/anime_board/presetation/anime_search/anime_search_page.dart'
-    as _i4;
-import 'package:anime_hub/feature/anime_board/presetation/anime_search/anime_search_vm.dart'
-    as _i15;
-import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_page.dart'
-    as _i6;
-import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_vm.dart'
-    as _i17;
-import 'package:anime_hub/feature/anime_info/presetration/anime_info_page.dart'
+import 'package:anime_hub/feature/anime/presetation/anime_info_page/anime_info_page.dart'
     as _i2;
-import 'package:anime_hub/feature/anime_info/presetration/anime_info_vm.dart'
+import 'package:anime_hub/feature/anime/presetation/anime_info_page/anime_info_vm.dart'
     as _i12;
+import 'package:anime_hub/feature/anime/presetation/anime_releses_page/anime_releases_page.dart'
+    as _i3;
+import 'package:anime_hub/feature/anime/presetation/anime_releses_page/anime_releases_vm.dart'
+    as _i14;
+import 'package:anime_hub/feature/anime/presetation/anime_search/anime_search_page.dart'
+    as _i4;
+import 'package:anime_hub/feature/anime/presetation/anime_search/anime_search_vm.dart'
+    as _i15;
+import 'package:anime_hub/feature/anime/presetation/favorite_anime_page/favorite_anime_page.dart'
+    as _i6;
+import 'package:anime_hub/feature/anime/presetation/favorite_anime_page/favorite_anime_vm.dart'
+    as _i17;
 import 'package:anime_hub/feature/auth/presetation/auth_page.dart' as _i5;
 import 'package:anime_hub/feature/auth/presetation/auth_vm.dart' as _i16;
 import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
