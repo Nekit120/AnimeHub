@@ -8,10 +8,13 @@ import 'package:anime_hub/feature/anime_board/presetation/widget/error_list_widg
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/domain/model/anime_api_list.dart';
+import '../../../../core/presentation/widget/searchCustomAppBar.dart';
 import '../../../../generated/l10n.dart';
 import '../../domain/stateManager/search/anime_search_notifier.dart';
+import '../../domain/stateManager/state/anime_search_state.dart';
 import 'anime_search_vm.dart';
 
 @RoutePage()
@@ -36,16 +39,17 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
                   controller: textEditingController,
                   onChanged: (value) {
                     _debounceTimer.cancel();
+                    if(value.length >1){
                     _debounceTimer =
                         Timer(const Duration(seconds: 1), () {
-                          ref
-                              .read(animeSearchApiProvider.notifier)
+
+                          ref.read(animeSearchApiProvider.notifier)
                               .findDataByRequest(
                             findAnimeListByRequest:
                             vm.findAnimeByRequestUseCase.call,
                             title: value,
                           );
-                        });
+                        });}
                   },
                   decoration: InputDecoration(
                       labelText: S.of(vm.context).title_search,
@@ -61,27 +65,24 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
         MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
         appBar: isNotHorizontal
-            ? CustomAppBar(
-                titleAppBar: S.of(vm.context).title_search,
-                context: vm.context,
-              )
+            ? SearchCustomAppBar(titleAppBar:  S.of(vm.context).title_search, context: vm.context, onPressesCallBack: () {  },)
             : null,
         body: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final animeApiList = ref.watch(animeSearchApiProvider);
             switch (animeApiList) {
-              case null:
+              case AnimeSearchState(result: null, loading: false):
                 return Column(children: [
                   _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,)
                 ]);
-              case GoodUseCaseResult<AnimeApiList>(:final data):
-                if (data.results.isNotEmpty) {
+              case AnimeSearchState(result: GoodUseCaseResult<AnimeApiList> animeItemList, loading: false):
+                if (animeItemList.data.results.isNotEmpty) {
                   return Column(children: [
                     _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
                     Expanded(
                       child: AnimeListBuilderWidget(
                           isNotHorizontal: isNotHorizontal,
-                          animeList: data.results,
+                          animeList: animeItemList.data.results,
                           controller: null,
                           context: vm.context),
                     )
@@ -94,13 +95,18 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
                     ],
                   );
                 }
-              case BadUseCaseResult<AnimeApiList>():
+              case AnimeSearchState(result: BadUseCaseResult<AnimeApiList>(), loading: false):
                 return  Column(
                   children: [
                     _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
                     ErrorListWidget(titleError: S.of(context).title_error, descriptionError: S.of(context).no_internet),
                   ],
                 );
+              case AnimeSearchState(loading: true):
+                return Column( children: [
+            _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
+             const Expanded(child: Center(child: CircularProgressIndicator()))
+            ]);
               default:
                 return const Center(child: CircularProgressIndicator());
             }

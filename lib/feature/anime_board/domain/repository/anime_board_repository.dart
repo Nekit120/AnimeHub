@@ -9,4 +9,6 @@ abstract interface class AnimeBoardRepository {
    Future<Result<List<AnimeApiItem>>> getAnimeListFromDb();
 
    Future<Result<AnimeApiList>> findAnimeByRequest(String title);
+
+   Future<Result<List<AnimeApiItem>>> findAnimeFromFavorites(String excerptTitle);
 }

@@ -4,17 +4,28 @@ import 'package:anime_hub/feature/anime_board/presetation/widget/error_list_widg
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/domain/container/app_container.dart';
 import '../../../../core/domain/model/anime_api_list.dart';
+import '../../../../core/domain/router/router.gr.dart';
 import '../../../../core/domain/use_case_result/use_case_result.dart';
 import '../../../../core/presentation/widget/customAppBar.dart';
 import '../../../../generated/l10n.dart';
 import '../../domain/stateManager/releases/anime_releases_notifier.dart';
+import '../anime_search/anime_search_vm.dart';
 import 'anime_releases_vm.dart';
 
 @RoutePage()
 class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
   const AnimeReleasesPage({super.key, required super.vmFactory});
 
+  void _customAppBarOnPressed({required BuildContext context}) {
+      AutoRouter.of(context).push(AnimeSearch(
+          vmFactory: (context) => AnimeSearchViewModel(
+            context,
+            animeBoardRepository:
+            AppContainer().repositoryScope.animeBoardRepository,
+          )));
+  }
 
   @override
   Widget build(AnimeReleasesViewModel vm) {
@@ -23,8 +34,7 @@ class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
     return Scaffold(
       appBar: isNotHorizontal
           ? CustomAppBar(
-              titleAppBar: S.of(vm.context).title_watch,
-              context: vm.context,
+              titleAppBar: S.of(vm.context).title_watch, context: vm.context, onPressesCallBack: () {_customAppBarOnPressed(context:  vm.context);},
             )
           : null,
       body: Consumer(
