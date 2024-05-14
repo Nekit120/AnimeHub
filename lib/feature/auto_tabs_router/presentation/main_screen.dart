@@ -1,6 +1,4 @@
 import 'package:anime_hub/core/domain/container/app_container.dart';
-import 'package:anime_hub/feature/anime_board/presetation/anime_search/anime_search_vm.dart';
-import 'package:anime_hub/feature/anime_board/presetation/favorite_anime_page/favorite_anime_vm.dart';
 import 'package:anime_hub/feature/auth/presetation/auth_vm.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +8,10 @@ import '../../../core/domain/router/router.gr.dart';
 import '../../../generated/l10n.dart';
 import '../../../theme/svg_image_collection.dart';
 import '../../../theme/theme_colors.dart';
-import '../../anime_board/presetation/anime_releses_page/anime_releases_page.dart';
-import '../../anime_board/presetation/anime_releses_page/anime_releases_vm.dart';
+import '../../anime/presetation/anime_releses_page/anime_releases_page.dart';
+import '../../anime/presetation/anime_releses_page/anime_releases_vm.dart';
+import '../../anime/presetation/anime_search/anime_search_vm.dart';
+import '../../anime/presetation/favorite_anime_page/favorite_anime_vm.dart';
 import '../widget/scroll_to_hide_widget.dart';
 
 @RoutePage()
@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
           vmFactory: (context) => AnimeReleasesViewModel(context,
               controller: releasesController,
               animeBoardRepository:
-              AppContainer().repositoryScope.animeBoardRepository)), predicate:  (route) => false );
+              AppContainer().repositoryScope.animeRepository)), predicate:  (route) => false );
     }
   }
 
@@ -61,14 +61,14 @@ class _MainScreenState extends State<MainScreen> {
     return AutoTabsRouter(
       routes: [
         FavoriteAnimeRoute(
-            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: favoritesController, animeBoardRepository: AppContainer().repositoryScope.animeBoardRepository)),
+            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: favoritesController, animeBoardRepository: AppContainer().repositoryScope.animeRepository)),
         AnimeReleasesRoute(
             vmFactory: (context) => AnimeReleasesViewModel(context,
                 controller: releasesController,
                 animeBoardRepository:
-                AppContainer().repositoryScope.animeBoardRepository)),
+                AppContainer().repositoryScope.animeRepository)),
         AuthRoute(vmFactory: (context) => AuthViewModel(context)),
-        AnimeSearch(vmFactory:(context) => AnimeSearchViewModel(context, animeBoardRepository: AppContainer().repositoryScope.animeBoardRepository))
+        AnimeSearch(vmFactory:(context) => AnimeSearchViewModel(context, animeBoardRepository: AppContainer().repositoryScope.animeRepository))
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,
@@ -79,7 +79,7 @@ class _MainScreenState extends State<MainScreen> {
             vmFactory: (context) => AnimeReleasesViewModel(context,
                 controller: releasesController,
                 animeBoardRepository:
-                AppContainer().repositoryScope.animeBoardRepository))),
+                AppContainer().repositoryScope.animeRepository))),
       ),
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);

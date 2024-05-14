@@ -1,13 +1,10 @@
 import 'dart:developer';
-
-import 'package:anime_hub/core/data/database/dataSource/anime_local_data_source.dart';
-import 'package:anime_hub/feature/anime_board/data/data_source/remote/remote_data_provider.dart';
-import 'package:anime_hub/feature/anime_board/data/repository/anime_board_repository_impl.dart';
-import 'package:anime_hub/feature/anime_board/domain/repository/anime_board_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-
-import '../../../feature/anime_info/data/repository/anime_info_repository_impl.dart';
+import '../../../feature/anime/data/data_source/local/anime_local_data_source.dart';
+import '../../../feature/anime/data/data_source/remote/anime_remote_data_source.dart';
+import '../../../feature/anime/data/repository/anime_repository_impl.dart';
+import '../../../feature/anime/domain/repository/anime_repository.dart';
 import '../../data/database/database_provider.dart';
 
 class AppContainer {
@@ -26,15 +23,14 @@ class AppContainer {
     try {
       final dbProvider = DBProvider();
 
-      final animeBoardRepository = AnimeBoardRepositoryImpl(
-          remoteDataProvider: RemoteDataProvider(Dio()),
+
+      final animeBoardRepository = AnimeRepositoryImpl(
+          remoteDataProvider: AnimeRemoteDataSource(Dio ()),
           animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
-      final animeInfoRepository =
-          AnimeInfoRepositoryImpl(dbProvider: dbProvider);
+
 
       repositoryScope = RepositoryScope(
-          animeBoardRepository: animeBoardRepository,
-          animeInfoRepository: animeInfoRepository);
+          animeRepository: animeBoardRepository);
 
       // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
       return true;
@@ -46,11 +42,10 @@ class AppContainer {
 }
 
 class RepositoryScope {
-  final AnimeBoardRepository animeBoardRepository;
-  final AnimeInfoRepositoryImpl animeInfoRepository;
+  final AnimeRepository animeRepository;
 
   RepositoryScope(
-      {required this.animeBoardRepository, required this.animeInfoRepository});
+      {required this.animeRepository});
 }
 
 // class DataSourceScope {
