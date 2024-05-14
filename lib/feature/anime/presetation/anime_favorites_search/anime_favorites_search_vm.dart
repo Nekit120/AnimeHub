@@ -9,8 +9,8 @@ class AnimeFavoritesSearchViewModel extends ViewModel {
   final FindAnimeInFavoritesRequestUseCase findAnimeInFavoritesRequestUseCase;
 
   AnimeFavoritesSearchViewModel(super.context,
-      {required AnimeRepository animeBoardRepository})
-      : findAnimeInFavoritesRequestUseCase = FindAnimeInFavoritesRequestUseCase(animeBoardRepository: animeBoardRepository);
+      {required AnimeRepository animeRepository})
+      : findAnimeInFavoritesRequestUseCase = FindAnimeInFavoritesRequestUseCase(animeBoardRepository: animeRepository);
 
   @override
   void initState() {

@@ -23,6 +23,7 @@ class AppContainer {
     try {
       final dbProvider = DBProvider();
 
+
       final animeBoardRepository = AnimeRepositoryImpl(
           remoteDataProvider: AnimeRemoteDataSource(Dio ()),
           animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
@@ -32,7 +33,6 @@ class AppContainer {
           animeRepository: animeBoardRepository);
 
       // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
-
       return true;
     } catch (e, st) {
       log('App Container has not been initialized', error: e, stackTrace: st);

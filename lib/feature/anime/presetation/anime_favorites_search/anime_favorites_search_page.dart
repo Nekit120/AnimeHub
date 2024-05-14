@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/domain/container/app_container.dart';
 import '../../../../core/presentation/widget/searchCustomAppBar.dart';
 import '../../../../generated/l10n.dart';
 import '../../domain/stateManager/favoritesSearch/anime_search_favorites_notifier.dart';
@@ -20,7 +21,14 @@ import 'anime_favorites_search_vm.dart';
 @RoutePage()
 // ignore: must_be_immutable
 class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
-  AnimeFavoritesSearch({super.key, required super.vmFactory});
+  AnimeFavoritesSearch({super.key})
+      : super(
+          vmFactory: (context) => AnimeFavoritesSearchViewModel(
+            context,
+            animeRepository:
+                AppContainer().repositoryScope.animeRepository,
+          ),
+        );
 
   final TextEditingController textEditingController = TextEditingController();
   Timer _debounceTimer = Timer(const Duration(seconds: 1), () {});
@@ -41,16 +49,17 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                   controller: textEditingController,
                   onChanged: (value) {
                     _debounceTimer.cancel();
-                    if(value.length >1){
-                    _debounceTimer = Timer(const Duration(seconds: 1), () {
-                      ref
-                          .read(animeSearchFavoritesProvider.notifier)
-                          .findAnimeInFavorites(
-                            findAnimeListByRequest:
-                                vm.findAnimeInFavoritesRequestUseCase.call,
-                            title: value,
-                          );
-                    });}
+                    if (value.length > 1) {
+                      _debounceTimer = Timer(const Duration(seconds: 1), () {
+                        ref
+                            .read(animeSearchFavoritesProvider.notifier)
+                            .findAnimeInFavorites(
+                              findAnimeListByRequest:
+                                  vm.findAnimeInFavoritesRequestUseCase.call,
+                              title: value,
+                            );
+                      });
+                    }
                   },
                   decoration: InputDecoration(
                       labelText: S.of(vm.context).title_search,
@@ -84,7 +93,10 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                     vm: vm,
                   )
                 ]);
-              case AnimeSearchFavoriteState(result: GoodUseCaseResult<List<AnimeApiItem>> animeItemList, loading: false):
+              case AnimeSearchFavoriteState(
+                  result: GoodUseCaseResult<List<AnimeApiItem>> animeItemList,
+                  loading: false
+                ):
                 if (animeItemList.data.isNotEmpty) {
                   return Column(children: [
                     _customTextField(
@@ -111,12 +123,16 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                       EmptyListWidget(
                           iconData: Icons.search_off,
                           titleEmptyList:
-                          S.of(context).anime_search_empty_title,
+                              S.of(context).anime_search_empty_title,
                           descriptionEmptyList:
-                          S.of(context).anime_search_empty_description)
+                              S.of(context).anime_search_empty_description)
                     ],
-                  );}
-              case AnimeSearchFavoriteState(result: BadUseCaseResult<List<AnimeApiItem>>(), loading: false):
+                  );
+                }
+              case AnimeSearchFavoriteState(
+                  result: BadUseCaseResult<List<AnimeApiItem>>(),
+                  loading: false
+                ):
                 return Column(
                   children: [
                     _customTextField(
@@ -130,8 +146,12 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                   ],
                 );
               case AnimeSearchFavoriteState(loading: true):
-                return Column( children: [
-                  _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
+                return Column(children: [
+                  _customTextField(
+                    isNotHorizontal: isNotHorizontal,
+                    ref: ref,
+                    vm: vm,
+                  ),
                   const Center(child: CircularProgressIndicator())
                 ]);
               default:

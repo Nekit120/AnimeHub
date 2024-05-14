@@ -1,7 +1,10 @@
 part of 'view_model.dart';
 
+typedef VMFactoryMethod<VM extends ViewModel> = VM Function(
+    BuildContext context);
+
 abstract class BaseView<VM extends ViewModel> extends Widget {
-  final VM Function(BuildContext context) vmFactory;
+  final VMFactoryMethod<VM> vmFactory;
 
   const BaseView({
     super.key,
