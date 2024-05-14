@@ -6,9 +6,12 @@ part 'get_anime_list_query.g.dart';
 class GetAnimeListQuery {
   final String token;
   final String types;
-  @JsonKey(name: "with_episodes")final bool withEpisodes;
-  @JsonKey(name: "with_material_data")final bool withMaterialData;
-  @JsonKey(name: "limit")final int limit;
+  @JsonKey(name: "with_episodes")
+  final bool withEpisodes;
+  @JsonKey(name: "with_material_data")
+  final bool withMaterialData;
+  @JsonKey(name: "limit")
+  final int limit;
 
   const GetAnimeListQuery({
     this.token = "405c66c107c8a27b0064e1506d2ded9f",

@@ -6,9 +6,12 @@ part 'find_anime_by_request_query.g.dart';
 class FindAnimeByRequestQuery {
   final String token;
   final String types;
-  @JsonKey(name: "with_episodes")final bool withEpisodes ;
-  @JsonKey(name: "with_material_data")final bool withMaterialData ;
-  @JsonKey(name: "translation_type")final String translationType;
+  @JsonKey(name: "with_episodes")
+  final bool withEpisodes ;
+  @JsonKey(name: "with_material_data")
+  final bool withMaterialData ;
+  @JsonKey(name: "translation_type")
+  final String translationType;
   final int limit;
   final String title;
 
