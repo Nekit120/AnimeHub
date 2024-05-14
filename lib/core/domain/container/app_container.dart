@@ -1,10 +1,12 @@
 import 'dart:developer';
+
 import 'package:anime_hub/core/data/database/dataSource/anime_local_data_source.dart';
 import 'package:anime_hub/feature/anime_board/data/data_source/remote/remote_data_provider.dart';
 import 'package:anime_hub/feature/anime_board/data/repository/anime_board_repository_impl.dart';
 import 'package:anime_hub/feature/anime_board/domain/repository/anime_board_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+
 import '../../../feature/anime_info/data/repository/anime_info_repository_impl.dart';
 import '../../data/database/database_provider.dart';
 
@@ -25,7 +27,7 @@ class AppContainer {
       final dbProvider = DBProvider();
 
       final animeBoardRepository = AnimeBoardRepositoryImpl(
-          remoteDataProvider: RemoteDataProvider(Dio ()),
+          remoteDataProvider: RemoteDataProvider(Dio()),
           animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
       final animeInfoRepository =
           AnimeInfoRepositoryImpl(dbProvider: dbProvider);
@@ -35,7 +37,6 @@ class AppContainer {
           animeInfoRepository: animeInfoRepository);
 
       // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
-
       return true;
     } catch (e, st) {
       log('App Container has not been initialized', error: e, stackTrace: st);

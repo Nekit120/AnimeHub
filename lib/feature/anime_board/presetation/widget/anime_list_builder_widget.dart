@@ -1,18 +1,21 @@
-import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/model/anime_api_item.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../core/domain/router/router.gr.dart';
-import '../../../anime_info/presetration/anime_info_vm.dart';
 
 class AnimeListBuilderWidget extends StatelessWidget {
   final bool isNotHorizontal;
   final List<AnimeApiItem> animeList;
   final ScrollController? controller;
   final BuildContext context;
-  const AnimeListBuilderWidget({super.key,required this.isNotHorizontal, required this.controller, required  this.animeList,required this.context});
+  const AnimeListBuilderWidget(
+      {super.key,
+      required this.isNotHorizontal,
+      required this.controller,
+      required this.animeList,
+      required this.context});
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +47,17 @@ class AnimeListBuilderWidget extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
                       child: CachedNetworkImage(
-                        imageUrl: animeList[index].materialData?.posterUrl ??  "https://shikimori.one/system/animes/original/56838.jpg",
+                        imageUrl: animeList[index].materialData?.posterUrl ??
+                            "https://shikimori.one/system/animes/original/56838.jpg",
                         height: 255,
                         width: 190,
                         fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(child: SizedBox( height: 24,width:24,child: CircularProgressIndicator())),
-                      )
-                    ),
+                        placeholder: (context, url) => const Center(
+                            child: SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator())),
+                      )),
                 ),
               ),
               Text(animeList[index].title,
@@ -58,8 +65,8 @@ class AnimeListBuilderWidget extends StatelessWidget {
             ],
           ),
           onTap: () {
-            AutoRouter.of(context).push(AnimeInfoRoute(
-                vmFactory: (context) => AnimeInfoViewModel(context, animeInfoRepository: AppContainer().repositoryScope.animeInfoRepository, animeItem:animeList[index],)));
+            AutoRouter.of(context)
+                .push(AnimeInfoRoute(animeItem: animeList[index]));
           },
         );
       },
