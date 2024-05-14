@@ -19,6 +19,7 @@ import '../../../../core/presentation/widget/searchCustomAppBar.dart';
 import '../../../../generated/l10n.dart';
 import '../../domain/stateManager/favoritesSearch/anime_search_favorites_notifier.dart';
 import '../../domain/stateManager/search/anime_search_notifier.dart';
+import '../../domain/stateManager/state/anime_search_favorite_state.dart';
 import '../anime_search/anime_search_vm.dart';
 import 'anime_favorites_search_vm.dart';
 
@@ -46,6 +47,7 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                   controller: textEditingController,
                   onChanged: (value) {
                     _debounceTimer.cancel();
+                    if(value.length >1){
                     _debounceTimer = Timer(const Duration(seconds: 1), () {
                       ref
                           .read(animeSearchFavoritesProvider.notifier)
@@ -54,7 +56,7 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                                 vm.findAnimeInFavoritesRequestUseCase.call,
                             title: value,
                           );
-                    });
+                    });}
                   },
                   decoration: InputDecoration(
                       labelText: S.of(vm.context).title_search,
@@ -80,7 +82,7 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final animeApiList = ref.watch(animeSearchFavoritesProvider);
             switch (animeApiList) {
-              case null:
+              case AnimeSearchFavoriteState(result: null, loading: false):
                 return Column(children: [
                   _customTextField(
                     isNotHorizontal: isNotHorizontal,
@@ -88,8 +90,8 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                     vm: vm,
                   )
                 ]);
-              case GoodUseCaseResult<List<AnimeApiItem>>(:final data):
-                if (data.isNotEmpty) {
+              case AnimeSearchFavoriteState(result: GoodUseCaseResult<List<AnimeApiItem>> animeItemList, loading: false):
+                if (animeItemList.data.isNotEmpty) {
                   return Column(children: [
                     _customTextField(
                       isNotHorizontal: isNotHorizontal,
@@ -99,7 +101,7 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                     Expanded(
                       child: AnimeListBuilderWidget(
                           isNotHorizontal: isNotHorizontal,
-                          animeList: data,
+                          animeList: animeItemList.data,
                           controller: null,
                           context: vm.context),
                     )
@@ -115,13 +117,12 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                       EmptyListWidget(
                           iconData: Icons.search_off,
                           titleEmptyList:
-                              S.of(context).anime_search_empty_title,
+                          S.of(context).anime_search_empty_title,
                           descriptionEmptyList:
-                              S.of(context).anime_search_empty_description)
+                          S.of(context).anime_search_empty_description)
                     ],
-                  );
-                }
-              case BadUseCaseResult<AnimeApiList>():
+                  );}
+              case AnimeSearchFavoriteState(result: BadUseCaseResult<List<AnimeApiItem>>(), loading: false):
                 return Column(
                   children: [
                     _customTextField(
@@ -134,6 +135,11 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                         descriptionError: S.of(context).no_internet),
                   ],
                 );
+              case AnimeSearchFavoriteState(loading: true):
+                return Column( children: [
+                  _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
+                  const Center(child: CircularProgressIndicator())
+                ]);
               default:
                 return Center(child: Container());
             }
