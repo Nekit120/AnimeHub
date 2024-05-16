@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/core/presentation/widget/customAppBar.dart';
@@ -20,18 +21,24 @@ import 'anime_search_vm.dart';
 @RoutePage()
 // ignore: must_be_immutable
 class AnimeSearch extends BaseView<AnimeSearchViewModel> {
-  AnimeSearch({super.key, required super.vmFactory});
+  AnimeSearch({super.key})
+      : super(
+            vmFactory: (context) => AnimeSearchViewModel(context,
+                animeBoardRepository:
+                    AppContainer().repositoryScope.animeRepository));
 
   final TextEditingController textEditingController = TextEditingController();
   Timer _debounceTimer = Timer(const Duration(seconds: 1), () {});
 
-  Widget _customTextField({required bool isNotHorizontal,required WidgetRef ref,required AnimeSearchViewModel vm }){
-    return  Padding(
+  Widget _customTextField(
+      {required bool isNotHorizontal,
+      required WidgetRef ref,
+      required AnimeSearchViewModel vm}) {
+    return Padding(
         padding: isNotHorizontal
             ? const EdgeInsets.only(
-            right: 12.0, left: 12.0, top: 4.0,bottom: 3.0)
-            : const EdgeInsets.only(
-            left: 16.0, right: 16.0, top: 28),
+                right: 12.0, left: 12.0, top: 4.0, bottom: 3.0)
+            : const EdgeInsets.only(left: 16.0, right: 16.0, top: 28),
         child: Column(children: [
           SizedBox(
               height: 60,
@@ -39,17 +46,17 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
                   controller: textEditingController,
                   onChanged: (value) {
                     _debounceTimer.cancel();
-                    if(value.length >1){
-                    _debounceTimer =
-                        Timer(const Duration(seconds: 1), () {
-
-                          ref.read(animeSearchApiProvider.notifier)
-                              .findDataByRequest(
-                            findAnimeListByRequest:
-                            vm.findAnimeByRequestUseCase.call,
-                            title: value,
-                          );
-                        });}
+                    if (value.length > 1) {
+                      _debounceTimer = Timer(const Duration(seconds: 1), () {
+                        ref
+                            .read(animeSearchApiProvider.notifier)
+                            .findDataByRequest(
+                              findAnimeListByRequest:
+                                  vm.findAnimeByRequestUseCase.call,
+                              title: value,
+                            );
+                      });
+                    }
                   },
                   decoration: InputDecoration(
                       labelText: S.of(vm.context).title_search,
@@ -65,7 +72,11 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
         MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
         appBar: isNotHorizontal
-            ? SearchCustomAppBar(titleAppBar:  S.of(vm.context).title_search, context: vm.context, onPressesCallBack: () {  },)
+            ? SearchCustomAppBar(
+                titleAppBar: S.of(vm.context).title_search,
+                context: vm.context,
+                onPressesCallBack: () {},
+              )
             : null,
         body: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -73,12 +84,23 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
             switch (animeApiList) {
               case AnimeSearchState(result: null, loading: false):
                 return Column(children: [
-                  _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,)
+                  _customTextField(
+                    isNotHorizontal: isNotHorizontal,
+                    ref: ref,
+                    vm: vm,
+                  )
                 ]);
-              case AnimeSearchState(result: GoodUseCaseResult<AnimeApiList> animeItemList, loading: false):
+              case AnimeSearchState(
+                  result: GoodUseCaseResult<AnimeApiList> animeItemList,
+                  loading: false
+                ):
                 if (animeItemList.data.results.isNotEmpty) {
                   return Column(children: [
-                    _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
+                    _customTextField(
+                      isNotHorizontal: isNotHorizontal,
+                      ref: ref,
+                      vm: vm,
+                    ),
                     Expanded(
                       child: AnimeListBuilderWidget(
                           isNotHorizontal: isNotHorizontal,
@@ -90,23 +112,46 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
                 } else {
                   return Column(
                     children: [
-                      _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
-                       EmptyListWidget(iconData: Icons.search_off, titleEmptyList: S.of(context).anime_search_empty_title, descriptionEmptyList: S.of(context).anime_search_empty_description)
+                      _customTextField(
+                        isNotHorizontal: isNotHorizontal,
+                        ref: ref,
+                        vm: vm,
+                      ),
+                      EmptyListWidget(
+                          iconData: Icons.search_off,
+                          titleEmptyList:
+                              S.of(context).anime_search_empty_title,
+                          descriptionEmptyList:
+                              S.of(context).anime_search_empty_description)
                     ],
                   );
                 }
-              case AnimeSearchState(result: BadUseCaseResult<AnimeApiList>(), loading: false):
-                return  Column(
+              case AnimeSearchState(
+                  result: BadUseCaseResult<AnimeApiList>(),
+                  loading: false
+                ):
+                return Column(
                   children: [
-                    _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
-                    ErrorListWidget(titleError: S.of(context).title_error, descriptionError: S.of(context).no_internet),
+                    _customTextField(
+                      isNotHorizontal: isNotHorizontal,
+                      ref: ref,
+                      vm: vm,
+                    ),
+                    ErrorListWidget(
+                        titleError: S.of(context).title_error,
+                        descriptionError: S.of(context).no_internet),
                   ],
                 );
               case AnimeSearchState(loading: true):
-                return Column( children: [
-            _customTextField(isNotHorizontal: isNotHorizontal, ref: ref, vm: vm,),
-             const Expanded(child: Center(child: CircularProgressIndicator()))
-            ]);
+                return Column(children: [
+                  _customTextField(
+                    isNotHorizontal: isNotHorizontal,
+                    ref: ref,
+                    vm: vm,
+                  ),
+                  const Expanded(
+                      child: Center(child: CircularProgressIndicator()))
+                ]);
               default:
                 return const Center(child: CircularProgressIndicator());
             }

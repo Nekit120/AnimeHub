@@ -1,5 +1,3 @@
-import 'package:anime_hub/core/domain/container/app_container.dart';
-import 'package:anime_hub/feature/auth/presetation/auth_vm.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,9 +7,6 @@ import '../../../generated/l10n.dart';
 import '../../../theme/svg_image_collection.dart';
 import '../../../theme/theme_colors.dart';
 import '../../anime/presetation/anime_releses_page/anime_releases_page.dart';
-import '../../anime/presetation/anime_releses_page/anime_releases_vm.dart';
-import '../../anime/presetation/anime_search/anime_search_vm.dart';
-import '../../anime/presetation/favorite_anime_page/favorite_anime_vm.dart';
 import '../widget/scroll_to_hide_widget.dart';
 
 @RoutePage()
@@ -46,11 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   void _arrayOverrunProtection({required bool isNotHorizontal}) {
     if (isNotHorizontal && selectIndex.value >2) {
       selectIndex.value = 1;
-      AutoRouter.of(context).pushAndPopUntil(  AnimeReleasesRoute(
-          vmFactory: (context) => AnimeReleasesViewModel(context,
-              controller: releasesController,
-              animeBoardRepository:
-              AppContainer().repositoryScope.animeRepository)), predicate:  (route) => false );
+      AutoRouter.of(context).pushAndPopUntil(  AnimeReleasesRoute(controller: releasesController), predicate:  (route) => false );
     }
   }
 
@@ -59,27 +50,18 @@ class _MainScreenState extends State<MainScreen> {
     final isNotHorizontal = MediaQuery.of(context).orientation != Orientation.landscape;
     _arrayOverrunProtection(isNotHorizontal: isNotHorizontal);
     return AutoTabsRouter(
+
       routes: [
-        FavoriteAnimeRoute(
-            vmFactory: (context) => FavoriteAnimeViewModel(context, controller: favoritesController, animeBoardRepository: AppContainer().repositoryScope.animeRepository)),
-        AnimeReleasesRoute(
-            vmFactory: (context) => AnimeReleasesViewModel(context,
-                controller: releasesController,
-                animeBoardRepository:
-                AppContainer().repositoryScope.animeRepository)),
-        AuthRoute(vmFactory: (context) => AuthViewModel(context)),
-        AnimeSearch(vmFactory:(context) => AnimeSearchViewModel(context, animeBoardRepository: AppContainer().repositoryScope.animeRepository))
+        FavoriteAnimeRoute(controller: favoritesController),
+        AnimeReleasesRoute(controller: releasesController),
+        AuthRoute(),
+        AnimeSearch()
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,
-        //пришлось прибегнуть к костылю из-за того, что autoRoute отказывается делать initial виджет с required параметром,а vm required
         child: initialRouteObs.observer((context, value) => value
             ? child
-            : AnimeReleasesPage(
-            vmFactory: (context) => AnimeReleasesViewModel(context,
-                controller: releasesController,
-                animeBoardRepository:
-                AppContainer().repositoryScope.animeRepository))),
+            : AnimeReleasesPage(controller: releasesController,)),
       ),
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);

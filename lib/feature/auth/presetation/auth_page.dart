@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 
 @RoutePage()
 class AuthPage extends BaseView<AuthViewModel> {
-  const AuthPage({super.key, required super.vmFactory});
+   AuthPage({super.key}) :super(
+     vmFactory: (context) => AuthViewModel(context)
+   );
 
   @override
   Widget build(AuthViewModel vm) {
