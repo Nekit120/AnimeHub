@@ -1,3 +1,4 @@
+import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/model/anime_api_item.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
@@ -14,9 +15,15 @@ import '../widget/empty_list_widget.dart';
 import '../widget/error_list_widget.dart';
 import 'favorite_anime_vm.dart';
 
+
 @RoutePage()
 class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
-  const FavoriteAnimePage({super.key, required super.vmFactory});
+   FavoriteAnimePage({super.key, required  ScrollController controller}): super(
+    vmFactory: (context) => FavoriteAnimeViewModel(
+        context,
+        controller: controller,
+        animeBoardRepository: AppContainer().repositoryScope.animeRepository)
+  );
 
   void _customAppBarOnPressed({required BuildContext context}) {
     AutoRouter.of(context).push(AnimeFavoritesSearch());

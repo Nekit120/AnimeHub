@@ -9,22 +9,22 @@ import '../../../../core/domain/use_case_result/use_case_result.dart';
 import '../../../../core/presentation/widget/customAppBar.dart';
 import '../../../../generated/l10n.dart';
 import '../../domain/stateManager/releases/anime_releases_notifier.dart';
-import '../anime_search/anime_search_vm.dart';
 import '../widget/anime_list_builder_widget.dart';
 import '../widget/error_list_widget.dart';
 import 'anime_releases_vm.dart';
 
 @RoutePage()
 class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
-  const AnimeReleasesPage({super.key, required super.vmFactory});
+  AnimeReleasesPage({super.key,required ScrollController controller}): super(
+      vmFactory: (context) => AnimeReleasesViewModel(
+          context,
+          controller: controller,
+          animeBoardRepository:
+          AppContainer().repositoryScope.animeRepository)
+  );
 
   void _customAppBarOnPressed({required BuildContext context}) {
-      AutoRouter.of(context).push(AnimeSearch(
-          vmFactory: (context) => AnimeSearchViewModel(
-            context,
-            animeBoardRepository:
-            AppContainer().repositoryScope.animeRepository,
-          )));
+      AutoRouter.of(context).push(AnimeSearch());
   }
 
   @override
