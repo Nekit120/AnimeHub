@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "181263819325",
+    "project_id": "animewatcher-8f188",
+    "storage_bucket": "animewatcher-8f188.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181263819325:android:b8dfb7c145aa6f271d8054",
+        "android_client_info": {
+          "package_name": "com.example.anime_hub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwSVmAlHqaBlABIqBxLk73lM6LUHEeimw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181263819325:android:ab66d8e32bd49f291d8054",
+        "android_client_info": {
+          "package_name": "com.example.animewatcher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwSVmAlHqaBlABIqBxLk73lM6LUHEeimw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

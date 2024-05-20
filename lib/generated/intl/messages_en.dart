@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_name": MessageLookupByLibrary.simpleMessage("AnimeHub"),
         "description_error": MessageLookupByLibrary.simpleMessage(
             "Unfortunately, the description has not been added yet, but you can always contact us and let us know about it!"),
+        "email": MessageLookupByLibrary.simpleMessage("E-mail"),
         "empty_answer_after_search": MessageLookupByLibrary.simpleMessage(
             "Nothing was found for your request!"),
         "empty_bd": MessageLookupByLibrary.simpleMessage(
@@ -48,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "not_in_player": MessageLookupByLibrary.simpleMessage(
             "Perhaps this anime is not in our player!"),
         "play_text": MessageLookupByLibrary.simpleMessage("Play"),
+        "register": MessageLookupByLibrary.simpleMessage(" Register."),
+        "registration": MessageLookupByLibrary.simpleMessage(" Registration"),
+        "registrationStart":
+            MessageLookupByLibrary.simpleMessage("Don\'t have an account yet?"),
         "select_episode":
             MessageLookupByLibrary.simpleMessage("Select episode"),
         "title_chat": MessageLookupByLibrary.simpleMessage("Chat"),

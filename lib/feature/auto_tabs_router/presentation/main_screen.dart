@@ -54,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
       routes: [
         FavoriteAnimeRoute(controller: favoritesController),
         AnimeReleasesRoute(controller: releasesController),
-        AuthRoute(),
+        SignInRoute(),
         AnimeSearch()
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(

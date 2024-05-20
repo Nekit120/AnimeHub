@@ -64,7 +64,7 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                   decoration: InputDecoration(
                       labelText: S.of(vm.context).title_search,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(16.0),
                       ))))
         ]));
   }
