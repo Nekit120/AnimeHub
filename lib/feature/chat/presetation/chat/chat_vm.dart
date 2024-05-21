@@ -14,14 +14,18 @@ import '../../domain/useCase/sign_in_with_email_use_case.dart';
 
 class ChatViewModel extends ViewModel {
   SignInWithEmailUseCase _signInWithEmailUseCase;
-  // GetUsersStreamUseCase getUsersStreamUseCase;
+  GetUsersStreamUseCase getUsersStreamUseCase;
   SignOutUseCase _signOutUseCase;
 
-  ChatViewModel(super.context, {required ChatAndAuthRepository chatAndAuthRepository})
-      : _signInWithEmailUseCase =
-            SignInWithEmailUseCase(chatAndAuthRepository: chatAndAuthRepository),
-        _signOutUseCase = SignOutUseCase(chatAndAuthRepository: chatAndAuthRepository);
-  // getUsersStreamUseCase = GetUsersStreamUseCase(authRepository: authRepository);
+  ChatViewModel(super.context,
+      {required ChatAndAuthRepository chatAndAuthRepository})
+      : _signInWithEmailUseCase = SignInWithEmailUseCase(
+            chatAndAuthRepository: chatAndAuthRepository),
+        _signOutUseCase =
+            SignOutUseCase(chatAndAuthRepository: chatAndAuthRepository),
+        getUsersStreamUseCase =
+            GetUsersStreamUseCase(chatAndAuthRepository: chatAndAuthRepository);
+
   final passwordTextCtrl = PassTextEditingController();
   final emailTextCtrl = AppTextEditingController();
   final isButtonActive = false.rv;
@@ -33,16 +37,17 @@ class ChatViewModel extends ViewModel {
       isButtonActive.value = false;
     }
   }
+
   Future<void> signOut() async {
     _signOutUseCase.call();
   }
+
   void customSnackBarShow({required String title, required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Center(child: Text(title)),
         duration: const Duration(milliseconds: 2000),
-        backgroundColor:
-            isError ? LightThemeColors.seed : Colors.green[500],
+        backgroundColor: isError ? LightThemeColors.seed : Colors.green[500],
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
@@ -62,8 +67,7 @@ class ChatViewModel extends ViewModel {
       case BadUseCaseResult<UserCredential>():
         {
           customSnackBarShow(title: "Ошибка входа в аккаунт", isError: true);
-              break;
-
+          break;
         }
     }
   }

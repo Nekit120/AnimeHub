@@ -11,6 +11,6 @@ abstract interface class ChatAndAuthRepository {
 
   Future<void> signOut();
 
-  // Stream<List<Map<String, dynamic>>> getUsersStream();
+  Stream<List<Map<String, dynamic>>> getUsersStream();
 
 }

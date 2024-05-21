@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:anime_hub/feature/chat/data/repository/chat_and_auth_repository_impl.dart';
+import 'package:anime_hub/feature/chat/data/services/chat/chat_sevice.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import '../../../feature/anime/data/data_source/local/anime_local_data_source.dart';
@@ -26,15 +27,18 @@ class AppContainer {
     try {
       final dbProvider = DBProvider();
       final authFirebaseService = AuthFirebaseService();
+      final chatFirebaseService = ChatFirebaseService();
 
 
       final animeBoardRepository = AnimeRepositoryImpl(
           remoteDataProvider: AnimeRemoteDataSource(Dio ()),
           animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
 
-      final authRepository = ChatAndAuthRepositoryImpl(authFirebaseService: authFirebaseService);
+      final authRepository = ChatAndAuthRepositoryImpl(authFirebaseService: authFirebaseService, chatFirebaseService: chatFirebaseService);
       repositoryScope = RepositoryScope(
-          animeRepository: animeBoardRepository, chatAndAuthRepository: authRepository);
+          animeRepository: animeBoardRepository, chatAndAuthRepository: authRepository,
+          // chatFirebaseService: ChatFirebaseService()
+      );
 
       // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
       return true;
@@ -51,7 +55,7 @@ class RepositoryScope {
 
   RepositoryScope(
       {required this.animeRepository,
-      required this.chatAndAuthRepository});
+      required this.chatAndAuthRepository,});
 }
 
 // class DataSourceScope {

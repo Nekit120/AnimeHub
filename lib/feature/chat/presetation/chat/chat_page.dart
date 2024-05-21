@@ -35,14 +35,14 @@ class ChatPage extends BaseView<ChatViewModel> {
       ),
     );
   }
-  // Widget _buildUserList({required ChatViewModel vm }) {
-  //   return StreamBuilder(stream: vm.getUsersStreamUseCase.call(),
-  //       builder: (context,snapshot) {
-  //       return Center(child: Text("hello"),);
-  //       }
-  //
-  //   );
-  // }
+  Widget _buildUserList({required ChatViewModel vm }) {
+    return StreamBuilder(stream: vm.getUsersStreamUseCase.call(),
+        builder: (context,snapshot) {
+        return Center(child: Text("hello"),);
+        }
+
+    );
+  }
 
   @override
   Widget build(ChatViewModel vm) {
@@ -62,6 +62,7 @@ class ChatPage extends BaseView<ChatViewModel> {
                     onPressed: vm.signOut,)
               ],
             ),
+            body: _buildUserList(vm: vm),
           );
           } else {
             return SingleChildScrollView(

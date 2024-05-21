@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/feature/chat/data/services/chat/chat_sevice.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,13 +8,13 @@ import '../services/auth/auth_service.dart';
 
 class ChatAndAuthRepositoryImpl implements ChatAndAuthRepository {
   final AuthFirebaseService _authFirebaseService;
-  // final ChatFirebaseService _chatFirebaseService;
+  final ChatFirebaseService _chatFirebaseService;
 
   ChatAndAuthRepositoryImpl({required AuthFirebaseService authFirebaseService,
-    // required ChatFirebaseService chatFirebaseService
+    required ChatFirebaseService chatFirebaseService
   })
-      : _authFirebaseService = authFirebaseService;
-        // _chatFirebaseService = chatFirebaseService;
+      : _authFirebaseService = authFirebaseService,
+        _chatFirebaseService = chatFirebaseService;
 
   @override
   Future<Result<bool>> registration({required String email, password}) async {
@@ -57,10 +56,10 @@ class ChatAndAuthRepositoryImpl implements ChatAndAuthRepository {
     await _authFirebaseService.signOut();
   }
 
-  // @override
-  // Stream<List<Map<String, dynamic>>> getUsersStream()   {
-  //   return _chatFirebaseService.getUsersStream();
-  // }
+  @override
+  Stream<List<Map<String, dynamic>>> getUsersStream()   {
+    return _chatFirebaseService.getUsersStream();
+  }
 
 
 
