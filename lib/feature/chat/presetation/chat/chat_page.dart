@@ -1,8 +1,6 @@
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
-import 'package:anime_hub/feature/auth/presetation/sign_in/sign_in_vm.dart';
-import 'package:anime_hub/feature/auth/widget/custom_filled_button.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,16 +12,18 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../theme/svg_image_collection.dart';
 import '../../../../theme/theme_colors.dart';
-import '../../domain/repository/auth_repository.dart';
+import '../../domain/repository/chat_and_auth_repository.dart';
+import '../../widget/custom_filled_button.dart';
 import '../../widget/email_text_field_widget.dart';
 import '../../widget/password_text_field_widget.dart';
+import 'chat_vm.dart';
 
 @RoutePage()
-class SignInPage extends BaseView<SignInViewModel> {
-  SignInPage({super.key, required AuthRepository authRepository})
+class ChatPage extends BaseView<ChatViewModel> {
+  ChatPage({super.key, required ChatAndAuthRepository chatAndAuthRepository})
       : super(
             vmFactory: (context) =>
-                SignInViewModel(context, authRepository: authRepository));
+                ChatViewModel(context, chatAndAuthRepository: chatAndAuthRepository));
 
   Widget _customDelimiter({required double maxWidth}) {
     return Padding(
@@ -35,16 +35,34 @@ class SignInPage extends BaseView<SignInViewModel> {
       ),
     );
   }
+  // Widget _buildUserList({required ChatViewModel vm }) {
+  //   return StreamBuilder(stream: vm.getUsersStreamUseCase.call(),
+  //       builder: (context,snapshot) {
+  //       return Center(child: Text("hello"),);
+  //       }
+  //
+  //   );
+  // }
 
   @override
-  Widget build(SignInViewModel vm) {
+  Widget build(ChatViewModel vm) {
     double maxWidth = MediaQuery.of(vm.context).size.width;
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          // if (snapshot.hasData) {
-          if (false) {
-            return Container();
+          if (snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Center(child: Text("Чат")),
+              actions: [
+                IconButton(
+                    icon: const Icon(
+                      Icons.logout,
+                    ),
+                    onPressed: vm.signOut,)
+              ],
+            ),
+          );
           } else {
             return SingleChildScrollView(
               child: Padding(
@@ -117,9 +135,9 @@ class SignInPage extends BaseView<SignInViewModel> {
                               ..onTap = () {
                                 AutoRouter.of(vm.context).push(
                                     RegistrationRoute(
-                                        authRepository: AppContainer()
+                                        chatAndAuthRepository: AppContainer()
                                             .repositoryScope
-                                            .authRepository));
+                                            .chatAndAuthRepository));
                               },
                           ),
                         ],
@@ -133,3 +151,5 @@ class SignInPage extends BaseView<SignInViewModel> {
         });
   }
 }
+
+

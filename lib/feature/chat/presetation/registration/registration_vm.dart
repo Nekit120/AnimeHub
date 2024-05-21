@@ -1,17 +1,17 @@
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
-import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
 import '../../../../core/presentation/controllers/app_text_editing_controller.dart';
 import '../../../../core/presentation/controllers/password_text_editing_controller.dart';
 import '../../../../theme/theme_colors.dart';
+import '../../domain/repository/chat_and_auth_repository.dart';
 import '../../domain/useCase/registration_with_email_use_case.dart';
 
 class RegistrationViewModel extends ViewModel {
   final RegistrationWithEmailUseCase _registrationWithEmailUseCase;
-  RegistrationViewModel(super.context,{required AuthRepository authRepository }): _registrationWithEmailUseCase = RegistrationWithEmailUseCase(authRepository: authRepository);
+  RegistrationViewModel(super.context,{required ChatAndAuthRepository chatAndAuthRepository }): _registrationWithEmailUseCase = RegistrationWithEmailUseCase(chatAndAuthRepository: chatAndAuthRepository);
 
   final passwordTextCtrl = PassTextEditingController();
   final emailTextCtrl = AppTextEditingController();

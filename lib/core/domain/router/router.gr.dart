@@ -18,16 +18,15 @@ import 'package:anime_hub/feature/anime/presetation/anime_releses_page/anime_rel
 import 'package:anime_hub/feature/anime/presetation/anime_search/anime_search_page.dart'
     as _i4;
 import 'package:anime_hub/feature/anime/presetation/favorite_anime_page/favorite_anime_page.dart'
-    as _i5;
-import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart'
-    as _i14;
-import 'package:anime_hub/feature/auth/presetation/registration/registration_page.dart'
-    as _i8;
-import 'package:anime_hub/feature/auth/presetation/sign_in/sign_in_page.dart'
-    as _i9;
-import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
     as _i6;
-import 'package:anime_hub/feature/player/presentation/payer_page.dart' as _i7;
+import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
+    as _i7;
+import 'package:anime_hub/feature/chat/domain/repository/chat_and_auth_repository.dart'
+    as _i14;
+import 'package:anime_hub/feature/chat/presetation/chat/chat_page.dart' as _i5;
+import 'package:anime_hub/feature/chat/presetation/registration/registration_page.dart'
+    as _i9;
+import 'package:anime_hub/feature/player/presentation/payer_page.dart' as _i8;
 import 'package:auto_route/auto_route.dart' as _i10;
 import 'package:flutter/cupertino.dart' as _i11;
 import 'package:flutter/material.dart' as _i13;
@@ -73,11 +72,21 @@ abstract class $AppRouter extends _i10.RootStackRouter {
         child: _i4.AnimeSearch(key: args.key),
       );
     },
+    ChatRoute.name: (routeData) {
+      final args = routeData.argsAs<ChatRouteArgs>();
+      return _i10.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i5.ChatPage(
+          key: args.key,
+          chatAndAuthRepository: args.chatAndAuthRepository,
+        ),
+      );
+    },
     FavoriteAnimeRoute.name: (routeData) {
       final args = routeData.argsAs<FavoriteAnimeRouteArgs>();
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i5.FavoriteAnimePage(
+        child: _i6.FavoriteAnimePage(
           key: args.key,
           controller: args.controller,
         ),
@@ -86,14 +95,14 @@ abstract class $AppRouter extends _i10.RootStackRouter {
     MainRoute.name: (routeData) {
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.MainScreen(),
+        child: const _i7.MainScreen(),
       );
     },
     PlayerRoute.name: (routeData) {
       final args = routeData.argsAs<PlayerRouteArgs>();
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i7.PlayerPage(
+        child: _i8.PlayerPage(
           key: args.key,
           animeStreamUrl: args.animeStreamUrl,
         ),
@@ -103,19 +112,9 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       final args = routeData.argsAs<RegistrationRouteArgs>();
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i8.RegistrationPage(
+        child: _i9.RegistrationPage(
           key: args.key,
-          authRepository: args.authRepository,
-        ),
-      );
-    },
-    SignInRoute.name: (routeData) {
-      final args = routeData.argsAs<SignInRouteArgs>();
-      return _i10.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i9.SignInPage(
-          key: args.key,
-          authRepository: args.authRepository,
+          chatAndAuthRepository: args.chatAndAuthRepository,
         ),
       );
     },
@@ -258,7 +257,45 @@ class AnimeSearchArgs {
 }
 
 /// generated route for
-/// [_i5.FavoriteAnimePage]
+/// [_i5.ChatPage]
+class ChatRoute extends _i10.PageRouteInfo<ChatRouteArgs> {
+  ChatRoute({
+    _i11.Key? key,
+    required _i14.ChatAndAuthRepository chatAndAuthRepository,
+    List<_i10.PageRouteInfo>? children,
+  }) : super(
+          ChatRoute.name,
+          args: ChatRouteArgs(
+            key: key,
+            chatAndAuthRepository: chatAndAuthRepository,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ChatRoute';
+
+  static const _i10.PageInfo<ChatRouteArgs> page =
+      _i10.PageInfo<ChatRouteArgs>(name);
+}
+
+class ChatRouteArgs {
+  const ChatRouteArgs({
+    this.key,
+    required this.chatAndAuthRepository,
+  });
+
+  final _i11.Key? key;
+
+  final _i14.ChatAndAuthRepository chatAndAuthRepository;
+
+  @override
+  String toString() {
+    return 'ChatRouteArgs{key: $key, chatAndAuthRepository: $chatAndAuthRepository}';
+  }
+}
+
+/// generated route for
+/// [_i6.FavoriteAnimePage]
 class FavoriteAnimeRoute extends _i10.PageRouteInfo<FavoriteAnimeRouteArgs> {
   FavoriteAnimeRoute({
     _i13.Key? key,
@@ -296,7 +333,7 @@ class FavoriteAnimeRouteArgs {
 }
 
 /// generated route for
-/// [_i6.MainScreen]
+/// [_i7.MainScreen]
 class MainRoute extends _i10.PageRouteInfo<void> {
   const MainRoute({List<_i10.PageRouteInfo>? children})
       : super(
@@ -310,7 +347,7 @@ class MainRoute extends _i10.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.PlayerPage]
+/// [_i8.PlayerPage]
 class PlayerRoute extends _i10.PageRouteInfo<PlayerRouteArgs> {
   PlayerRoute({
     _i11.Key? key,
@@ -348,17 +385,17 @@ class PlayerRouteArgs {
 }
 
 /// generated route for
-/// [_i8.RegistrationPage]
+/// [_i9.RegistrationPage]
 class RegistrationRoute extends _i10.PageRouteInfo<RegistrationRouteArgs> {
   RegistrationRoute({
     _i13.Key? key,
-    required _i14.AuthRepository authRepository,
+    required _i14.ChatAndAuthRepository chatAndAuthRepository,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           RegistrationRoute.name,
           args: RegistrationRouteArgs(
             key: key,
-            authRepository: authRepository,
+            chatAndAuthRepository: chatAndAuthRepository,
           ),
           initialChildren: children,
         );
@@ -372,53 +409,15 @@ class RegistrationRoute extends _i10.PageRouteInfo<RegistrationRouteArgs> {
 class RegistrationRouteArgs {
   const RegistrationRouteArgs({
     this.key,
-    required this.authRepository,
+    required this.chatAndAuthRepository,
   });
 
   final _i13.Key? key;
 
-  final _i14.AuthRepository authRepository;
+  final _i14.ChatAndAuthRepository chatAndAuthRepository;
 
   @override
   String toString() {
-    return 'RegistrationRouteArgs{key: $key, authRepository: $authRepository}';
-  }
-}
-
-/// generated route for
-/// [_i9.SignInPage]
-class SignInRoute extends _i10.PageRouteInfo<SignInRouteArgs> {
-  SignInRoute({
-    _i11.Key? key,
-    required _i14.AuthRepository authRepository,
-    List<_i10.PageRouteInfo>? children,
-  }) : super(
-          SignInRoute.name,
-          args: SignInRouteArgs(
-            key: key,
-            authRepository: authRepository,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'SignInRoute';
-
-  static const _i10.PageInfo<SignInRouteArgs> page =
-      _i10.PageInfo<SignInRouteArgs>(name);
-}
-
-class SignInRouteArgs {
-  const SignInRouteArgs({
-    this.key,
-    required this.authRepository,
-  });
-
-  final _i11.Key? key;
-
-  final _i14.AuthRepository authRepository;
-
-  @override
-  String toString() {
-    return 'SignInRouteArgs{key: $key, authRepository: $authRepository}';
+    return 'RegistrationRouteArgs{key: $key, chatAndAuthRepository: $chatAndAuthRepository}';
   }
 }

@@ -1,13 +1,13 @@
 import 'dart:developer';
-import 'package:anime_hub/feature/auth/data/repository/auth_repository_impl.dart';
-import 'package:anime_hub/feature/auth/data/service/auth_service.dart';
-import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart';
+import 'package:anime_hub/feature/chat/data/repository/chat_and_auth_repository_impl.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import '../../../feature/anime/data/data_source/local/anime_local_data_source.dart';
 import '../../../feature/anime/data/data_source/remote/anime_remote_data_source.dart';
 import '../../../feature/anime/data/repository/anime_repository_impl.dart';
 import '../../../feature/anime/domain/repository/anime_repository.dart';
+import '../../../feature/chat/data/services/auth/auth_service.dart';
+import '../../../feature/chat/domain/repository/chat_and_auth_repository.dart';
 import '../../data/database/database_provider.dart';
 
 class AppContainer {
@@ -32,9 +32,9 @@ class AppContainer {
           remoteDataProvider: AnimeRemoteDataSource(Dio ()),
           animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
 
-      final authRepository = AuthRepositoryImpl(authFirebaseService: authFirebaseService);
+      final authRepository = ChatAndAuthRepositoryImpl(authFirebaseService: authFirebaseService);
       repositoryScope = RepositoryScope(
-          animeRepository: animeBoardRepository, authRepository: authRepository);
+          animeRepository: animeBoardRepository, chatAndAuthRepository: authRepository);
 
       // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
       return true;
@@ -47,11 +47,11 @@ class AppContainer {
 
 class RepositoryScope {
   final AnimeRepository animeRepository;
-  final AuthRepository authRepository;
+  final ChatAndAuthRepository chatAndAuthRepository;
 
   RepositoryScope(
       {required this.animeRepository,
-      required this.authRepository});
+      required this.chatAndAuthRepository});
 }
 
 // class DataSourceScope {

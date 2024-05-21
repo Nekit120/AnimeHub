@@ -1,18 +1,17 @@
-import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart';
-import 'package:anime_hub/feature/auth/domain/useCase/registration_with_email_use_case.dart';
-import 'package:anime_hub/feature/auth/presetation/registration/registration_vm.dart';
+import 'package:anime_hub/feature/chat/presetation/registration/registration_vm.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/presentation/view/view_model.dart';
 import '../../../../theme/theme_colors.dart';
+import '../../domain/repository/chat_and_auth_repository.dart';
 import '../../widget/custom_filled_button.dart';
 import '../../widget/email_text_field_widget.dart';
 import '../../widget/password_text_field_widget.dart';
 
 @RoutePage()
 class RegistrationPage extends BaseView<RegistrationViewModel> {
-  RegistrationPage({super.key,required AuthRepository authRepository})
-      : super(vmFactory: (context) => RegistrationViewModel(context, authRepository: authRepository,));
+  RegistrationPage({super.key,required ChatAndAuthRepository chatAndAuthRepository})
+      : super(vmFactory: (context) => RegistrationViewModel(context, chatAndAuthRepository: chatAndAuthRepository,));
 
   Widget _checkMarkWidget({required bool isRight,required RegistrationViewModel vm,required String textCheckMark}) {
     return isRight ?

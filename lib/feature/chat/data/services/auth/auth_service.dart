@@ -14,7 +14,7 @@ class AuthFirebaseService{
         if (user != null && !user.emailVerified) {
           await user.sendEmailVerification();
         }
-
+        await _auth.signOut();
     }
 
     Future<UserCredential> signIn({required String email,password}) async {
@@ -41,4 +41,9 @@ class AuthFirebaseService{
       throw Exception('No user is currently signed in or email is already verified.');
     }
   }
+
+  Future<void> signOut() async {
+      return await _auth.signOut();
+  }
+
 }
