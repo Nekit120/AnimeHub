@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
@@ -12,10 +14,12 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../theme/svg_image_collection.dart';
 import '../../../../theme/theme_colors.dart';
+import '../../../anime/presetation/widget/error_list_widget.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
 import '../../widget/custom_filled_button.dart';
 import '../../widget/email_text_field_widget.dart';
 import '../../widget/password_text_field_widget.dart';
+import '../../widget/user_tile.dart';
 import 'chat_vm.dart';
 
 @RoutePage()
@@ -38,11 +42,30 @@ class ChatPage extends BaseView<ChatViewModel> {
   Widget _buildUserList({required ChatViewModel vm }) {
     return StreamBuilder(stream: vm.getUsersStreamUseCase.call(),
         builder: (context,snapshot) {
-        return Center(child: Text("hello"),);
-        }
+          if (snapshot.hasError) {
+            log(snapshot.error.toString());
+            return ErrorListWidget(titleError: S
+                .of(context)
+                .title_error, descriptionError: S
+                .of(context)
+                .no_internet,);
+          }
 
-    );
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return ListView(
+            children: snapshot.data!
+                .map<Widget>((userData) => _buildUserListItem(userData: userData, context: vm.context, ))
+                .toList(),
+          );
+        });
   }
+ Widget _buildUserListItem({required Map<String, dynamic> userData,required BuildContext context}){
+  return UserTile(text: userData["email"],onTap: () {
+  },);
+ }
 
   @override
   Widget build(ChatViewModel vm) {
