@@ -1,4 +1,7 @@
 import 'dart:developer';
+import 'package:anime_hub/feature/auth/data/repository/auth_repository_impl.dart';
+import 'package:anime_hub/feature/auth/data/service/auth_service.dart';
+import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import '../../../feature/anime/data/data_source/local/anime_local_data_source.dart';
@@ -22,15 +25,16 @@ class AppContainer {
   Future<bool> initDependencies() async {
     try {
       final dbProvider = DBProvider();
+      final authFirebaseService = AuthFirebaseService();
 
 
       final animeBoardRepository = AnimeRepositoryImpl(
           remoteDataProvider: AnimeRemoteDataSource(Dio ()),
           animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
 
-
+      final authRepository = AuthRepositoryImpl(authFirebaseService: authFirebaseService);
       repositoryScope = RepositoryScope(
-          animeRepository: animeBoardRepository);
+          animeRepository: animeBoardRepository, authRepository: authRepository);
 
       // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
       return true;
@@ -43,9 +47,11 @@ class AppContainer {
 
 class RepositoryScope {
   final AnimeRepository animeRepository;
+  final AuthRepository authRepository;
 
   RepositoryScope(
-      {required this.animeRepository});
+      {required this.animeRepository,
+      required this.authRepository});
 }
 
 // class DataSourceScope {

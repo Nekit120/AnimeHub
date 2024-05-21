@@ -19,6 +19,8 @@ import 'package:anime_hub/feature/anime/presetation/anime_search/anime_search_pa
     as _i4;
 import 'package:anime_hub/feature/anime/presetation/favorite_anime_page/favorite_anime_page.dart'
     as _i5;
+import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart'
+    as _i14;
 import 'package:anime_hub/feature/auth/presetation/registration/registration_page.dart'
     as _i8;
 import 'package:anime_hub/feature/auth/presetation/sign_in/sign_in_page.dart'
@@ -98,19 +100,23 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       );
     },
     RegistrationRoute.name: (routeData) {
-      final args = routeData.argsAs<RegistrationRouteArgs>(
-          orElse: () => const RegistrationRouteArgs());
+      final args = routeData.argsAs<RegistrationRouteArgs>();
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i8.RegistrationPage(key: args.key),
+        child: _i8.RegistrationPage(
+          key: args.key,
+          authRepository: args.authRepository,
+        ),
       );
     },
     SignInRoute.name: (routeData) {
-      final args = routeData.argsAs<SignInRouteArgs>(
-          orElse: () => const SignInRouteArgs());
+      final args = routeData.argsAs<SignInRouteArgs>();
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.SignInPage(key: args.key),
+        child: _i9.SignInPage(
+          key: args.key,
+          authRepository: args.authRepository,
+        ),
       );
     },
   };
@@ -345,11 +351,15 @@ class PlayerRouteArgs {
 /// [_i8.RegistrationPage]
 class RegistrationRoute extends _i10.PageRouteInfo<RegistrationRouteArgs> {
   RegistrationRoute({
-    _i11.Key? key,
+    _i13.Key? key,
+    required _i14.AuthRepository authRepository,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           RegistrationRoute.name,
-          args: RegistrationRouteArgs(key: key),
+          args: RegistrationRouteArgs(
+            key: key,
+            authRepository: authRepository,
+          ),
           initialChildren: children,
         );
 
@@ -360,13 +370,18 @@ class RegistrationRoute extends _i10.PageRouteInfo<RegistrationRouteArgs> {
 }
 
 class RegistrationRouteArgs {
-  const RegistrationRouteArgs({this.key});
+  const RegistrationRouteArgs({
+    this.key,
+    required this.authRepository,
+  });
 
-  final _i11.Key? key;
+  final _i13.Key? key;
+
+  final _i14.AuthRepository authRepository;
 
   @override
   String toString() {
-    return 'RegistrationRouteArgs{key: $key}';
+    return 'RegistrationRouteArgs{key: $key, authRepository: $authRepository}';
   }
 }
 
@@ -375,10 +390,14 @@ class RegistrationRouteArgs {
 class SignInRoute extends _i10.PageRouteInfo<SignInRouteArgs> {
   SignInRoute({
     _i11.Key? key,
+    required _i14.AuthRepository authRepository,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           SignInRoute.name,
-          args: SignInRouteArgs(key: key),
+          args: SignInRouteArgs(
+            key: key,
+            authRepository: authRepository,
+          ),
           initialChildren: children,
         );
 
@@ -389,12 +408,17 @@ class SignInRoute extends _i10.PageRouteInfo<SignInRouteArgs> {
 }
 
 class SignInRouteArgs {
-  const SignInRouteArgs({this.key});
+  const SignInRouteArgs({
+    this.key,
+    required this.authRepository,
+  });
 
   final _i11.Key? key;
 
+  final _i14.AuthRepository authRepository;
+
   @override
   String toString() {
-    return 'SignInRouteArgs{key: $key}';
+    return 'SignInRouteArgs{key: $key, authRepository: $authRepository}';
   }
 }

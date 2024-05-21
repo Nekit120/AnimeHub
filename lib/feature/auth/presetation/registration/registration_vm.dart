@@ -1,11 +1,17 @@
+import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
+import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
 import '../../../../core/presentation/controllers/app_text_editing_controller.dart';
 import '../../../../core/presentation/controllers/password_text_editing_controller.dart';
+import '../../../../theme/theme_colors.dart';
+import '../../domain/useCase/registration_with_email_use_case.dart';
 
 class RegistrationViewModel extends ViewModel {
-  RegistrationViewModel(super.context);
+  final RegistrationWithEmailUseCase _registrationWithEmailUseCase;
+  RegistrationViewModel(super.context,{required AuthRepository authRepository }): _registrationWithEmailUseCase = RegistrationWithEmailUseCase(authRepository: authRepository);
 
   final passwordTextCtrl = PassTextEditingController();
   final emailTextCtrl = AppTextEditingController();
@@ -17,6 +23,36 @@ class RegistrationViewModel extends ViewModel {
     final regex = RegExp(r'\d');
     return regex.hasMatch(password);
   }
+
+  void customSnackBarShow({required String title,required bool isError}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(child: Text(title)),
+        duration: const Duration(milliseconds: 2000),
+        backgroundColor: isError ? LightThemeColors.mdThemeLightError :Colors.green[500]   ,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
+  }
+
+  Future<void> registration() async{
+    final result = await _registrationWithEmailUseCase.call(email: emailTextCtrl.text,password: passwordTextCtrl.text);
+    switch(result){
+      case GoodUseCaseResult<bool>():
+        {
+          customSnackBarShow(title: "Письмо с подтверждением отправлена на E-mail", isError: false);
+        }
+      case BadUseCaseResult<bool>():
+        {
+          customSnackBarShow(title: "Ошибка запроса к серверу", isError: true);
+
+        }
+    }
+  }
+
 
   void _buttonPossibilityListener() {
     passwordTextCtrl.text.length > 7

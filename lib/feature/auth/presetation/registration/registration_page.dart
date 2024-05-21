@@ -1,3 +1,5 @@
+import 'package:anime_hub/feature/auth/domain/repository/auth_repository.dart';
+import 'package:anime_hub/feature/auth/domain/useCase/registration_with_email_use_case.dart';
 import 'package:anime_hub/feature/auth/presetation/registration/registration_vm.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,8 @@ import '../../widget/password_text_field_widget.dart';
 
 @RoutePage()
 class RegistrationPage extends BaseView<RegistrationViewModel> {
-  RegistrationPage({super.key})
-      : super(vmFactory: (context) => RegistrationViewModel(context));
+  RegistrationPage({super.key,required AuthRepository authRepository})
+      : super(vmFactory: (context) => RegistrationViewModel(context, authRepository: authRepository,));
 
   Widget _checkMarkWidget({required bool isRight,required RegistrationViewModel vm,required String textCheckMark}) {
     return isRight ?
@@ -108,8 +110,8 @@ class RegistrationPage extends BaseView<RegistrationViewModel> {
                 vm.isButtonActive.observer((context, value) =>
                     CustomFilledButton(
                         isButtonActive: value,
-                        titleButton: "Войти",
-                        buttonCallback: () async {}),
+                        titleButton: "Зарегистрироватьсяд",
+                        buttonCallback: vm.registration),
                 )
 
               ],
