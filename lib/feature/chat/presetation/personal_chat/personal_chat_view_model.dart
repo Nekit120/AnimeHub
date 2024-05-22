@@ -9,6 +9,7 @@ class PersonalChatViewModel extends ViewModel {
   final GetMessageUseCase getMessageUseCase;
   GetCurrentUserUseCase getCurrentUserUseCase;
   final SendMessageUseCase sendMessageUseCase;
+  var isFirstTime = true;
 
   PersonalChatViewModel(super.context,
       {required ChatAndAuthRepository chatAndAuthRepository})

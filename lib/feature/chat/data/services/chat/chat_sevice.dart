@@ -40,22 +40,6 @@ class ChatFirebaseService {
   }
 
 
-
-  Stream<QuerySnapshot> getChatMessages(String chatRoomId) {
-    return _firestore
-        .collection("chat_rooms")
-        .doc("SErOoj4xqoZXla3jsRWHgm1B3Mz2_X4JFsWbKYieny7GqgjQREccj1Bg2")
-        .collection("messages")
-        .orderBy("timestamp", descending: false)
-        .snapshots();
-
-    // return _firestore
-    //     .collection("chat_rooms")
-    //     .doc("SErOoj4xqoZXla3jsRWHgm1B3Mz2_X4JFsWbKYieny7GqgjQREccj1Bg2")
-    //     .collection("messages") // Предполагая, что коллекция называется "messages"
-    //     .orderBy("timestamp", descending: true) // Сортируем сообщения по времени
-    //     .snapshots());
-  }
   Stream<QuerySnapshot> getMessage(
       {required String userId, required String otherUserId}) {
     List<String> ids = [userId, otherUserId];
