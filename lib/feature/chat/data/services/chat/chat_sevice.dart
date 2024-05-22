@@ -26,7 +26,8 @@ class ChatFirebaseService {
         senderID: currentUserId,
         senderEmail: currentUserEmail,
         receiverID: receiverID,
-        message: message);
+        message: message,
+        timestamp: timestamp);
 
     List<String> ids = [currentUserId, receiverID];
     ids.sort();
@@ -34,10 +35,27 @@ class ChatFirebaseService {
     await _firestore
         .collection("chat_rooms")
         .doc(chatRoomId)
-        .collection(message)
+        .collection("messages")
         .add(newMessage.toJson());
   }
 
+
+
+  Stream<QuerySnapshot> getChatMessages(String chatRoomId) {
+    return _firestore
+        .collection("chat_rooms")
+        .doc("SErOoj4xqoZXla3jsRWHgm1B3Mz2_X4JFsWbKYieny7GqgjQREccj1Bg2")
+        .collection("messages")
+        .orderBy("timestamp", descending: false)
+        .snapshots();
+
+    // return _firestore
+    //     .collection("chat_rooms")
+    //     .doc("SErOoj4xqoZXla3jsRWHgm1B3Mz2_X4JFsWbKYieny7GqgjQREccj1Bg2")
+    //     .collection("messages") // Предполагая, что коллекция называется "messages"
+    //     .orderBy("timestamp", descending: true) // Сортируем сообщения по времени
+    //     .snapshots());
+  }
   Stream<QuerySnapshot> getMessage(
       {required String userId, required String otherUserId}) {
     List<String> ids = [userId, otherUserId];
@@ -48,6 +66,7 @@ class ChatFirebaseService {
         .collection("chat_rooms")
         .doc(chatRoomId)
         .collection("messages")
+        .orderBy("timestamp", descending: false)
         .snapshots();
   }
 }

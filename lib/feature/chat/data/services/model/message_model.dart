@@ -11,12 +11,15 @@ class MessageModel {
   final String senderEmail;
   final String receiverID;
   final String message;
+  @TimestampConverter()
+  final Timestamp timestamp;
 
   MessageModel({
     required this.senderID,
     required this.senderEmail,
     required this.receiverID,
     required this.message,
+    required this.timestamp,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) =>

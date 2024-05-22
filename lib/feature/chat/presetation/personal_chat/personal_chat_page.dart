@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import '../../../../core/presentation/view/view_model.dart';
 import '../../../../generated/l10n.dart';
 import '../../../anime/presetation/widget/error_list_widget.dart';
+import '../../data/services/chat/chat_sevice.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
 
 @RoutePage()
@@ -35,11 +36,11 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     Map<String, dynamic> data = doc.data() as  Map<String, dynamic>;
     return Text("fdfdf");
   }
-
+  final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
   Widget _messageWidget({required PersonalChatViewModel vm}) {
     String senderId =  vm.getCurrentUserUseCase.call()!.uid;
     return StreamBuilder(
-        stream: vm.getMessageUseCase.call(userId: receiverId, otherUserId: senderId),
+        stream: chatFirebaseService.getChatMessages("fdf"),
         builder: (context, snapshot){
           if(snapshot.hasError){
             return ErrorListWidget(
@@ -51,10 +52,11 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           if(snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator(),);
           }
-          log(snapshot.data!.docs.map((e) => e.data()).toString());
-          snapshot.data!.docs.map((doc) => log("message"));
+          // log(snapshot.data!.docs.map((e) => e.data()).toString());
+          // snapshot.data!.docs.map((doc) => log("message"));
 
-          return  ListView(
+          log(snapshot.data!.docs.toString());
+          return ListView(
             children: snapshot.data!.docs.map((doc) => _messageItemWidget(doc: doc)).toList(),
           );
         });
