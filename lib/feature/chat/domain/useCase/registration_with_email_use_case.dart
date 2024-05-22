@@ -8,8 +8,8 @@ class RegistrationWithEmailUseCase{
 
   RegistrationWithEmailUseCase({required ChatAndAuthRepository chatAndAuthRepository}): _chatAndAuthRepository = chatAndAuthRepository;
 
-  Future<Result<bool>> call({required String email,password}) async {
-    final requestResult = await _chatAndAuthRepository.registration(email: email,password: password );
+  Future<Result<bool>> call({required String email,password, username}) async {
+    final requestResult = await _chatAndAuthRepository.registration(email: email,password: password,username: username );
     return requestResult;
   }
 

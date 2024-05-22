@@ -24,5 +24,7 @@
   "email": "E-mail",
   "registrationStart" :"Don't have an account yet?",
   "register" :" Register.",
-  "registration" : " Registration"
+  "registration" : " Registration",
+  "username" : "Username"
+
 }

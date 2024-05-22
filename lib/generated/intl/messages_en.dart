@@ -63,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "title_favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
         "title_search": MessageLookupByLibrary.simpleMessage("Search"),
         "title_settings": MessageLookupByLibrary.simpleMessage("Settings"),
-        "title_watch": MessageLookupByLibrary.simpleMessage("Watch")
+        "title_watch": MessageLookupByLibrary.simpleMessage("Watch"),
+        "username": MessageLookupByLibrary.simpleMessage("Username")
       };
 }

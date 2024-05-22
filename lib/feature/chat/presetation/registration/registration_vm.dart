@@ -15,6 +15,7 @@ class RegistrationViewModel extends ViewModel {
 
   final passwordTextCtrl = PassTextEditingController();
   final emailTextCtrl = AppTextEditingController();
+  final usernameTextCtrl = AppTextEditingController();
   final isButtonActive = false.rv;
   final isMoreEightCharacters = false.rv;
   final isContainsNumbers = false.rv;
@@ -39,7 +40,7 @@ class RegistrationViewModel extends ViewModel {
   }
 
   Future<void> registration() async{
-    final result = await _registrationWithEmailUseCase.call(email: emailTextCtrl.text,password: passwordTextCtrl.text);
+    final result = await _registrationWithEmailUseCase.call(email: emailTextCtrl.text,password: passwordTextCtrl.text,username: usernameTextCtrl.text );
     switch(result){
       case GoodUseCaseResult<bool>():
         {

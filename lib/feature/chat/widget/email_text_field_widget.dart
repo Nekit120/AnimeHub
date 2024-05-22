@@ -7,18 +7,20 @@ import '../../../generated/l10n.dart';
 
 
 
-class EmailTextFieldWidget extends StatefulWidget {
+class CustomTextFieldWidget extends StatefulWidget {
   final TextEditingController _controller;
+  final String title;
+  final bool isEmail;
 
-  const EmailTextFieldWidget({required TextEditingController controller, super.key}) : _controller = controller;
+  const CustomTextFieldWidget({required TextEditingController controller, super.key, required this.title, required this.isEmail}) : _controller = controller;
 
   @override
-  State<EmailTextFieldWidget> createState() =>
-      _EmailTextFieldWidgetState();
+  State<CustomTextFieldWidget> createState() =>
+      _CustomTextFieldWidgetState();
 }
 
-class _EmailTextFieldWidgetState
-    extends State<EmailTextFieldWidget> {
+class _CustomTextFieldWidgetState
+    extends State<CustomTextFieldWidget> {
   // final maskFormatPhoneNumber = MaskTextInputFormatter(
   //     mask: '+### ### ## ###',
   //     filter: {"#": RegExp(r'[0-9]')},
@@ -33,11 +35,12 @@ class _EmailTextFieldWidgetState
         // keyboardType: TextInputType.phone,
         // inputFormatters: [maskFormatPhoneNumber],
         decoration: InputDecoration(
-          prefixIcon: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Icon(Icons.email_outlined),
+          prefixIcon:  Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: widget.isEmail ? const Icon(Icons.email_outlined)
+            : const Icon(Icons.person_outline),
           ),
-          labelText: S.of(context).email,
+          labelText: widget.title,
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),

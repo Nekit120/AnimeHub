@@ -2,25 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserTile extends StatelessWidget {
-  final String text;
+  final String email;
   final void Function()? onTap;
-  const UserTile({super.key, required this.text, this.onTap});
+  const UserTile({super.key, required this.email, this.onTap});
 
   @override
   Widget build(BuildContext context) {
       return GestureDetector(
         onTap: onTap,
         child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 2,horizontal: 12),
           decoration: BoxDecoration(
-            color: CupertinoColors.inactiveGray,
+            color: Colors.grey[200],
             borderRadius: BorderRadius.circular(12)
           ),
-            child: const Row(
-              children: [
-                Icon(Icons.person),
-                Text("text")
-              ],
-            ),
+          child: ListTile(
+            title: Text(email),
+            subtitle:const Text("secret") ,
+            leading: const Icon(Icons.person) ,
+          ),
+
+          //   child:  Row(
+          //     children: [
+          //       const Icon(Icons.person),
+          //       Text(email)
+          //     ],
+          //   ),
         ),
       );
   }

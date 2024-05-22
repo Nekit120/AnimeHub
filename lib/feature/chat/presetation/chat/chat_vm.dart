@@ -9,6 +9,7 @@ import '../../../../core/presentation/controllers/app_text_editing_controller.da
 import '../../../../core/presentation/controllers/password_text_editing_controller.dart';
 import '../../../../theme/theme_colors.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
+import '../../domain/useCase/get_current_user_use_case.dart';
 import '../../domain/useCase/get_users_stream_use_case.dart';
 import '../../domain/useCase/sign_in_with_email_use_case.dart';
 
@@ -16,6 +17,7 @@ class ChatViewModel extends ViewModel {
   SignInWithEmailUseCase _signInWithEmailUseCase;
   GetUsersStreamUseCase getUsersStreamUseCase;
   SignOutUseCase _signOutUseCase;
+  GetCurrentUserUseCase getCurrentUserUseCase;
 
   ChatViewModel(super.context,
       {required ChatAndAuthRepository chatAndAuthRepository})
@@ -24,7 +26,8 @@ class ChatViewModel extends ViewModel {
         _signOutUseCase =
             SignOutUseCase(chatAndAuthRepository: chatAndAuthRepository),
         getUsersStreamUseCase =
-            GetUsersStreamUseCase(chatAndAuthRepository: chatAndAuthRepository);
+            GetUsersStreamUseCase(chatAndAuthRepository: chatAndAuthRepository),
+  getCurrentUserUseCase = GetCurrentUserUseCase(chatAndAuthRepository: chatAndAuthRepository);
 
   final passwordTextCtrl = PassTextEditingController();
   final emailTextCtrl = AppTextEditingController();

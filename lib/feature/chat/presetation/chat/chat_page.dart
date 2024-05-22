@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
+import 'package:anime_hub/feature/chat/data/services/model/user_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,8 +27,8 @@ import 'chat_vm.dart';
 class ChatPage extends BaseView<ChatViewModel> {
   ChatPage({super.key, required ChatAndAuthRepository chatAndAuthRepository})
       : super(
-            vmFactory: (context) =>
-                ChatViewModel(context, chatAndAuthRepository: chatAndAuthRepository));
+            vmFactory: (context) => ChatViewModel(context,
+                chatAndAuthRepository: chatAndAuthRepository));
 
   Widget _customDelimiter({required double maxWidth}) {
     return Padding(
@@ -39,16 +40,19 @@ class ChatPage extends BaseView<ChatViewModel> {
       ),
     );
   }
-  Widget _buildUserList({required ChatViewModel vm }) {
-    return StreamBuilder(stream: vm.getUsersStreamUseCase.call(),
-        builder: (context,snapshot) {
+
+  Widget _buildUserList({required ChatViewModel vm}) {
+    return StreamBuilder(
+        stream: vm.getUsersStreamUseCase.call(),
+        builder: (context, snapshot) {
           if (snapshot.hasError) {
-            log(snapshot.error.toString());
-            return ErrorListWidget(titleError: S
-                .of(context)
-                .title_error, descriptionError: S
-                .of(context)
-                .no_internet,);
+            try {} catch (e) {
+              log(e.toString());
+            }
+            return ErrorListWidget(
+              titleError: S.of(context).title_error,
+              descriptionError: S.of(context).no_internet,
+            );
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -57,15 +61,33 @@ class ChatPage extends BaseView<ChatViewModel> {
 
           return ListView(
             children: snapshot.data!
-                .map<Widget>((userData) => _buildUserListItem(userData: userData, context: vm.context, ))
+                .map<Widget>((userData) => _buildUserListItem(
+                      userData: userData,
+                      vm: vm,
+                    ))
                 .toList(),
           );
         });
   }
- Widget _buildUserListItem({required Map<String, dynamic> userData,required BuildContext context}){
-  return UserTile(text: userData["email"],onTap: () {
-  },);
- }
+
+  Widget _buildUserListItem(
+      {required UserModel userData, required ChatViewModel vm}) {
+    final currentUser = vm.getCurrentUserUseCase();
+    if (userData.email != currentUser!.email) {
+      return UserTile(
+        email: userData.username,
+        onTap: () {
+          AutoRouter.of(vm.context).push(PersonalChatRoute(
+              receiverUsername: userData.username,
+              chatAndAuthRepository:
+                  AppContainer().repositoryScope.chatAndAuthRepository,
+              receiverId: userData.uid));
+        },
+      );
+    } else {
+      return Container();
+    }
+  }
 
   @override
   Widget build(ChatViewModel vm) {
@@ -74,19 +96,20 @@ class ChatPage extends BaseView<ChatViewModel> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const Center(child: Text("Чат")),
-              actions: [
-                IconButton(
+            return Scaffold(
+              appBar: AppBar(
+                title: const Center(child: Text("Чат")),
+                actions: [
+                  IconButton(
                     icon: const Icon(
                       Icons.logout,
                     ),
-                    onPressed: vm.signOut,)
-              ],
-            ),
-            body: _buildUserList(vm: vm),
-          );
+                    onPressed: vm.signOut,
+                  )
+                ],
+              ),
+              body: _buildUserList(vm: vm),
+            );
           } else {
             return SingleChildScrollView(
               child: Padding(
@@ -105,8 +128,10 @@ class ChatPage extends BaseView<ChatViewModel> {
                     const SizedBox(
                       height: 18,
                     ),
-                    EmailTextFieldWidget(
+                    CustomTextFieldWidget(
                       controller: vm.emailTextCtrl,
+                      title: S.of(vm.context).email,
+                      isEmail: true,
                     ),
                     const SizedBox(
                       height: 16,
@@ -175,5 +200,3 @@ class ChatPage extends BaseView<ChatViewModel> {
         });
   }
 }
-
-

@@ -24,6 +24,7 @@
   "email": "E-mail",
   "registrationStart" :"У вас ещё нет аккаунта?",
   "register" :" Зарегистрируйтесь.",
-  "registration" : "Регистрация"
+  "registration" : "Регистрация",
+  "username" : "Username"
 
 }

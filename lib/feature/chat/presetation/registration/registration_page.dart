@@ -2,6 +2,7 @@ import 'package:anime_hub/feature/chat/presetation/registration/registration_vm.
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/presentation/view/view_model.dart';
+import '../../../../generated/l10n.dart';
 import '../../../../theme/theme_colors.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
 import '../../widget/custom_filled_button.dart';
@@ -73,8 +74,16 @@ class RegistrationPage extends BaseView<RegistrationViewModel> {
                 const SizedBox(
                   height: 18,
                 ),
-                EmailTextFieldWidget(
-                  controller: vm.emailTextCtrl,
+                CustomTextFieldWidget(
+                  controller: vm.emailTextCtrl, title: S.of(vm.context).email, isEmail: true,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+
+                CustomTextFieldWidget(
+                  controller: vm.usernameTextCtrl,
+                    title: S.of(vm.context).username, isEmail: false,
                 ),
                 const SizedBox(
                   height: 16,
@@ -109,7 +118,7 @@ class RegistrationPage extends BaseView<RegistrationViewModel> {
                 vm.isButtonActive.observer((context, value) =>
                     CustomFilledButton(
                         isButtonActive: value,
-                        titleButton: "Зарегистрироватьсяд",
+                        titleButton: "Зарегистрироваться",
                         buttonCallback: vm.registration),
                 )
 

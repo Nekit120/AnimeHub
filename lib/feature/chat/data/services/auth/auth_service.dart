@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:async';
 
+import 'package:anime_hub/feature/chat/data/services/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,7 +9,7 @@ class AuthFirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> registration({required String email, password}) async {
+  Future<void> registration({required String email, password,username}) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
@@ -20,12 +21,19 @@ class AuthFirebaseService {
     _firestore
         .collection("Users")
         .doc(userCredential.user!.uid)
-        .set({'uid': userCredential.user!.uid, 'email': email});
+        .set(
+
+        UserModel(uid: userCredential.user!.uid, email: email, username: username).toJson()
+    );
 
     await _auth.signOut();
   }
 
-  Future<UserCredential> signIn({required String email, password}) async {
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
+  Future<UserCredential> signIn({required String email, password,username}) async {
     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     User? user = userCredential.user;
@@ -41,7 +49,8 @@ class AuthFirebaseService {
     _firestore
         .collection("Users")
         .doc(userCredential.user!.uid)
-        .set({'uid': userCredential.user!.uid, 'email': email});
+        .set(  UserModel(uid: userCredential.user!.uid, email: email, username: "unknown_username").toJson()
+    );
 
     return userCredential;
   }
