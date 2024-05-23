@@ -1,10 +1,14 @@
 import 'dart:developer';
+import 'package:anime_hub/feature/chat/data/repository/chat_and_auth_repository_impl.dart';
+import 'package:anime_hub/feature/chat/data/services/chat/chat_sevice.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import '../../../feature/anime/data/data_source/local/anime_local_data_source.dart';
 import '../../../feature/anime/data/data_source/remote/anime_remote_data_source.dart';
 import '../../../feature/anime/data/repository/anime_repository_impl.dart';
 import '../../../feature/anime/domain/repository/anime_repository.dart';
+import '../../../feature/chat/data/services/auth/auth_service.dart';
+import '../../../feature/chat/domain/repository/chat_and_auth_repository.dart';
 import '../../data/database/database_provider.dart';
 
 class AppContainer {
@@ -22,15 +26,19 @@ class AppContainer {
   Future<bool> initDependencies() async {
     try {
       final dbProvider = DBProvider();
+      final authFirebaseService = AuthFirebaseService();
+      final chatFirebaseService = ChatFirebaseService();
 
 
       final animeBoardRepository = AnimeRepositoryImpl(
           remoteDataProvider: AnimeRemoteDataSource(Dio ()),
           animeLocalDataSource: AnimeLocalDataSource(dbProvider: dbProvider));
 
-
+      final authRepository = ChatAndAuthRepositoryImpl(authFirebaseService: authFirebaseService, chatFirebaseService: chatFirebaseService);
       repositoryScope = RepositoryScope(
-          animeRepository: animeBoardRepository);
+          animeRepository: animeBoardRepository, chatAndAuthRepository: authRepository,
+          // chatFirebaseService: ChatFirebaseService()
+      );
 
       // dataSourceScope = DataSourceScope(dbProvider: dbProvider);
       return true;
@@ -43,9 +51,11 @@ class AppContainer {
 
 class RepositoryScope {
   final AnimeRepository animeRepository;
+  final ChatAndAuthRepository chatAndAuthRepository;
 
   RepositoryScope(
-      {required this.animeRepository});
+      {required this.animeRepository,
+      required this.chatAndAuthRepository,});
 }
 
 // class DataSourceScope {

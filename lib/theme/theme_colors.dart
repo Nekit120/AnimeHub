@@ -33,5 +33,11 @@ abstract class LightThemeColors {
   static const Color mdThemeLightInversePrimary = Color(0xFFFFB3B4);
   static const Color mdThemeLightShadow = Color(0xFF000000);
   static const Color mdThemeLightSurfaceTint = Color(0xFFAE2D3D);
+  static const Color positiveCheck = Color(0xB5808BCA);
+  static const Color positiveCheckBack = Color(0xB5CFD7FC);
+  static const Color sendMessageColor = Color(0xB5C1CBF6);
+  static const Color negativeCheck = Color(0xFFA3A4A9);
+  static const Color negativeCheckBack = Color(0xFFF1F1F1);
+  static const Color blueTextColor = Color(0xFF3E5481);
   static const Color mdThemeLightSurfaceTintColor = Color(0xFFAE2D3D);
 }

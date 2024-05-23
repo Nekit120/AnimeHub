@@ -20,5 +20,11 @@
   "empty_favorites_title": "There are no favorite anime",
   "empty_favorites_description": "You can add your favorite anime after watching",
   "anime_search_empty_title": "No anime found",
-  "anime_search_empty_description": "Nothing was found for your request, check your request and try again"
+  "anime_search_empty_description": "Nothing was found for your request, check your request and try again",
+  "email": "E-mail",
+  "registrationStart" :"Don't have an account yet?",
+  "register" :" Register.",
+  "registration" : " Registration",
+  "username" : "Username"
+
 }

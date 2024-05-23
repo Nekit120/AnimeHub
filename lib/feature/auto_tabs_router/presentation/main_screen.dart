@@ -1,3 +1,4 @@
+import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
       routes: [
         FavoriteAnimeRoute(controller: favoritesController),
         AnimeReleasesRoute(controller: releasesController),
-        AuthRoute(),
+        ChatRoute(chatAndAuthRepository: AppContainer().repositoryScope.chatAndAuthRepository),
         AnimeSearch()
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(

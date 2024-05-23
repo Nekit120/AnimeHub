@@ -12,10 +12,10 @@ class AnimeListBuilderWidget extends StatelessWidget {
   final BuildContext context;
   const AnimeListBuilderWidget(
       {super.key,
-      required this.isNotHorizontal,
-      required this.controller,
-      required this.animeList,
-      required this.context});
+        required this.isNotHorizontal,
+        required this.controller,
+        required this.animeList,
+        required this.context});
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +23,17 @@ class AnimeListBuilderWidget extends StatelessWidget {
       controller: isNotHorizontal && controller != null ? controller : null,
       gridDelegate: isNotHorizontal
           ? const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              childAspectRatio: 0.66,
-            )
+        crossAxisCount: 2,
+        crossAxisSpacing: 0.1,
+        mainAxisSpacing: 0.1,
+        childAspectRatio: 0.68,
+      )
           : const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 0,
-              childAspectRatio: 0.65,
-            ),
+        crossAxisCount: 4,
+        crossAxisSpacing: 0.1,
+        mainAxisSpacing: 0.1,
+        childAspectRatio: 0.67,
+      ),
       itemCount: animeList.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
@@ -61,7 +61,7 @@ class AnimeListBuilderWidget extends StatelessWidget {
                 ),
               ),
               Text(animeList[index].title,
-                  maxLines: 2, textAlign: TextAlign.center)
+                  maxLines: 1, textAlign: TextAlign.center)
             ],
           ),
           onTap: () {

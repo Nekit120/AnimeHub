@@ -53,9 +53,9 @@ final lightTheme = ThemeData(
         height: 64 / 57,
         letterSpacing: -.25),
     displayMedium: TextStyle(
-      fontSize: 45,
-      fontFamily: 'Roboto',
-      fontWeight: FontWeight.w400,
+      fontSize: 46,
+      fontFamily: 'DancingScript',
+      fontWeight: FontWeight.w500,
       height: 52 / 45,
     ),
     displaySmall: TextStyle(
@@ -65,7 +65,7 @@ final lightTheme = ThemeData(
       height: 44 / 36,
     ),
     headlineLarge: TextStyle(
-      fontSize: 32,
+      fontSize: 16,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w500,
       height: 40 / 32,
@@ -77,9 +77,9 @@ final lightTheme = ThemeData(
       height: 36 / 28,
     ),
     headlineSmall: TextStyle(
-      fontSize: 24,
+      fontSize: 18,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       height: 32 / 24,
     ),
     titleLarge: TextStyle(

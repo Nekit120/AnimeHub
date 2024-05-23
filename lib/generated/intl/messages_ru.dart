@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "app_name": MessageLookupByLibrary.simpleMessage("AnimeHub"),
         "description_error": MessageLookupByLibrary.simpleMessage(
             "К сожалению описание ещё не добавленно, но Вы всегда можете связаться с нами и сообщить об этом!"),
+        "email": MessageLookupByLibrary.simpleMessage("E-mail"),
         "empty_answer_after_search": MessageLookupByLibrary.simpleMessage(
             "По вашему запросу ничего не найдено!"),
         "empty_bd": MessageLookupByLibrary.simpleMessage(
@@ -48,6 +49,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "not_in_player": MessageLookupByLibrary.simpleMessage(
             "Возможно это аниме нет в нашем плеере!"),
         "play_text": MessageLookupByLibrary.simpleMessage("Воспроизвести"),
+        "register": MessageLookupByLibrary.simpleMessage(" Зарегистрируйтесь."),
+        "registration": MessageLookupByLibrary.simpleMessage("Регистрация"),
+        "registrationStart":
+            MessageLookupByLibrary.simpleMessage("У вас ещё нет аккаунта?"),
         "select_episode":
             MessageLookupByLibrary.simpleMessage("Выберите эпизод"),
         "title_chat": MessageLookupByLibrary.simpleMessage("Чат"),
@@ -57,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "title_favorite": MessageLookupByLibrary.simpleMessage("Любимые"),
         "title_search": MessageLookupByLibrary.simpleMessage("Поиск"),
         "title_settings": MessageLookupByLibrary.simpleMessage("Настройки"),
-        "title_watch": MessageLookupByLibrary.simpleMessage("Просмотр")
+        "title_watch": MessageLookupByLibrary.simpleMessage("Просмотр"),
+        "username": MessageLookupByLibrary.simpleMessage("Username")
       };
 }
