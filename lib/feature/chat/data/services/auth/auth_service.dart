@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthFirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore =   FirebaseFirestore.instance;
 
   Future<void> registration({required String email, password,username}) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
@@ -49,7 +49,7 @@ class AuthFirebaseService {
     _firestore
         .collection("Users")
         .doc(userCredential.user!.uid)
-        .set(  UserModel(uid: userCredential.user!.uid, email: email, username: "unknown_username").toJson()
+        .set(  UserModel(uid: userCredential.user!.uid, email: email, username: username).toJson()
     );
 
     return userCredential;

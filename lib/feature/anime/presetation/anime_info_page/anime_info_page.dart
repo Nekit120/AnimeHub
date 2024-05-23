@@ -141,8 +141,10 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
 
   @override
   Widget build(AnimeInfoViewModel vm) {
-    final isNotHorizontal =
-        MediaQuery.of(vm.context).orientation != Orientation.landscape;
+
+    final maxWidth = MediaQuery.of(vm.context).size.width;
+    final maxHeight = MediaQuery.of(vm.context).size.height;
+    final isNotHorizontal = MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
       appBar: AppBar(title: Text(S.of(vm.context).title_detailed_information)),
       body: SingleChildScrollView(
@@ -157,18 +159,18 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                         child: CachedNetworkImage(
                       imageUrl: vm.animeItem.materialData?.posterUrl ??
                           "https://shikimori.one/system/animes/original/56838.jpg",
-                      height: 180,
+                      height:  isNotHorizontal ? maxHeight/5.2 : maxHeight/2.55 ,
                       width: MediaQuery.of(vm.context).size.width,
                       fit: BoxFit.cover,
                     )),
                     Container(
-                      height: 142,
+                      height: isNotHorizontal ? maxHeight/6.25 : maxHeight/2.75,
                     ),
                   ],
                 ),
                 Positioned(
-                  left: 16,
-                  bottom: 0,
+                  left: isNotHorizontal ? 16: maxWidth*0.08,
+                  bottom:isNotHorizontal ? 0 : maxHeight/38,
                   child: Card(
                     elevation: 1,
                     shape: RoundedRectangleBorder(
@@ -180,8 +182,8 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                         child: CachedNetworkImage(
                           imageUrl: vm.animeItem.materialData?.posterUrl ??
                               "https://shikimori.one/system/animes/original/56838.jpg",
-                          height: 160,
-                          width: 110,
+                          height: isNotHorizontal ?maxHeight/5.5 :maxHeight/2.6 ,
+                          width: isNotHorizontal ? maxWidth/3.55 :maxWidth/7.8,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -189,10 +191,10 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                   ),
                 ),
                 Positioned(
-                  left: 150,
+                  left: isNotHorizontal ? maxWidth/2.7 : maxWidth/4.2,
                   bottom: -65,
                   child: SizedBox(
-                    width: isNotHorizontal ? 257 : 725,
+                    width: isNotHorizontal ? maxWidth/1.54 : maxWidth - maxWidth*0.23,
                     height: 200,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

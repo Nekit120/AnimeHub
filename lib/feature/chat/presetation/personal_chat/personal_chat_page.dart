@@ -76,9 +76,45 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
 
           log(snapshot.data!.docs.toString());
           return ListView(
+            controller: vm.scrollController,
             children: snapshot.data!.docs.map((doc) => _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth)).toList(),
           );
         });
+  }
+  Widget _myCustomTextWidget({required double maxWidth, required PersonalChatViewModel vm}) {
+    return  Container(
+      color: Colors.grey[100],
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 4, top: 6),
+        child:
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          IconButton(
+            icon: const Icon(
+              Icons.add,
+            ),
+            onPressed: () {},
+          ),
+          SizedBox(
+              width: maxWidth - 100,height: 35, child:  TextField(
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              hintText: "Сообщение"
+            ),
+            focusNode: vm.myFocusNode,
+            textAlignVertical: TextAlignVertical.center,
+            controller: _messageTextController,
+          )),
+          IconButton(
+            icon: const Icon(
+              Icons.send,
+            ),
+            onPressed: () {
+              sendMessage(vm: vm);
+            },
+          ),
+        ]),
+      ),
+    );
   }
   @override
   Widget build(PersonalChatViewModel vm) {
@@ -100,35 +136,9 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
       ),
       body: Column(
         children: [
-          Expanded(child: _messageWidget(vm: vm, maxWidth: maxWidth))
+         Expanded(child: _messageWidget(vm: vm, maxWidth: maxWidth)),
+          _myCustomTextWidget(maxWidth: maxWidth,vm:vm)
         ],
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.grey[100],
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 4, top: 6),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            IconButton(
-              icon: const Icon(
-                Icons.photo_camera_outlined,
-              ),
-              onPressed: () {},
-            ),
-            SizedBox(
-                width: maxWidth - 100, height: 40, child:  TextField(
-              controller: _messageTextController,
-            )),
-            IconButton(
-              icon: const Icon(
-                Icons.send,
-              ),
-              onPressed: () {
-                sendMessage(vm: vm);
-              },
-            ),
-          ]),
-        ),
       ),
     );
   }

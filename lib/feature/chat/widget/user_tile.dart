@@ -14,11 +14,11 @@ class UserTile extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 2,horizontal: 12),
           decoration: BoxDecoration(
             color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(12)
+            borderRadius: BorderRadius.circular(24)
           ),
           child: ListTile(
             title: Text(email),
-            subtitle:const Text("secret") ,
+            // subtitle:const Text("secret") ,
             leading: const Icon(Icons.person) ,
           ),
 
