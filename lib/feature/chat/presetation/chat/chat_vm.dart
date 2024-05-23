@@ -67,9 +67,13 @@ class ChatViewModel extends ViewModel {
         {
           break;
         }
-      case BadUseCaseResult<UserCredential>():
+      case BadUseCaseResult<UserCredential>(:final errorList):
         {
-          customSnackBarShow(title: "Ошибка входа в аккаунт", isError: true);
+          if(errorList.first.code == "unknownException") {
+
+          }else {
+            customSnackBarShow(title: "Ошибка входа в аккаунт", isError: true);
+          }
           break;
         }
     }

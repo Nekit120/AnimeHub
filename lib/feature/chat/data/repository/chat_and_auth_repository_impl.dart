@@ -1,12 +1,12 @@
 import 'dart:developer';
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
-import 'package:anime_hub/feature/chat/data/services/chat/chat_sevice.dart';
-import 'package:anime_hub/feature/chat/data/services/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../core/data/firebase_services/auth/auth_service.dart';
+import '../../../../core/data/firebase_services/chat/chat_sevice.dart';
+import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../core/domain/app_error/app_error.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
-import '../services/auth/auth_service.dart';
 
 class ChatAndAuthRepositoryImpl implements ChatAndAuthRepository {
   final AuthFirebaseService _authFirebaseService;

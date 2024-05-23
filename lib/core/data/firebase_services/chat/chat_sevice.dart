@@ -1,7 +1,8 @@
-import 'package:anime_hub/feature/chat/data/services/model/message_model.dart';
-import 'package:anime_hub/feature/chat/data/services/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../model/message_model.dart';
+import '../model/user_model.dart';
 
 class ChatFirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

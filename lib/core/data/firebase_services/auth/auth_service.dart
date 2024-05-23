@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:async';
-
-import 'package:anime_hub/feature/chat/data/services/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../model/user_model.dart';
 
 class AuthFirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

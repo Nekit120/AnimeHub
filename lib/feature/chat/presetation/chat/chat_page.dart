@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
-import 'package:anime_hub/feature/chat/data/services/model/user_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../theme/svg_image_collection.dart';
 import '../../../../theme/theme_colors.dart';
@@ -101,11 +101,15 @@ class ChatPage extends BaseView<ChatViewModel> {
                 title: const Center(child: Text("Чат")),
                 leading: Container(
                   margin: const EdgeInsets.all(8.0),
-                  child: ClipOval(
-                    child: Image.network(
-                      "https://thumbs.dreamstime.com/b/%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D0%BF%D1%83%D1%81%D1%82%D0%BE%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B5-%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%BC-%D1%87%D0%B5%D1%80%D0%BD%D0%BE%D0%B3%D0%BE-%D1%80%D0%B0%D0%BC%D0%BA%D0%B8-208599975.jpg",
-                      fit: BoxFit.cover,
+                  child: GestureDetector(
+                    child: ClipOval(
+                      child: Image.network(
+                        "https://thumbs.dreamstime.com/b/%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D0%BF%D1%83%D1%81%D1%82%D0%BE%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B5-%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%BC-%D1%87%D0%B5%D1%80%D0%BD%D0%BE%D0%B3%D0%BE-%D1%80%D0%B0%D0%BC%D0%BA%D0%B8-208599975.jpg",
+                        fit: BoxFit.cover,
+                      ),
                     ),
+                    onTap: (){
+                      AutoRouter.of(context).push(const ProfileRoute());},
                   ),
                 ),
                 actions: [
