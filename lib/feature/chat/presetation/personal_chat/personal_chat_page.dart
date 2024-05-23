@@ -101,6 +101,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           log(snapshot.data!.docs.toString());
           return ListView(
             controller: vm.scrollController,
+
             children: snapshot.data!.docs
                 .map((doc) =>
                     _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth))
@@ -139,6 +140,11 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             ),
             onPressed: () {
               sendMessage(vm: vm);
+              Future.delayed(
+                  const Duration(milliseconds: 300),
+                      () => vm.fastScrollDown()
+              );
+
             },
           ),
         ]),

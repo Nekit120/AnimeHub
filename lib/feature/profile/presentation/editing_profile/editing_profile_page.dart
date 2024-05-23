@@ -12,7 +12,7 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
       : super(vmFactory: (context) => EditingProfileViewModel(context));
 
   AppBar _profileAppBar({required BuildContext context}) => AppBar(
-      title: Text("Редактирование профиля"),
+      title: const Text("Редактирование профиля"),
       actions: _appBarState
           ? [
               IconButton(
