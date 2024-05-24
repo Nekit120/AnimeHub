@@ -18,6 +18,8 @@ abstract interface class ChatAndAuthRepository {
 
   User? getCurrentUser();
 
+  Future<UserModel?> getUserByUid({required String uid});
+
   Stream<List<UserModel>> getUsersStream();
 
   Stream<QuerySnapshot> getMessage({required String userId, required String otherUserId});

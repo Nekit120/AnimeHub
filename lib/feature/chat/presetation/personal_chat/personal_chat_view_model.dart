@@ -24,11 +24,11 @@ class PersonalChatViewModel extends ViewModel {
   final scrollController = ScrollController();
 
   void scrollDown() {
-     scrollController.animateTo(scrollController.position.maxScrollExtent, duration: const Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+     scrollController.animateTo(scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 1300), curve: Curves.fastLinearToSlowEaseIn);
   }
 
   void fastScrollDown() {
-     scrollController.animateTo(scrollController.position.maxScrollExtent, duration: const Duration(milliseconds:  700), curve: Curves.fastLinearToSlowEaseIn);
+     scrollController.animateTo(scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 700), curve: Curves.fastLinearToSlowEaseIn);
   }
 
 
@@ -42,12 +42,11 @@ class PersonalChatViewModel extends ViewModel {
     );
 
     myFocusNode.addListener(() {
-      if( myFocusNode.hasFocus) {
       Future.delayed(
-        const Duration(milliseconds: 600),
-          () => scrollDown()
-      );
-      }});
+        const Duration(milliseconds: 500),
+          () => scrollDown());
+    }
+    );
 
   }
   @override

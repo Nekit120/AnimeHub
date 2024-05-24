@@ -126,7 +126,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           ),
           SizedBox(
               width: maxWidth - 100,
-              height: 35,
+              height: 50,
               child: TextField(
                 decoration: const InputDecoration(
                     border: UnderlineInputBorder(), hintText: "Сообщение"),

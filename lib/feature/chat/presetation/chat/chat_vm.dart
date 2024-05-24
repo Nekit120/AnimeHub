@@ -1,10 +1,12 @@
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
+import 'package:anime_hub/feature/chat/domain/useCase/get_current_user_by_uid_use_case.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/sign_out_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
+import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../core/presentation/controllers/app_text_editing_controller.dart';
 import '../../../../core/presentation/controllers/password_text_editing_controller.dart';
 import '../../../../theme/theme_colors.dart';
@@ -14,10 +16,13 @@ import '../../domain/useCase/get_users_stream_use_case.dart';
 import '../../domain/useCase/sign_in_with_email_use_case.dart';
 
 class ChatViewModel extends ViewModel {
-  SignInWithEmailUseCase _signInWithEmailUseCase;
-  GetUsersStreamUseCase getUsersStreamUseCase;
-  SignOutUseCase _signOutUseCase;
-  GetCurrentUserUseCase getCurrentUserUseCase;
+  final SignInWithEmailUseCase _signInWithEmailUseCase;
+  final GetUsersStreamUseCase getUsersStreamUseCase;
+  final SignOutUseCase _signOutUseCase;
+  final GetCurrentUserUseCase getCurrentUserUseCase;
+  final GetCurrentUserByUidUseCase getCurrentUserByUidUseCase;
+
+  final Rv<UserModel?> currentUserModel = null.rv();
 
   ChatViewModel(super.context,
       {required ChatAndAuthRepository chatAndAuthRepository})
@@ -27,7 +32,7 @@ class ChatViewModel extends ViewModel {
             SignOutUseCase(chatAndAuthRepository: chatAndAuthRepository),
         getUsersStreamUseCase =
             GetUsersStreamUseCase(chatAndAuthRepository: chatAndAuthRepository),
-  getCurrentUserUseCase = GetCurrentUserUseCase(chatAndAuthRepository: chatAndAuthRepository);
+  getCurrentUserUseCase = GetCurrentUserUseCase(chatAndAuthRepository: chatAndAuthRepository), getCurrentUserByUidUseCase = GetCurrentUserByUidUseCase(chatAndAuthRepository: chatAndAuthRepository);
 
   final passwordTextCtrl = PassTextEditingController();
   final emailTextCtrl = AppTextEditingController();
@@ -78,6 +83,11 @@ class ChatViewModel extends ViewModel {
         }
     }
   }
+  Future<void> getUser({required String uid, required ChatViewModel vm}) async {
+    vm.currentUserModel.value =
+    await vm.getCurrentUserByUidUseCase.call(uid: uid);
+  }
+
 
   @override
   void initState() {

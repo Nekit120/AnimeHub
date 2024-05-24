@@ -1,8 +1,11 @@
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
+import 'package:anime_hub/feature/profile/data/repository/profile_repository_impl.dart';
+import 'package:anime_hub/feature/profile/domain/repository/profile_repository.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -89,6 +92,7 @@ class ChatPage extends BaseView<ChatViewModel> {
     }
   }
 
+
   @override
   Widget build(ChatViewModel vm) {
     double maxWidth = MediaQuery.of(vm.context).size.width;
@@ -96,6 +100,7 @@ class ChatPage extends BaseView<ChatViewModel> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            vm.getUser(uid: snapshot.data!.uid, vm: vm);
             return Scaffold(
               appBar: AppBar(
                 title: const Center(child: Text("Чат")),
@@ -103,13 +108,24 @@ class ChatPage extends BaseView<ChatViewModel> {
                   margin: const EdgeInsets.all(8.0),
                   child: GestureDetector(
                     child: ClipOval(
-                      child: Image.network(
-                        "https://thumbs.dreamstime.com/b/%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D0%BF%D1%83%D1%81%D1%82%D0%BE%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B5-%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%BC-%D1%87%D0%B5%D1%80%D0%BD%D0%BE%D0%B3%D0%BE-%D1%80%D0%B0%D0%BC%D0%BA%D0%B8-208599975.jpg",
-                        fit: BoxFit.cover,
-                      ),
+                        child: vm.currentUserModel.observer((context, value) =>
+                        value !=null ? Image.network(
+                          vm.currentUserModel.value!.profileImageUrl!,
+                          fit: BoxFit.cover,
+                        ) :
+                        Image.network(
+                          "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png",
+                          fit: BoxFit.cover,
+                        )
+
+                        )
                     ),
-                    onTap: (){
-                      AutoRouter.of(context).push(const ProfileRoute());},
+                    onTap: () {
+                      AutoRouter.of(context).push(ProfileRoute(
+                          profileRepository: AppContainer()
+                              .repositoryScope
+                              .profileRepository));
+                    },
                   ),
                 ),
                 actions: [

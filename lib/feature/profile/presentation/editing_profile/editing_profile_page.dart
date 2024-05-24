@@ -1,17 +1,25 @@
+import 'dart:ffi';
+import 'dart:io';
+
+import 'package:anime_hub/core/data/firebase_services/model/user_model.dart';
+import 'package:anime_hub/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../core/presentation/view/view_model.dart';
+import '../../domain/repository/profile_repository.dart';
 import 'editing_profile_vm.dart';
 
 @RoutePage()
 class EditingProfilePage extends BaseView<EditingProfileViewModel> {
   final bool _appBarState = true;
+  final imagePicker = ImagePicker();
 
-  EditingProfilePage({super.key})
-      : super(vmFactory: (context) => EditingProfileViewModel(context));
+  EditingProfilePage({super.key,required ProfileRepository profileRepository,required UserModel userModel})
+      : super(vmFactory: (context) => EditingProfileViewModel(context, profileRepository: profileRepository, userModel: userModel));
 
-  AppBar _profileAppBar({required BuildContext context}) => AppBar(
+  AppBar _profileAppBar({required EditingProfileViewModel vm}) => AppBar(
       title: const Text("Редактирование профиля"),
       actions: _appBarState
           ? [
@@ -20,7 +28,8 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
                     Icons.check,
                   ),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                      vm.updateProfileImageUseCase.call(uid: vm.userModel.uid, imageFile: vm.imageFile.value);
+                    Navigator.of(vm.context).pop();
                   }),
             ]
           : null);
@@ -58,34 +67,47 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
         ),
       );
 
+  Future<void> _pickImageFromGallery(
+      {required EditingProfileViewModel vm}) async {
+    XFile? selectedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    vm.imageFile.value = selectedImage;
+  }
+
   Widget _personalProfileBody({required EditingProfileViewModel vm}) => Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: SizedBox(
-                width: 116,
-                height: 116,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.network(
-                      "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"),
+              child: GestureDetector(
+                  child: SizedBox(
+                    height: 116,
+                    width: 116,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: vm.imageFile.observer((context, value) => value ==
+                                null
+                            ? Image.network(
+                                "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png")
+                            : Image.file(File(value.path), fit: BoxFit.cover,))),
+                  ),
+                  onTap: () {
+                    _pickImageFromGallery(vm: vm);
+                  },
                 ),
               ),
-            ),
+
             const SizedBox(height: 16),
             _customTextField(
-                text: "username",
-                textEditingController: vm.nameTextController),
+                text: "username", textEditingController: vm.nameTextController),
             const SizedBox(height: 16),
             _customTextField(
                 text: "number phone",
                 textEditingController: vm.surnameTextController),
             const SizedBox(height: 16),
             _customTextField(
-                text: "E-mal",
-                textEditingController: vm.eMailTextController),
+                text: "E-mal", textEditingController: vm.eMailTextController),
             const SizedBox(height: 16),
           ],
         ),
@@ -94,7 +116,7 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
   @override
   Widget build(EditingProfileViewModel vm) {
     return Scaffold(
-      appBar: _profileAppBar(context: vm.context),
+      appBar: _profileAppBar(vm: vm),
       body: _personalProfileBody(vm: vm),
     );
   }

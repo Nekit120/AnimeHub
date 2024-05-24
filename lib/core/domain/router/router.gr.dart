@@ -8,6 +8,8 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:anime_hub/core/data/firebase_services/model/user_model.dart'
+    as _i19;
 import 'package:anime_hub/core/domain/model/anime_api_item.dart' as _i15;
 import 'package:anime_hub/feature/anime/presetation/anime_favorites_search/anime_favorites_search_page.dart'
     as _i1;
@@ -29,9 +31,11 @@ import 'package:anime_hub/feature/chat/presetation/personal_chat/personal_chat_p
 import 'package:anime_hub/feature/chat/presetation/registration/registration_page.dart'
     as _i12;
 import 'package:anime_hub/feature/player/presentation/payer_page.dart' as _i10;
+import 'package:anime_hub/feature/profile/domain/repository/profile_repository.dart'
+    as _i18;
 import 'package:anime_hub/feature/profile/presentation/editing_profile/editing_profile_page.dart'
     as _i6;
-import 'package:anime_hub/feature/profile/presentation/profile/profile_tab.dart'
+import 'package:anime_hub/feature/profile/presentation/profile/profile_page.dart'
     as _i11;
 import 'package:auto_route/auto_route.dart' as _i13;
 import 'package:flutter/cupertino.dart' as _i14;
@@ -89,11 +93,14 @@ abstract class $AppRouter extends _i13.RootStackRouter {
       );
     },
     EditingProfileRoute.name: (routeData) {
-      final args = routeData.argsAs<EditingProfileRouteArgs>(
-          orElse: () => const EditingProfileRouteArgs());
+      final args = routeData.argsAs<EditingProfileRouteArgs>();
       return _i13.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i6.EditingProfilePage(key: args.key),
+        child: _i6.EditingProfilePage(
+          key: args.key,
+          profileRepository: args.profileRepository,
+          userModel: args.userModel,
+        ),
       );
     },
     FavoriteAnimeRoute.name: (routeData) {
@@ -135,9 +142,13 @@ abstract class $AppRouter extends _i13.RootStackRouter {
       );
     },
     ProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileRouteArgs>();
       return _i13.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i11.ProfilePage(),
+        child: _i11.ProfilePage(
+          key: args.key,
+          profileRepository: args.profileRepository,
+        ),
       );
     },
     RegistrationRoute.name: (routeData) {
@@ -331,10 +342,16 @@ class ChatRouteArgs {
 class EditingProfileRoute extends _i13.PageRouteInfo<EditingProfileRouteArgs> {
   EditingProfileRoute({
     _i16.Key? key,
+    required _i18.ProfileRepository profileRepository,
+    required _i19.UserModel userModel,
     List<_i13.PageRouteInfo>? children,
   }) : super(
           EditingProfileRoute.name,
-          args: EditingProfileRouteArgs(key: key),
+          args: EditingProfileRouteArgs(
+            key: key,
+            profileRepository: profileRepository,
+            userModel: userModel,
+          ),
           initialChildren: children,
         );
 
@@ -345,13 +362,21 @@ class EditingProfileRoute extends _i13.PageRouteInfo<EditingProfileRouteArgs> {
 }
 
 class EditingProfileRouteArgs {
-  const EditingProfileRouteArgs({this.key});
+  const EditingProfileRouteArgs({
+    this.key,
+    required this.profileRepository,
+    required this.userModel,
+  });
 
   final _i16.Key? key;
 
+  final _i18.ProfileRepository profileRepository;
+
+  final _i19.UserModel userModel;
+
   @override
   String toString() {
-    return 'EditingProfileRouteArgs{key: $key}';
+    return 'EditingProfileRouteArgs{key: $key, profileRepository: $profileRepository, userModel: $userModel}';
   }
 }
 
@@ -495,16 +520,40 @@ class PlayerRouteArgs {
 
 /// generated route for
 /// [_i11.ProfilePage]
-class ProfileRoute extends _i13.PageRouteInfo<void> {
-  const ProfileRoute({List<_i13.PageRouteInfo>? children})
-      : super(
+class ProfileRoute extends _i13.PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({
+    _i14.Key? key,
+    required _i18.ProfileRepository profileRepository,
+    List<_i13.PageRouteInfo>? children,
+  }) : super(
           ProfileRoute.name,
+          args: ProfileRouteArgs(
+            key: key,
+            profileRepository: profileRepository,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'ProfileRoute';
 
-  static const _i13.PageInfo<void> page = _i13.PageInfo<void>(name);
+  static const _i13.PageInfo<ProfileRouteArgs> page =
+      _i13.PageInfo<ProfileRouteArgs>(name);
+}
+
+class ProfileRouteArgs {
+  const ProfileRouteArgs({
+    this.key,
+    required this.profileRepository,
+  });
+
+  final _i14.Key? key;
+
+  final _i18.ProfileRepository profileRepository;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{key: $key, profileRepository: $profileRepository}';
+  }
 }
 
 /// generated route for

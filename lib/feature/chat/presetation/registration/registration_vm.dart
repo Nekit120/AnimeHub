@@ -64,7 +64,7 @@ class RegistrationViewModel extends ViewModel {
         ? isContainsNumbers.value = true
         : isContainsNumbers.value = false;
 
-    if ( emailTextCtrl.text.isNotEmpty && isMoreEightCharacters.value &&  isContainsNumbers.value ) {
+    if ( emailTextCtrl.text.isNotEmpty && isMoreEightCharacters.value &&  isContainsNumbers.value && usernameTextCtrl.text.isNotEmpty ) {
 
       isButtonActive.value = true;
     } else {
@@ -78,12 +78,14 @@ class RegistrationViewModel extends ViewModel {
     super.initState();
     passwordTextCtrl.addListener(_buttonPossibilityListener);
     emailTextCtrl.addListener(_buttonPossibilityListener);
+    usernameTextCtrl.addListener(_buttonPossibilityListener);
   }
 
   @override
   void dispose() {
     passwordTextCtrl.removeListener(_buttonPossibilityListener);
     emailTextCtrl.removeListener(_buttonPossibilityListener);
+    usernameTextCtrl.removeListener(_buttonPossibilityListener);
     super.dispose();
   }
 }

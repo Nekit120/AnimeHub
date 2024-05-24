@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../model/user_model.dart';
 
@@ -22,7 +25,7 @@ class AuthFirebaseService {
         .doc(userCredential.user!.uid)
         .set(
 
-        UserModel(uid: userCredential.user!.uid, email: email, username: username).toJson()
+        UserModel(uid: userCredential.user!.uid, email: email, username: username,profileImageUrl: null,phoneNumber: null).toJson()
     );
 
     await _auth.signOut();
@@ -31,6 +34,51 @@ class AuthFirebaseService {
   User? getCurrentUser() {
     return _auth.currentUser;
   }
+
+  Future<String?> uploadProfileImage({required String uid,required XFile imageFile}) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref().child('profile_images/$uid.jpg');
+      await storageRef.putFile(File(imageFile.path));
+      return await storageRef.getDownloadURL();
+    } catch (e) {
+      print('Error uploading profile image: $e');
+      return null;
+    }
+  }
+
+  Future<void> updateProfileImage({required String uid,required XFile? imageFile}) async {
+
+
+    if (imageFile != null) {
+      final String? downloadUrl = await uploadProfileImage(uid: uid, imageFile: imageFile);
+      if (downloadUrl != null) {
+        await _firestore.collection('Users').doc(uid).update({
+          'profileImageUrl': downloadUrl,
+        });
+      }
+    }
+  }
+
+  Future<UserModel?> getUserByUid({required String uid}) async {
+    try {
+      var userDoc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .get();
+      if (userDoc.exists) {
+        return UserModel.fromJson(userDoc.data()!);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error getting user by UID: $e");
+      return null;
+    }
+  }
+
+
+
+
 
   Future<UserCredential> signIn({required String email, password,username}) async {
     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
