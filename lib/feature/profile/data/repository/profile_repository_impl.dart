@@ -24,16 +24,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<void> updateProfileImage({required String uid, required XFile? imageFile}) async {
-    return await _authFirebaseService.updateProfileImage(uid: uid, imageFile: imageFile);
+  Future<void> updateProfileImage({required String uid, required XFile? imageFile, required String username}) async {
+    return await _authFirebaseService.updateProfileImage(uid: uid, imageFile: imageFile, username: username);
   }
-
-  // @override
-  // Future<void> updateProfileImage({required String uid, required XFile? imageFile}) async {
-  //   return await _authFirebaseService.updateProfileImage(uid: uid, imageFile: imageFile);
-  // }
-
-
-
 
 }

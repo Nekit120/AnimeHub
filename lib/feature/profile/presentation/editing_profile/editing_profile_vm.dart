@@ -1,3 +1,6 @@
+import 'package:anime_hub/feature/profile/domain/useCase/get_current_user_by_uid_use_case.dart';
+import 'package:anime_hub/feature/profile/domain/useCase/get_current_user_use_case.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
@@ -9,11 +12,16 @@ import '../../domain/useCase/update_profile_Image_use_case.dart';
 
 class EditingProfileViewModel extends ViewModel {
   final UpdateProfileImageUseCase updateProfileImageUseCase;
+
+  final GetCurrentUserUseCase getCurrentUserUseCase;
+  final GetCurrentUserByUidUseCase getCurrentUserByUidUseCase;
   final Rv<XFile?>imageFile = null.rv();
   final UserModel userModel;
 
   EditingProfileViewModel(super.context, {required ProfileRepository profileRepository,required this.userModel})
-      :updateProfileImageUseCase = UpdateProfileImageUseCase(profileRepository: profileRepository)
+      :updateProfileImageUseCase = UpdateProfileImageUseCase(profileRepository: profileRepository),getCurrentUserUseCase =
+  GetCurrentUserUseCase(profileRepository: profileRepository),
+        getCurrentUserByUidUseCase = GetCurrentUserByUidUseCase(profileRepository: profileRepository)
   ;
 
   AppTextEditingController nameTextController = AppTextEditingController();
@@ -23,16 +31,19 @@ class EditingProfileViewModel extends ViewModel {
 
   final changeProfilePossible = false.rv;
 
+  Future<UserModel?>  getCurrentUserByUid() async {
+    final User? user = getCurrentUserUseCase.call();
+    return   await getCurrentUserByUidUseCase.call(uid:user!.uid);
+  }
+
   @override
   void initState() {
     nameTextController.text = userModel.username;
+    phoneTextController.text = "—";
 
     if(userModel.phoneNumber != null) {
       phoneTextController.text = userModel.phoneNumber!;
     }
-
-     eMailTextController.text = userModel.email;
-
 
     nameTextController.text = userModel.username;
     super.initState();

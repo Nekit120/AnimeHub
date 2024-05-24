@@ -8,5 +8,5 @@ abstract interface class ProfileRepository {
 
   Future<UserModel?> getUserByUid({required String uid});
 
- Future<void> updateProfileImage({required String uid,required XFile? imageFile});
+ Future<void> updateProfileImage({required String uid,required XFile? imageFile,required String username});
 }

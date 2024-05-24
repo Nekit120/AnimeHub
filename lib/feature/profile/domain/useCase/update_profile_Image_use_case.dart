@@ -8,8 +8,8 @@ class UpdateProfileImageUseCase{
 
   UpdateProfileImageUseCase({required ProfileRepository profileRepository}): _profileRepository = profileRepository;
 
-    Future<void> call({required String uid,required XFile? imageFile})async  {
-    await _profileRepository.updateProfileImage(uid: uid, imageFile: imageFile);
+    Future<void> call({required String uid,required XFile? imageFile,required String username})async  {
+    await _profileRepository.updateProfileImage(uid: uid, imageFile: imageFile, username: username);
   }
 
 }

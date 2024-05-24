@@ -46,7 +46,7 @@ class AuthFirebaseService {
     }
   }
 
-  Future<void> updateProfileImage({required String uid,required XFile? imageFile}) async {
+  Future<void> updateProfileImage({required String uid,required XFile? imageFile, required String username}) async {
 
 
     if (imageFile != null) {
@@ -54,9 +54,15 @@ class AuthFirebaseService {
       if (downloadUrl != null) {
         await _firestore.collection('Users').doc(uid).update({
           'profileImageUrl': downloadUrl,
+          'username': username,
         });
       }
+    } else {
+      await _firestore.collection('Users').doc(uid).update({
+        'username': username,
+      });
     }
+
   }
 
   Future<UserModel?> getUserByUid({required String uid}) async {

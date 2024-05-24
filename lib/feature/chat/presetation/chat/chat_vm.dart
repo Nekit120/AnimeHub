@@ -74,7 +74,7 @@ class ChatViewModel extends ViewModel {
         }
       case BadUseCaseResult<UserCredential>(:final errorList):
         {
-          if(errorList.first.code == "unknownException") {
+          if(errorList.first.code == "unknownException" && errorList.first.code == "Email not verified. Please check your email for verification link.") {
 
           }else {
             customSnackBarShow(title: "Ошибка входа в аккаунт", isError: true);
@@ -88,6 +88,10 @@ class ChatViewModel extends ViewModel {
     await vm.getCurrentUserByUidUseCase.call(uid: uid);
   }
 
+  Future<UserModel?>  getCurrentUserByUid() async {
+    final User? user = getCurrentUserUseCase.call();
+    return   await getCurrentUserByUidUseCase.call(uid:user!.uid);
+  }
 
   @override
   void initState() {

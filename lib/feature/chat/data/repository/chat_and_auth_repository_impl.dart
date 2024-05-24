@@ -50,6 +50,7 @@ class ChatAndAuthRepositoryImpl implements ChatAndAuthRepository {
     } on FirebaseException catch (e) {
       return Result.bad([SpecificError(e.toString())]);
     } catch (e) {
+      log(e.toString()+"hui");
       return Result.bad([SpecificError("unknownException")]);
     }
   }

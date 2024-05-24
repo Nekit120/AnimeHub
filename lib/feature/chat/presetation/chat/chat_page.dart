@@ -13,12 +13,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../theme/svg_image_collection.dart';
 import '../../../../theme/theme_colors.dart';
 import '../../../anime/presetation/widget/error_list_widget.dart';
+import '../../../profile/domain/state_manager/profile/profile_notifier.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
 import '../../widget/custom_filled_button.dart';
 import '../../widget/email_text_field_widget.dart';
@@ -85,7 +87,7 @@ class ChatPage extends BaseView<ChatViewModel> {
               chatAndAuthRepository:
                   AppContainer().repositoryScope.chatAndAuthRepository,
               receiverId: userData.uid));
-        },
+        }, photoUrl: userData.profileImageUrl,
       );
     } else {
       return Container();
@@ -107,19 +109,18 @@ class ChatPage extends BaseView<ChatViewModel> {
                 leading: Container(
                   margin: const EdgeInsets.all(8.0),
                   child: GestureDetector(
-                    child: ClipOval(
-                        child: vm.currentUserModel.observer((context, value) =>
-                        value !=null ? Image.network(
-                          vm.currentUserModel.value!.profileImageUrl!,
-                          fit: BoxFit.cover,
-                        ) :
-                        Image.network(
-                          "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png",
-                          fit: BoxFit.cover,
-                        )
-
-                        )
-                    ),
+                    child: Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                      ref.read(profileProvider.notifier).updateProfile(getAnimeListFunction:  vm.getCurrentUserByUid());
+                      return   Consumer(builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                        final currentProfile = ref.watch(profileProvider);
+                        return ClipOval(
+                            child: currentProfile !=null ? Image.network(
+                              currentProfile!.profileImageUrl == null ?  "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png" : currentProfile!.profileImageUrl!,
+                              fit: BoxFit.cover,
+                            ) :  Container(margin: const EdgeInsets.all(8),child: CircularProgressIndicator()),
+                        );
+                      },);
+                    },) ,
                     onTap: () {
                       AutoRouter.of(context).push(ProfileRoute(
                           profileRepository: AppContainer()
