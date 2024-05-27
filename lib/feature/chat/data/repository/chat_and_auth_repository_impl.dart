@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:anime_hub/core/data/firebase_services/model/message_model.dart';
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,6 +84,11 @@ class ChatAndAuthRepositoryImpl implements ChatAndAuthRepository {
   @override
   Future<UserModel?> getUserByUid({required String uid}) async {
     return await _authFirebaseService.getUserByUid(uid: uid);
+  }
+
+  @override
+  Future<MessageModel?> getLastMessage({required String userId, required String otherUserId}) async {
+    return await _chatFirebaseService.getLastMessage(userId: userId, otherUserId: otherUserId);
   }
 
 

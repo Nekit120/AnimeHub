@@ -75,10 +75,12 @@ class ChatPage extends BaseView<ChatViewModel> {
         });
   }
 
+
   Widget _buildUserListItem(
       {required UserModel userData, required ChatViewModel vm}) {
     final currentUser = vm.getCurrentUserUseCase();
     if (userData.email != currentUser!.email) {
+      // vm.getLastMessageModel(userId:userData.uid,otherUserId: currentUser!.uid);
       return UserTile(
         email: userData.username,
         onTap: () {
@@ -86,12 +88,10 @@ class ChatPage extends BaseView<ChatViewModel> {
               receiverUsername: userData.username,
               chatAndAuthRepository:
                   AppContainer().repositoryScope.chatAndAuthRepository,
-              receiverId: userData.uid));
+              receiverId: userData.uid, userModel: userData, ));
         }, photoUrl: userData.profileImageUrl,
       );
-    } else {
-      return Container();
-    }
+    } else {  return Container();  }
   }
 
 

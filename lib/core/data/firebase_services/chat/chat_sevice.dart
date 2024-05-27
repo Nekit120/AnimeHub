@@ -54,4 +54,25 @@ class ChatFirebaseService {
         .orderBy("timestamp", descending: false)
         .snapshots();
   }
+
+  Future<MessageModel?> getLastMessage(
+      {required String userId, required String otherUserId}) async {
+    List<String> ids = [userId, otherUserId];
+    ids.sort();
+    String chatRoomId = ids.join("_");
+
+    final querySnapshot = await _firestore
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("messages")
+        .orderBy("timestamp",descending: false)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return MessageModel.fromJson(querySnapshot.docs.first.data());
+    } else {
+      return null;
+    }
+  }
+
 }

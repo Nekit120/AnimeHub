@@ -1,11 +1,13 @@
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/get_current_user_by_uid_use_case.dart';
+import 'package:anime_hub/feature/chat/domain/useCase/get_last_message_use_case.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/sign_out_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
+import '../../../../core/data/firebase_services/model/message_model.dart';
 import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../core/presentation/controllers/app_text_editing_controller.dart';
 import '../../../../core/presentation/controllers/password_text_editing_controller.dart';
@@ -21,7 +23,8 @@ class ChatViewModel extends ViewModel {
   final SignOutUseCase _signOutUseCase;
   final GetCurrentUserUseCase getCurrentUserUseCase;
   final GetCurrentUserByUidUseCase getCurrentUserByUidUseCase;
-
+  final GetLastMessageUseCase getLastMessageUseCase;
+  // MessageModel? lastMessageModel;
   final Rv<UserModel?> currentUserModel = null.rv();
 
   ChatViewModel(super.context,
@@ -32,6 +35,7 @@ class ChatViewModel extends ViewModel {
             SignOutUseCase(chatAndAuthRepository: chatAndAuthRepository),
         getUsersStreamUseCase =
             GetUsersStreamUseCase(chatAndAuthRepository: chatAndAuthRepository),
+  getLastMessageUseCase = GetLastMessageUseCase(chatAndAuthRepository: chatAndAuthRepository),
   getCurrentUserUseCase = GetCurrentUserUseCase(chatAndAuthRepository: chatAndAuthRepository), getCurrentUserByUidUseCase = GetCurrentUserByUidUseCase(chatAndAuthRepository: chatAndAuthRepository);
 
   final passwordTextCtrl = PassTextEditingController();
@@ -49,6 +53,10 @@ class ChatViewModel extends ViewModel {
   Future<void> signOut() async {
     _signOutUseCase.call();
   }
+
+  // Future<void> getLastMessageModel({required String userId, required String otherUserId}) async {
+  //   lastMessageModel = await getLastMessageUseCase(userId: userId,otherUserId: otherUserId);
+  // }
 
   void customSnackBarShow({required String title, required bool isError}) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -83,6 +91,7 @@ class ChatViewModel extends ViewModel {
         }
     }
   }
+
   Future<void> getUser({required String uid, required ChatViewModel vm}) async {
     vm.currentUserModel.value =
     await vm.getCurrentUserByUidUseCase.call(uid: uid);

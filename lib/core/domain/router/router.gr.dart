@@ -9,8 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:anime_hub/core/data/firebase_services/model/user_model.dart'
-    as _i19;
-import 'package:anime_hub/core/domain/model/anime_api_item.dart' as _i15;
+    as _i20;
+import 'package:anime_hub/core/domain/model/anime_api_item.dart' as _i16;
 import 'package:anime_hub/feature/anime/presetation/anime_favorites_search/anime_favorites_search_page.dart'
     as _i1;
 import 'package:anime_hub/feature/anime/presetation/anime_info_page/anime_info_page.dart'
@@ -22,41 +22,43 @@ import 'package:anime_hub/feature/anime/presetation/anime_search/anime_search_pa
 import 'package:anime_hub/feature/anime/presetation/favorite_anime_page/favorite_anime_page.dart'
     as _i7;
 import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
-    as _i8;
+    as _i9;
 import 'package:anime_hub/feature/chat/domain/repository/chat_and_auth_repository.dart'
-    as _i17;
+    as _i18;
 import 'package:anime_hub/feature/chat/presetation/chat/chat_page.dart' as _i5;
 import 'package:anime_hub/feature/chat/presetation/personal_chat/personal_chat_page.dart'
-    as _i9;
+    as _i10;
 import 'package:anime_hub/feature/chat/presetation/registration/registration_page.dart'
-    as _i12;
-import 'package:anime_hub/feature/player/presentation/payer_page.dart' as _i10;
+    as _i13;
+import 'package:anime_hub/feature/player/presentation/payer_page.dart' as _i11;
 import 'package:anime_hub/feature/profile/domain/repository/profile_repository.dart'
-    as _i18;
+    as _i19;
 import 'package:anime_hub/feature/profile/presentation/editing_profile/editing_profile_page.dart'
     as _i6;
+import 'package:anime_hub/feature/profile/presentation/interlocutor_profile/interlocutor_profile_page.dart'
+    as _i8;
 import 'package:anime_hub/feature/profile/presentation/profile/profile_page.dart'
-    as _i11;
-import 'package:auto_route/auto_route.dart' as _i13;
-import 'package:flutter/cupertino.dart' as _i14;
-import 'package:flutter/material.dart' as _i16;
+    as _i12;
+import 'package:auto_route/auto_route.dart' as _i14;
+import 'package:flutter/cupertino.dart' as _i15;
+import 'package:flutter/material.dart' as _i17;
 
-abstract class $AppRouter extends _i13.RootStackRouter {
+abstract class $AppRouter extends _i14.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i13.PageFactory> pagesMap = {
+  final Map<String, _i14.PageFactory> pagesMap = {
     AnimeFavoritesSearch.name: (routeData) {
       final args = routeData.argsAs<AnimeFavoritesSearchArgs>(
           orElse: () => const AnimeFavoritesSearchArgs());
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i1.AnimeFavoritesSearch(key: args.key),
       );
     },
     AnimeInfoRoute.name: (routeData) {
       final args = routeData.argsAs<AnimeInfoRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i2.AnimeInfoPage(
           key: args.key,
@@ -66,7 +68,7 @@ abstract class $AppRouter extends _i13.RootStackRouter {
     },
     AnimeReleasesRoute.name: (routeData) {
       final args = routeData.argsAs<AnimeReleasesRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i3.AnimeReleasesPage(
           key: args.key,
@@ -77,14 +79,14 @@ abstract class $AppRouter extends _i13.RootStackRouter {
     AnimeSearch.name: (routeData) {
       final args = routeData.argsAs<AnimeSearchArgs>(
           orElse: () => const AnimeSearchArgs());
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i4.AnimeSearch(key: args.key),
       );
     },
     ChatRoute.name: (routeData) {
       final args = routeData.argsAs<ChatRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i5.ChatPage(
           key: args.key,
@@ -94,7 +96,7 @@ abstract class $AppRouter extends _i13.RootStackRouter {
     },
     EditingProfileRoute.name: (routeData) {
       final args = routeData.argsAs<EditingProfileRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i6.EditingProfilePage(
           key: args.key,
@@ -105,7 +107,7 @@ abstract class $AppRouter extends _i13.RootStackRouter {
     },
     FavoriteAnimeRoute.name: (routeData) {
       final args = routeData.argsAs<FavoriteAnimeRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i7.FavoriteAnimePage(
           key: args.key,
@@ -113,29 +115,40 @@ abstract class $AppRouter extends _i13.RootStackRouter {
         ),
       );
     },
-    MainRoute.name: (routeData) {
-      return _i13.AutoRoutePage<dynamic>(
+    InterlocutorProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<InterlocutorProfileRouteArgs>();
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i8.MainScreen(),
+        child: _i8.InterlocutorProfilePage(
+          key: args.key,
+          userModel: args.userModel,
+        ),
+      );
+    },
+    MainRoute.name: (routeData) {
+      return _i14.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i9.MainScreen(),
       );
     },
     PersonalChatRoute.name: (routeData) {
       final args = routeData.argsAs<PersonalChatRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.PersonalChatPage(
+        child: _i10.PersonalChatPage(
           key: args.key,
           receiverUsername: args.receiverUsername,
           chatAndAuthRepository: args.chatAndAuthRepository,
           receiverId: args.receiverId,
+          userModel: args.userModel,
         ),
       );
     },
     PlayerRoute.name: (routeData) {
       final args = routeData.argsAs<PlayerRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i10.PlayerPage(
+        child: _i11.PlayerPage(
           key: args.key,
           animeStreamUrl: args.animeStreamUrl,
         ),
@@ -143,9 +156,9 @@ abstract class $AppRouter extends _i13.RootStackRouter {
     },
     ProfileRoute.name: (routeData) {
       final args = routeData.argsAs<ProfileRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.ProfilePage(
+        child: _i12.ProfilePage(
           key: args.key,
           profileRepository: args.profileRepository,
         ),
@@ -153,9 +166,9 @@ abstract class $AppRouter extends _i13.RootStackRouter {
     },
     RegistrationRoute.name: (routeData) {
       final args = routeData.argsAs<RegistrationRouteArgs>();
-      return _i13.AutoRoutePage<dynamic>(
+      return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i12.RegistrationPage(
+        child: _i13.RegistrationPage(
           key: args.key,
           chatAndAuthRepository: args.chatAndAuthRepository,
         ),
@@ -167,10 +180,10 @@ abstract class $AppRouter extends _i13.RootStackRouter {
 /// generated route for
 /// [_i1.AnimeFavoritesSearch]
 class AnimeFavoritesSearch
-    extends _i13.PageRouteInfo<AnimeFavoritesSearchArgs> {
+    extends _i14.PageRouteInfo<AnimeFavoritesSearchArgs> {
   AnimeFavoritesSearch({
-    _i14.Key? key,
-    List<_i13.PageRouteInfo>? children,
+    _i15.Key? key,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           AnimeFavoritesSearch.name,
           args: AnimeFavoritesSearchArgs(key: key),
@@ -179,14 +192,14 @@ class AnimeFavoritesSearch
 
   static const String name = 'AnimeFavoritesSearch';
 
-  static const _i13.PageInfo<AnimeFavoritesSearchArgs> page =
-      _i13.PageInfo<AnimeFavoritesSearchArgs>(name);
+  static const _i14.PageInfo<AnimeFavoritesSearchArgs> page =
+      _i14.PageInfo<AnimeFavoritesSearchArgs>(name);
 }
 
 class AnimeFavoritesSearchArgs {
   const AnimeFavoritesSearchArgs({this.key});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -196,11 +209,11 @@ class AnimeFavoritesSearchArgs {
 
 /// generated route for
 /// [_i2.AnimeInfoPage]
-class AnimeInfoRoute extends _i13.PageRouteInfo<AnimeInfoRouteArgs> {
+class AnimeInfoRoute extends _i14.PageRouteInfo<AnimeInfoRouteArgs> {
   AnimeInfoRoute({
-    _i14.Key? key,
-    required _i15.AnimeApiItem animeItem,
-    List<_i13.PageRouteInfo>? children,
+    _i15.Key? key,
+    required _i16.AnimeApiItem animeItem,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           AnimeInfoRoute.name,
           args: AnimeInfoRouteArgs(
@@ -212,8 +225,8 @@ class AnimeInfoRoute extends _i13.PageRouteInfo<AnimeInfoRouteArgs> {
 
   static const String name = 'AnimeInfoRoute';
 
-  static const _i13.PageInfo<AnimeInfoRouteArgs> page =
-      _i13.PageInfo<AnimeInfoRouteArgs>(name);
+  static const _i14.PageInfo<AnimeInfoRouteArgs> page =
+      _i14.PageInfo<AnimeInfoRouteArgs>(name);
 }
 
 class AnimeInfoRouteArgs {
@@ -222,9 +235,9 @@ class AnimeInfoRouteArgs {
     required this.animeItem,
   });
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
-  final _i15.AnimeApiItem animeItem;
+  final _i16.AnimeApiItem animeItem;
 
   @override
   String toString() {
@@ -234,11 +247,11 @@ class AnimeInfoRouteArgs {
 
 /// generated route for
 /// [_i3.AnimeReleasesPage]
-class AnimeReleasesRoute extends _i13.PageRouteInfo<AnimeReleasesRouteArgs> {
+class AnimeReleasesRoute extends _i14.PageRouteInfo<AnimeReleasesRouteArgs> {
   AnimeReleasesRoute({
-    _i16.Key? key,
-    required _i16.ScrollController controller,
-    List<_i13.PageRouteInfo>? children,
+    _i17.Key? key,
+    required _i17.ScrollController controller,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           AnimeReleasesRoute.name,
           args: AnimeReleasesRouteArgs(
@@ -250,8 +263,8 @@ class AnimeReleasesRoute extends _i13.PageRouteInfo<AnimeReleasesRouteArgs> {
 
   static const String name = 'AnimeReleasesRoute';
 
-  static const _i13.PageInfo<AnimeReleasesRouteArgs> page =
-      _i13.PageInfo<AnimeReleasesRouteArgs>(name);
+  static const _i14.PageInfo<AnimeReleasesRouteArgs> page =
+      _i14.PageInfo<AnimeReleasesRouteArgs>(name);
 }
 
 class AnimeReleasesRouteArgs {
@@ -260,9 +273,9 @@ class AnimeReleasesRouteArgs {
     required this.controller,
   });
 
-  final _i16.Key? key;
+  final _i17.Key? key;
 
-  final _i16.ScrollController controller;
+  final _i17.ScrollController controller;
 
   @override
   String toString() {
@@ -272,10 +285,10 @@ class AnimeReleasesRouteArgs {
 
 /// generated route for
 /// [_i4.AnimeSearch]
-class AnimeSearch extends _i13.PageRouteInfo<AnimeSearchArgs> {
+class AnimeSearch extends _i14.PageRouteInfo<AnimeSearchArgs> {
   AnimeSearch({
-    _i14.Key? key,
-    List<_i13.PageRouteInfo>? children,
+    _i15.Key? key,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           AnimeSearch.name,
           args: AnimeSearchArgs(key: key),
@@ -284,14 +297,14 @@ class AnimeSearch extends _i13.PageRouteInfo<AnimeSearchArgs> {
 
   static const String name = 'AnimeSearch';
 
-  static const _i13.PageInfo<AnimeSearchArgs> page =
-      _i13.PageInfo<AnimeSearchArgs>(name);
+  static const _i14.PageInfo<AnimeSearchArgs> page =
+      _i14.PageInfo<AnimeSearchArgs>(name);
 }
 
 class AnimeSearchArgs {
   const AnimeSearchArgs({this.key});
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -301,11 +314,11 @@ class AnimeSearchArgs {
 
 /// generated route for
 /// [_i5.ChatPage]
-class ChatRoute extends _i13.PageRouteInfo<ChatRouteArgs> {
+class ChatRoute extends _i14.PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
-    _i14.Key? key,
-    required _i17.ChatAndAuthRepository chatAndAuthRepository,
-    List<_i13.PageRouteInfo>? children,
+    _i15.Key? key,
+    required _i18.ChatAndAuthRepository chatAndAuthRepository,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           ChatRoute.name,
           args: ChatRouteArgs(
@@ -317,8 +330,8 @@ class ChatRoute extends _i13.PageRouteInfo<ChatRouteArgs> {
 
   static const String name = 'ChatRoute';
 
-  static const _i13.PageInfo<ChatRouteArgs> page =
-      _i13.PageInfo<ChatRouteArgs>(name);
+  static const _i14.PageInfo<ChatRouteArgs> page =
+      _i14.PageInfo<ChatRouteArgs>(name);
 }
 
 class ChatRouteArgs {
@@ -327,9 +340,9 @@ class ChatRouteArgs {
     required this.chatAndAuthRepository,
   });
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
-  final _i17.ChatAndAuthRepository chatAndAuthRepository;
+  final _i18.ChatAndAuthRepository chatAndAuthRepository;
 
   @override
   String toString() {
@@ -339,12 +352,12 @@ class ChatRouteArgs {
 
 /// generated route for
 /// [_i6.EditingProfilePage]
-class EditingProfileRoute extends _i13.PageRouteInfo<EditingProfileRouteArgs> {
+class EditingProfileRoute extends _i14.PageRouteInfo<EditingProfileRouteArgs> {
   EditingProfileRoute({
-    _i16.Key? key,
-    required _i18.ProfileRepository profileRepository,
-    required _i19.UserModel userModel,
-    List<_i13.PageRouteInfo>? children,
+    _i17.Key? key,
+    required _i19.ProfileRepository profileRepository,
+    required _i20.UserModel userModel,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           EditingProfileRoute.name,
           args: EditingProfileRouteArgs(
@@ -357,8 +370,8 @@ class EditingProfileRoute extends _i13.PageRouteInfo<EditingProfileRouteArgs> {
 
   static const String name = 'EditingProfileRoute';
 
-  static const _i13.PageInfo<EditingProfileRouteArgs> page =
-      _i13.PageInfo<EditingProfileRouteArgs>(name);
+  static const _i14.PageInfo<EditingProfileRouteArgs> page =
+      _i14.PageInfo<EditingProfileRouteArgs>(name);
 }
 
 class EditingProfileRouteArgs {
@@ -368,11 +381,11 @@ class EditingProfileRouteArgs {
     required this.userModel,
   });
 
-  final _i16.Key? key;
+  final _i17.Key? key;
 
-  final _i18.ProfileRepository profileRepository;
+  final _i19.ProfileRepository profileRepository;
 
-  final _i19.UserModel userModel;
+  final _i20.UserModel userModel;
 
   @override
   String toString() {
@@ -382,11 +395,11 @@ class EditingProfileRouteArgs {
 
 /// generated route for
 /// [_i7.FavoriteAnimePage]
-class FavoriteAnimeRoute extends _i13.PageRouteInfo<FavoriteAnimeRouteArgs> {
+class FavoriteAnimeRoute extends _i14.PageRouteInfo<FavoriteAnimeRouteArgs> {
   FavoriteAnimeRoute({
-    _i16.Key? key,
-    required _i16.ScrollController controller,
-    List<_i13.PageRouteInfo>? children,
+    _i17.Key? key,
+    required _i17.ScrollController controller,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           FavoriteAnimeRoute.name,
           args: FavoriteAnimeRouteArgs(
@@ -398,8 +411,8 @@ class FavoriteAnimeRoute extends _i13.PageRouteInfo<FavoriteAnimeRouteArgs> {
 
   static const String name = 'FavoriteAnimeRoute';
 
-  static const _i13.PageInfo<FavoriteAnimeRouteArgs> page =
-      _i13.PageInfo<FavoriteAnimeRouteArgs>(name);
+  static const _i14.PageInfo<FavoriteAnimeRouteArgs> page =
+      _i14.PageInfo<FavoriteAnimeRouteArgs>(name);
 }
 
 class FavoriteAnimeRouteArgs {
@@ -408,9 +421,9 @@ class FavoriteAnimeRouteArgs {
     required this.controller,
   });
 
-  final _i16.Key? key;
+  final _i17.Key? key;
 
-  final _i16.ScrollController controller;
+  final _i17.ScrollController controller;
 
   @override
   String toString() {
@@ -419,9 +432,48 @@ class FavoriteAnimeRouteArgs {
 }
 
 /// generated route for
-/// [_i8.MainScreen]
-class MainRoute extends _i13.PageRouteInfo<void> {
-  const MainRoute({List<_i13.PageRouteInfo>? children})
+/// [_i8.InterlocutorProfilePage]
+class InterlocutorProfileRoute
+    extends _i14.PageRouteInfo<InterlocutorProfileRouteArgs> {
+  InterlocutorProfileRoute({
+    _i15.Key? key,
+    required _i20.UserModel userModel,
+    List<_i14.PageRouteInfo>? children,
+  }) : super(
+          InterlocutorProfileRoute.name,
+          args: InterlocutorProfileRouteArgs(
+            key: key,
+            userModel: userModel,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'InterlocutorProfileRoute';
+
+  static const _i14.PageInfo<InterlocutorProfileRouteArgs> page =
+      _i14.PageInfo<InterlocutorProfileRouteArgs>(name);
+}
+
+class InterlocutorProfileRouteArgs {
+  const InterlocutorProfileRouteArgs({
+    this.key,
+    required this.userModel,
+  });
+
+  final _i15.Key? key;
+
+  final _i20.UserModel userModel;
+
+  @override
+  String toString() {
+    return 'InterlocutorProfileRouteArgs{key: $key, userModel: $userModel}';
+  }
+}
+
+/// generated route for
+/// [_i9.MainScreen]
+class MainRoute extends _i14.PageRouteInfo<void> {
+  const MainRoute({List<_i14.PageRouteInfo>? children})
       : super(
           MainRoute.name,
           initialChildren: children,
@@ -429,18 +481,19 @@ class MainRoute extends _i13.PageRouteInfo<void> {
 
   static const String name = 'MainRoute';
 
-  static const _i13.PageInfo<void> page = _i13.PageInfo<void>(name);
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i9.PersonalChatPage]
-class PersonalChatRoute extends _i13.PageRouteInfo<PersonalChatRouteArgs> {
+/// [_i10.PersonalChatPage]
+class PersonalChatRoute extends _i14.PageRouteInfo<PersonalChatRouteArgs> {
   PersonalChatRoute({
-    _i14.Key? key,
+    _i15.Key? key,
     required String receiverUsername,
-    required _i17.ChatAndAuthRepository chatAndAuthRepository,
+    required _i18.ChatAndAuthRepository chatAndAuthRepository,
     required String receiverId,
-    List<_i13.PageRouteInfo>? children,
+    required _i20.UserModel userModel,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           PersonalChatRoute.name,
           args: PersonalChatRouteArgs(
@@ -448,14 +501,15 @@ class PersonalChatRoute extends _i13.PageRouteInfo<PersonalChatRouteArgs> {
             receiverUsername: receiverUsername,
             chatAndAuthRepository: chatAndAuthRepository,
             receiverId: receiverId,
+            userModel: userModel,
           ),
           initialChildren: children,
         );
 
   static const String name = 'PersonalChatRoute';
 
-  static const _i13.PageInfo<PersonalChatRouteArgs> page =
-      _i13.PageInfo<PersonalChatRouteArgs>(name);
+  static const _i14.PageInfo<PersonalChatRouteArgs> page =
+      _i14.PageInfo<PersonalChatRouteArgs>(name);
 }
 
 class PersonalChatRouteArgs {
@@ -464,29 +518,32 @@ class PersonalChatRouteArgs {
     required this.receiverUsername,
     required this.chatAndAuthRepository,
     required this.receiverId,
+    required this.userModel,
   });
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   final String receiverUsername;
 
-  final _i17.ChatAndAuthRepository chatAndAuthRepository;
+  final _i18.ChatAndAuthRepository chatAndAuthRepository;
 
   final String receiverId;
 
+  final _i20.UserModel userModel;
+
   @override
   String toString() {
-    return 'PersonalChatRouteArgs{key: $key, receiverUsername: $receiverUsername, chatAndAuthRepository: $chatAndAuthRepository, receiverId: $receiverId}';
+    return 'PersonalChatRouteArgs{key: $key, receiverUsername: $receiverUsername, chatAndAuthRepository: $chatAndAuthRepository, receiverId: $receiverId, userModel: $userModel}';
   }
 }
 
 /// generated route for
-/// [_i10.PlayerPage]
-class PlayerRoute extends _i13.PageRouteInfo<PlayerRouteArgs> {
+/// [_i11.PlayerPage]
+class PlayerRoute extends _i14.PageRouteInfo<PlayerRouteArgs> {
   PlayerRoute({
-    _i14.Key? key,
+    _i15.Key? key,
     required String animeStreamUrl,
-    List<_i13.PageRouteInfo>? children,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           PlayerRoute.name,
           args: PlayerRouteArgs(
@@ -498,8 +555,8 @@ class PlayerRoute extends _i13.PageRouteInfo<PlayerRouteArgs> {
 
   static const String name = 'PlayerRoute';
 
-  static const _i13.PageInfo<PlayerRouteArgs> page =
-      _i13.PageInfo<PlayerRouteArgs>(name);
+  static const _i14.PageInfo<PlayerRouteArgs> page =
+      _i14.PageInfo<PlayerRouteArgs>(name);
 }
 
 class PlayerRouteArgs {
@@ -508,7 +565,7 @@ class PlayerRouteArgs {
     required this.animeStreamUrl,
   });
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
   final String animeStreamUrl;
 
@@ -519,12 +576,12 @@ class PlayerRouteArgs {
 }
 
 /// generated route for
-/// [_i11.ProfilePage]
-class ProfileRoute extends _i13.PageRouteInfo<ProfileRouteArgs> {
+/// [_i12.ProfilePage]
+class ProfileRoute extends _i14.PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({
-    _i14.Key? key,
-    required _i18.ProfileRepository profileRepository,
-    List<_i13.PageRouteInfo>? children,
+    _i15.Key? key,
+    required _i19.ProfileRepository profileRepository,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           ProfileRoute.name,
           args: ProfileRouteArgs(
@@ -536,8 +593,8 @@ class ProfileRoute extends _i13.PageRouteInfo<ProfileRouteArgs> {
 
   static const String name = 'ProfileRoute';
 
-  static const _i13.PageInfo<ProfileRouteArgs> page =
-      _i13.PageInfo<ProfileRouteArgs>(name);
+  static const _i14.PageInfo<ProfileRouteArgs> page =
+      _i14.PageInfo<ProfileRouteArgs>(name);
 }
 
 class ProfileRouteArgs {
@@ -546,9 +603,9 @@ class ProfileRouteArgs {
     required this.profileRepository,
   });
 
-  final _i14.Key? key;
+  final _i15.Key? key;
 
-  final _i18.ProfileRepository profileRepository;
+  final _i19.ProfileRepository profileRepository;
 
   @override
   String toString() {
@@ -557,12 +614,12 @@ class ProfileRouteArgs {
 }
 
 /// generated route for
-/// [_i12.RegistrationPage]
-class RegistrationRoute extends _i13.PageRouteInfo<RegistrationRouteArgs> {
+/// [_i13.RegistrationPage]
+class RegistrationRoute extends _i14.PageRouteInfo<RegistrationRouteArgs> {
   RegistrationRoute({
-    _i16.Key? key,
-    required _i17.ChatAndAuthRepository chatAndAuthRepository,
-    List<_i13.PageRouteInfo>? children,
+    _i17.Key? key,
+    required _i18.ChatAndAuthRepository chatAndAuthRepository,
+    List<_i14.PageRouteInfo>? children,
   }) : super(
           RegistrationRoute.name,
           args: RegistrationRouteArgs(
@@ -574,8 +631,8 @@ class RegistrationRoute extends _i13.PageRouteInfo<RegistrationRouteArgs> {
 
   static const String name = 'RegistrationRoute';
 
-  static const _i13.PageInfo<RegistrationRouteArgs> page =
-      _i13.PageInfo<RegistrationRouteArgs>(name);
+  static const _i14.PageInfo<RegistrationRouteArgs> page =
+      _i14.PageInfo<RegistrationRouteArgs>(name);
 }
 
 class RegistrationRouteArgs {
@@ -584,9 +641,9 @@ class RegistrationRouteArgs {
     required this.chatAndAuthRepository,
   });
 
-  final _i16.Key? key;
+  final _i17.Key? key;
 
-  final _i17.ChatAndAuthRepository chatAndAuthRepository;
+  final _i18.ChatAndAuthRepository chatAndAuthRepository;
 
   @override
   String toString() {

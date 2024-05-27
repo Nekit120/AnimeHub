@@ -1,12 +1,15 @@
 import 'dart:developer';
+import 'package:anime_hub/core/data/firebase_services/model/user_model.dart';
 import 'package:anime_hub/feature/chat/presetation/personal_chat/personal_chat_view_model.dart';
 import 'package:anime_hub/theme/theme_colors.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../../../core/data/firebase_services/model/message_model.dart';
+import '../../../../core/domain/router/router.gr.dart';
 import '../../../../core/presentation/view/view_model.dart';
 import '../../../../generated/l10n.dart';
 import '../../../anime/presetation/widget/error_list_widget.dart';
@@ -15,6 +18,7 @@ import '../../domain/repository/chat_and_auth_repository.dart';
 @RoutePage()
 class PersonalChatPage extends BaseView<PersonalChatViewModel> {
   final String receiverUsername;
+  final UserModel userModel;
   final String receiverId;
 
   PersonalChatPage({
@@ -22,6 +26,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     required this.receiverUsername,
     required ChatAndAuthRepository chatAndAuthRepository,
     required this.receiverId,
+    required this.userModel,
   }) : super(
             vmFactory: (context) => PersonalChatViewModel(context,
                 chatAndAuthRepository: chatAndAuthRepository));
@@ -99,9 +104,12 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           }
 
           log(snapshot.data!.docs.toString());
+          Future.delayed(
+              const Duration(milliseconds: 500),
+                  () => vm.scrollDown());
+
           return ListView(
             controller: vm.scrollController,
-
             children: snapshot.data!.docs
                 .map((doc) =>
                     _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth))
@@ -141,10 +149,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             onPressed: () {
               sendMessage(vm: vm);
               Future.delayed(
-                  const Duration(milliseconds: 300),
-                      () => vm.fastScrollDown()
-              );
-
+                  const Duration(milliseconds: 300), () => vm.fastScrollDown());
             },
           ),
         ]),
@@ -158,8 +163,35 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        surfaceTintColor: CupertinoColors.white,
+        // shadowColor: Colors.white,
+        backgroundColor: CupertinoColors.white,
+
         title: Center(
-          child: Text(receiverUsername),
+          child: GestureDetector(
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 45,
+                  width: 45,
+                  child: ClipOval(
+                    child: Image.network(
+                      userModel.profileImageUrl == null
+                          ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
+                          : userModel.profileImageUrl!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8,),
+                Text(receiverUsername),
+              ],
+            ),
+            onTap: (){
+    AutoRouter.of(vm.context).push(InterlocutorProfileRoute(userModel: userModel));
+    },
+
+          ),
         ),
         actions: [
           IconButton(
