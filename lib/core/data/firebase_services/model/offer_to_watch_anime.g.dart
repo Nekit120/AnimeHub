@@ -12,7 +12,7 @@ OfferToWatchAnime _$OfferToWatchAnimeFromJson(Map<String, dynamic> json) =>
       animeName: json['anime_name'] as String,
       animePoster: json['anime_poster'] as String,
       proposedId: json['proposed_id'] as String,
-      acceptId: json['accepted_id'] as String,
+      acceptId: json['accepted_id'] as String?,
       isProposed: json['is_proposed'] as bool,
       isAccepted: json['is_accepted'] as bool,
     );

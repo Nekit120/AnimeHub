@@ -51,8 +51,7 @@ class ChatPage extends BaseView<ChatViewModel> {
 
   Widget _buildUserList({required ChatViewModel vm, required String uid}) {
     return StreamBuilder(
-        stream: chatFirebaseService.getUserModelWithLastMessage(
-            currentUserUid: uid),
+        stream: vm.getUserWithLastMessageUseCase.call(currentUserUid: uid),
         // vm.getUsersStreamUseCase.call(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {

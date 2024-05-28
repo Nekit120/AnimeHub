@@ -104,7 +104,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             );
           }
           Future.delayed(
-              const Duration(milliseconds: 600),
+              const Duration(milliseconds: 700),
                   () => vm.scrollDown());
 
           return ListView(

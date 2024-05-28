@@ -142,7 +142,7 @@ abstract class $AppRouter extends _i14.RootStackRouter {
           receiverUsername: args.receiverUsername,
           chatAndAuthRepository: args.chatAndAuthRepository,
           receiverId: args.receiverId,
-          userModel: args.userModel,
+      userModel: args.userModel,
         ),
       );
     },

@@ -1,4 +1,4 @@
-import 'package:anime_hub/core/presentation/view/view_model.dart';
+ import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/feature/anime/domain/useCase/update_anime_list_from_db_use_case.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 import '../../../../core/domain/model/anime_api_item.dart';

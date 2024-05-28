@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../model/message_model.dart';
+import '../model/offer_to_watch_anime.dart';
 import '../model/user_model.dart';
 
 class ChatFirebaseService {
@@ -37,8 +38,12 @@ class ChatFirebaseService {
 //       }).toList();
 //     });
 //   }
-  Stream<List<UserModelWithLastMessage>> getUserModelWithLastMessage({required String currentUserUid}) {
-    return _firestore.collection("Users").snapshots().asyncMap((snapshots) async {
+  Stream<List<UserModelWithLastMessage>> getUserModelWithLastMessage(
+      {required String currentUserUid}) {
+    return _firestore
+        .collection("Users")
+        .snapshots()
+        .asyncMap((snapshots) async {
       List<UserModelWithLastMessage> userModelWithLastMessages = [];
 
       for (var doc in snapshots.docs) {
@@ -57,7 +62,8 @@ class ChatFirebaseService {
 
         String lastMessage = "";
         if (querySnapshot.docs.isNotEmpty) {
-          lastMessage = MessageModel.fromJson(querySnapshot.docs.first.data()).message;
+          lastMessage =
+              MessageModel.fromJson(querySnapshot.docs.first.data()).message;
         }
 
         userModelWithLastMessages.add(UserModelWithLastMessage(
@@ -96,8 +102,32 @@ class ChatFirebaseService {
         .collection("messages")
         .add(newMessage.toJson());
   }
+  ///////////////////////////////////////////////
 
+  Future<void> sendInvite(
+      {required String animeLink,
+      required String animeName,
+      required String animePoster,
+      required String proposedId,
+      required String acceptId}) async {
+    final String currentUserId = _auth.currentUser!.uid;
+    final String currentUserEmail = _auth.currentUser!.email!;
+    final Timestamp timestamp = Timestamp.now();
 
+    final newInvite = OfferToWatchAnime(animeLink: animeLink, animeName: animeName, animePoster: animePoster, proposedId: proposedId, acceptId: acceptId, isProposed: true, isAccepted: false,);
+
+    List<String> ids = [currentUserId, acceptId];
+    ids.sort();
+    String chatRoomId = ids.join("_");
+
+    await _firestore
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("offers")
+        .add(newInvite.toJson());
+  }
+
+////////////////////////////////////////////////////
   Stream<QuerySnapshot> getMessage(
       {required String userId, required String otherUserId}) {
     List<String> ids = [userId, otherUserId];
@@ -123,7 +153,7 @@ class ChatFirebaseService {
         .collection("chat_rooms")
         .doc(chatRoomId)
         .collection("messages")
-        .orderBy("timestamp",descending: false)
+        .orderBy("timestamp", descending: false)
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -132,5 +162,4 @@ class ChatFirebaseService {
       return null;
     }
   }
-
 }

@@ -14,7 +14,7 @@ class OfferToWatchAnime {
   @JsonKey(name: "proposed_id")
   final String proposedId;
   @JsonKey(name: "accepted_id")
-  final String acceptId;
+  final String? acceptId;
   @JsonKey(name: "is_proposed")
   final bool isProposed;
   @JsonKey(name: "is_accepted")

@@ -2,6 +2,7 @@ import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/get_current_user_by_uid_use_case.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/get_last_message_use_case.dart';
+import 'package:anime_hub/feature/chat/domain/useCase/get_user_with_last_message_use_case.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/sign_out_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class ChatViewModel extends ViewModel {
   final GetCurrentUserUseCase getCurrentUserUseCase;
   final GetCurrentUserByUidUseCase getCurrentUserByUidUseCase;
   final GetLastMessageUseCase getLastMessageUseCase;
+  final GetUserWithLastMessageUseCase getUserWithLastMessageUseCase;
   // MessageModel? lastMessageModel;
   final Rv<UserModel?> currentUserModel = null.rv();
 
@@ -36,7 +38,9 @@ class ChatViewModel extends ViewModel {
         getUsersStreamUseCase =
             GetUsersStreamUseCase(chatAndAuthRepository: chatAndAuthRepository),
   getLastMessageUseCase = GetLastMessageUseCase(chatAndAuthRepository: chatAndAuthRepository),
-  getCurrentUserUseCase = GetCurrentUserUseCase(chatAndAuthRepository: chatAndAuthRepository), getCurrentUserByUidUseCase = GetCurrentUserByUidUseCase(chatAndAuthRepository: chatAndAuthRepository);
+  getCurrentUserUseCase = GetCurrentUserUseCase(chatAndAuthRepository: chatAndAuthRepository),
+        getUserWithLastMessageUseCase = GetUserWithLastMessageUseCase(chatAndAuthRepository: chatAndAuthRepository),
+        getCurrentUserByUidUseCase = GetCurrentUserByUidUseCase(chatAndAuthRepository: chatAndAuthRepository);
 
   final passwordTextCtrl = PassTextEditingController();
   final emailTextCtrl = AppTextEditingController();

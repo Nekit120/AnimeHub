@@ -50,7 +50,7 @@ class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
                         isNotHorizontal: isNotHorizontal,
                         controller:  vm.controller ,
                         animeList: data.results,
-                        context: vm.context, isFavorite: false,
+                        context: vm.context, isFavorite: false, onTapCallback:null,
                       );
                 case null:
                   return const Center(child: CircularProgressIndicator());

@@ -109,7 +109,7 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                           isNotHorizontal: isNotHorizontal,
                           animeList: animeItemList.data,
                           controller: null,
-                          context: vm.context, isFavorite: true,),
+                          context: vm.context, isFavorite: true, onTapCallback: null,),
                     )
                   ]);
                 } else {
