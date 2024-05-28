@@ -109,6 +109,7 @@ class ChatFirebaseService {
         .doc(chatRoomId)
         .collection("messages")
         .orderBy("timestamp", descending: false)
+        // .limitToLast(140)
         .snapshots();
   }
 

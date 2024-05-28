@@ -103,10 +103,8 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
               child: CircularProgressIndicator(),
             );
           }
-
-          log(snapshot.data!.docs.toString());
           Future.delayed(
-              const Duration(milliseconds: 500),
+              const Duration(milliseconds: 600),
                   () => vm.scrollDown());
 
           return ListView(
@@ -118,6 +116,8 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           );
         });
   }
+
+
 
   Widget _myCustomTextWidget(
       {required double maxWidth, required PersonalChatViewModel vm}) {
