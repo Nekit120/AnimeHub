@@ -1,4 +1,5 @@
 import 'package:anime_hub/core/data/firebase_services/model/user_model.dart';
+import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
@@ -17,7 +18,7 @@ import 'interlocutor_profile_vm.dart';
 
 @RoutePage()
 class InterlocutorProfilePage extends BaseView<InterlocutorProfileViewModel> {
-  final UserModel userModel;
+  final UserModelWithLastMessage userModel;
   InterlocutorProfilePage({super.key, required this.userModel})
       : super(
             vmFactory: (context) => InterlocutorProfileViewModel(context));
@@ -28,7 +29,7 @@ class InterlocutorProfilePage extends BaseView<InterlocutorProfileViewModel> {
     );
   }
 
-  Widget _personalProfileBody({required InterlocutorProfileViewModel vm,required UserModel userModel}) {
+  Widget _personalProfileBody({required InterlocutorProfileViewModel vm,required UserModelWithLastMessage userModel}) {
     return Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(

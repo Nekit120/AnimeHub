@@ -59,10 +59,11 @@ final lightTheme = ThemeData(
       height: 52 / 45,
     ),
     displaySmall: TextStyle(
-      fontSize: 36,
+      fontSize: 17,
       fontFamily: 'Roboto',
-      fontWeight: FontWeight.w400,
-      height: 44 / 36,
+      color: LightThemeColors.mdThemeLightInverseSurface,
+      fontWeight: FontWeight.w700,
+      height: 20 / 16,
     ),
     headlineLarge: TextStyle(
       fontSize: 16,

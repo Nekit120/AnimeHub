@@ -37,13 +37,13 @@ class PersonalChatViewModel extends ViewModel {
   void initState() {
     super.initState();
     Future.delayed(
-        const Duration(milliseconds: 300),
+        const Duration(milliseconds: 500),
             () => fastScrollDown()
     );
 
     myFocusNode.addListener(() {
       Future.delayed(
-        const Duration(milliseconds: 500),
+        const Duration(milliseconds: 600),
           () => scrollDown());
     }
     );

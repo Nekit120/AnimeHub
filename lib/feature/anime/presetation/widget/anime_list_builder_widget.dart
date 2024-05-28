@@ -10,12 +10,14 @@ class AnimeListBuilderWidget extends StatelessWidget {
   final List<AnimeApiItem> animeList;
   final ScrollController? controller;
   final BuildContext context;
+  final bool isFavorite;
   const AnimeListBuilderWidget(
       {super.key,
         required this.isNotHorizontal,
         required this.controller,
         required this.animeList,
-        required this.context});
+        required this.context,
+        required this.isFavorite});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class AnimeListBuilderWidget extends StatelessWidget {
                 child: SizedBox(
                   child: ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(12)),
-                      child: CachedNetworkImage(
+                      child: isFavorite == true ? CachedNetworkImage(
                         imageUrl: animeList[index].materialData?.posterUrl ??
                             "https://shikimori.one/system/animes/original/56838.jpg",
                         height: 255,
@@ -57,7 +59,15 @@ class AnimeListBuilderWidget extends StatelessWidget {
                                 height: 24,
                                 width: 24,
                                 child: CircularProgressIndicator())),
-                      )),
+                      ) :  Image.network(
+                      animeList[index].materialData?.posterUrl ??
+                            "https://shikimori.one/system/animes/original/56838.jpg",
+                        height: 255,
+                        width: 190,
+                        fit: BoxFit.cover,
+                      )
+
+                  ),
                 ),
               ),
               Text(animeList[index].title,

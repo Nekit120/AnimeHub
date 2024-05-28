@@ -106,7 +106,7 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
                           isNotHorizontal: isNotHorizontal,
                           animeList: animeItemList.data.results,
                           controller: null,
-                          context: vm.context),
+                          context: vm.context, isFavorite: false,),
                     )
                   ]);
                 } else {

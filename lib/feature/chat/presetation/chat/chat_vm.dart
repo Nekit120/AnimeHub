@@ -82,10 +82,10 @@ class ChatViewModel extends ViewModel {
         }
       case BadUseCaseResult<UserCredential>(:final errorList):
         {
-          if(errorList.first.code == "unknownException" && errorList.first.code == "Email not verified. Please check your email for verification link.") {
+          if(errorList.first.code == "type 'Null' is not a subtype of type 'String'") {
 
-          }else {
-            customSnackBarShow(title: "Ошибка входа в аккаунт", isError: true);
+          } else {
+            customSnackBarShow(title: errorList.first.code, isError: true);
           }
           break;
         }

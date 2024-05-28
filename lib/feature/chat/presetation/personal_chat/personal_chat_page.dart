@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:anime_hub/core/data/firebase_services/model/user_model.dart';
+import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
 import 'package:anime_hub/feature/chat/presetation/personal_chat/personal_chat_view_model.dart';
 import 'package:anime_hub/theme/theme_colors.dart';
 import 'package:auto_route/annotations.dart';
@@ -18,7 +19,7 @@ import '../../domain/repository/chat_and_auth_repository.dart';
 @RoutePage()
 class PersonalChatPage extends BaseView<PersonalChatViewModel> {
   final String receiverUsername;
-  final UserModel userModel;
+  final UserModelWithLastMessage userModel;
   final String receiverId;
 
   PersonalChatPage({
@@ -190,7 +191,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             onTap: (){
     AutoRouter.of(vm.context).push(InterlocutorProfileRoute(userModel: userModel));
     },
-
           ),
         ),
         actions: [

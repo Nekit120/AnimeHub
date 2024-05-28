@@ -10,6 +10,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:anime_hub/core/data/firebase_services/model/user_model.dart'
     as _i20;
+import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart'
+    as _i21;
 import 'package:anime_hub/core/domain/model/anime_api_item.dart' as _i16;
 import 'package:anime_hub/feature/anime/presetation/anime_favorites_search/anime_favorites_search_page.dart'
     as _i1;
@@ -437,7 +439,7 @@ class InterlocutorProfileRoute
     extends _i14.PageRouteInfo<InterlocutorProfileRouteArgs> {
   InterlocutorProfileRoute({
     _i15.Key? key,
-    required _i20.UserModel userModel,
+    required _i21.UserModelWithLastMessage userModel,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           InterlocutorProfileRoute.name,
@@ -462,7 +464,7 @@ class InterlocutorProfileRouteArgs {
 
   final _i15.Key? key;
 
-  final _i20.UserModel userModel;
+  final _i21.UserModelWithLastMessage userModel;
 
   @override
   String toString() {
@@ -492,7 +494,7 @@ class PersonalChatRoute extends _i14.PageRouteInfo<PersonalChatRouteArgs> {
     required String receiverUsername,
     required _i18.ChatAndAuthRepository chatAndAuthRepository,
     required String receiverId,
-    required _i20.UserModel userModel,
+    required _i21.UserModelWithLastMessage userModel,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           PersonalChatRoute.name,
@@ -529,7 +531,7 @@ class PersonalChatRouteArgs {
 
   final String receiverId;
 
-  final _i20.UserModel userModel;
+  final _i21.UserModelWithLastMessage userModel;
 
   @override
   String toString() {

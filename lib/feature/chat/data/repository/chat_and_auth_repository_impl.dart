@@ -49,10 +49,9 @@ class ChatAndAuthRepositoryImpl implements ChatAndAuthRepository {
           await _authFirebaseService.signIn(email: email, password: password);
       return Result.good(result);
     } on FirebaseException catch (e) {
-      return Result.bad([SpecificError(e.toString())]);
+      return Result.bad([SpecificError(e.code)]);
     } catch (e) {
-      log(e.toString()+"hui");
-      return Result.bad([SpecificError("unknownException")]);
+      return Result.bad([SpecificError(e.toString())]);
     }
   }
 
