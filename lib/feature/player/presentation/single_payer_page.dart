@@ -6,16 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 @RoutePage()
-class PlayerPage extends StatefulWidget {
+class SinglePlayerPage extends StatefulWidget {
   final String animeStreamUrl;
 
-  const PlayerPage({super.key, required this.animeStreamUrl});
+  const SinglePlayerPage({super.key, required this.animeStreamUrl});
 
   @override
-  State<PlayerPage> createState() => _PlayerPageState();
+  State<SinglePlayerPage> createState() => _SinglePlayerPageState();
 }
 
-class _PlayerPageState extends State<PlayerPage> {
+class _SinglePlayerPageState extends State<SinglePlayerPage> {
   @override
   void initState() {
     super.initState();

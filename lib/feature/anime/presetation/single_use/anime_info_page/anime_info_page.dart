@@ -8,22 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_variables/reactive_variables.dart';
-import '../../../../core/domain/container/app_container.dart';
-import '../../../../core/domain/model/anime_api_item.dart';
-import '../../../../generated/l10n.dart';
-import '../../../../theme/theme_colors.dart';
-import '../../domain/stateManager/favorites/anime_favorites_notifier.dart';
+import '../../../../../core/domain/container/app_container.dart';
+import '../../../../../core/domain/model/anime_api_item.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../../../theme/theme_colors.dart';
+import '../../../domain/stateManager/favorites/anime_favorites_notifier.dart';
 import 'anime_info_vm.dart';
 
 @RoutePage()
 class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
   final AnimeApiItem animeItem;
+
   AnimeInfoPage({super.key, required this.animeItem})
       : super(
           vmFactory: (context) => AnimeInfoViewModel(
             context,
-            animeRepository:
-                AppContainer().repositoryScope.animeRepository,
+            animeRepository: AppContainer().repositoryScope.animeRepository,
             animeItem: animeItem,
           ),
         );
@@ -124,7 +124,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
 
   void _playTabCallback(
       {required BuildContext context, required String animeStreamUrl}) {
-    AutoRouter.of(context).push(PlayerRoute(animeStreamUrl: animeStreamUrl));
+    AutoRouter.of(context).push(SinglePlayerRoute(animeStreamUrl: animeStreamUrl));
   }
 
   AppBar _infoAppBar({required BuildContext context}) {
@@ -141,10 +141,10 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
 
   @override
   Widget build(AnimeInfoViewModel vm) {
-
     final maxWidth = MediaQuery.of(vm.context).size.width;
     final maxHeight = MediaQuery.of(vm.context).size.height;
-    final isNotHorizontal = MediaQuery.of(vm.context).orientation != Orientation.landscape;
+    final isNotHorizontal =
+        MediaQuery.of(vm.context).orientation != Orientation.landscape;
     return Scaffold(
       appBar: AppBar(title: Text(S.of(vm.context).title_detailed_information)),
       body: SingleChildScrollView(
@@ -159,18 +159,20 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                         child: CachedNetworkImage(
                       imageUrl: vm.animeItem.materialData?.posterUrl ??
                           "https://shikimori.one/system/animes/original/56838.jpg",
-                      height:  isNotHorizontal ? maxHeight/5.2 : maxHeight/2.55 ,
+                      height:
+                          isNotHorizontal ? maxHeight / 5.2 : maxHeight / 2.55,
                       width: MediaQuery.of(vm.context).size.width,
                       fit: BoxFit.cover,
                     )),
                     Container(
-                      height: isNotHorizontal ? maxHeight/6.25 : maxHeight/2.75,
+                      height:
+                          isNotHorizontal ? maxHeight / 6.25 : maxHeight / 2.75,
                     ),
                   ],
                 ),
                 Positioned(
-                  left: isNotHorizontal ? 16: maxWidth*0.08,
-                  bottom:isNotHorizontal ? 0 : maxHeight/38,
+                  left: isNotHorizontal ? 16 : maxWidth * 0.08,
+                  bottom: isNotHorizontal ? 0 : maxHeight / 38,
                   child: Card(
                     elevation: 1,
                     shape: RoundedRectangleBorder(
@@ -182,8 +184,12 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                         child: CachedNetworkImage(
                           imageUrl: vm.animeItem.materialData?.posterUrl ??
                               "https://shikimori.one/system/animes/original/56838.jpg",
-                          height: isNotHorizontal ?maxHeight/5.5 :maxHeight/2.6 ,
-                          width: isNotHorizontal ? maxWidth/3.55 :maxWidth/7.8,
+                          height: isNotHorizontal
+                              ? maxHeight / 5.5
+                              : maxHeight / 2.6,
+                          width: isNotHorizontal
+                              ? maxWidth / 3.55
+                              : maxWidth / 7.8,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -191,10 +197,12 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                   ),
                 ),
                 Positioned(
-                  left: isNotHorizontal ? maxWidth/2.7 : maxWidth/4.2,
+                  left: isNotHorizontal ? maxWidth / 2.7 : maxWidth / 4.2,
                   bottom: -65,
                   child: SizedBox(
-                    width: isNotHorizontal ? maxWidth/1.54 : maxWidth - maxWidth*0.23,
+                    width: isNotHorizontal
+                        ? maxWidth / 1.54
+                        : maxWidth - maxWidth * 0.23,
                     height: 200,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +246,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                                         vm.updateAnimeListFromDbUseCase.call);
                           },
                           iconWidget: Obs(
-                            rvList: [vm.checkRequest,vm.isFavorite],
+                            rvList: [vm.checkRequest, vm.isFavorite],
                             builder: (BuildContext context) {
                               if (vm.checkRequest.value == true &&
                                   vm.isFavorite == true) {
@@ -260,7 +268,6 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                                 );
                               }
                             },
-
                           ),
                           context: vm.context);
                     },

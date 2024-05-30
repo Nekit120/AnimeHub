@@ -1,8 +1,8 @@
 import 'dart:developer';
-import 'package:anime_hub/core/data/firebase_services/model/user_model.dart';
 import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/feature/chat/presetation/personal_chat/personal_chat_view_model.dart';
+import 'package:anime_hub/feature/player/presentation/share_payer_page.dart';
 import 'package:anime_hub/theme/theme_colors.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
@@ -180,10 +180,17 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
   final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
 
   void showInviteDialog(
-      {required BuildContext context, required String animeName,required String acceptId ,required String proposedId }) {
+      {
+      required String animeName,
+      required String acceptId,
+      required String proposedId,
+      required PersonalChatViewModel vm}) {
+    vm.dialogCount++;
+    vm.isFirstShowDialog = false;
     showDialog(
-      context: context,
+      context: vm.context,
       builder: (BuildContext context) {
+        vm.currentContext = context;
         return AlertDialog(
           title: const Text(
             "Вам пришёл запрос на просмотр",
@@ -201,12 +208,17 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                   child: const Text('Да'),
                   onPressed: () {
                     AutoRouter.of(context).pop();
-                    chatFirebaseService.updatePositiveInviteAfterSend(acceptId: acceptId, proposedId: proposedId);
+                    Future.delayed(
+                        const Duration(milliseconds: 500),
+                        () => chatFirebaseService.updatePositiveInviteAfterSend(
+                            acceptId: acceptId, proposedId: proposedId));
                   },
                 ),
                 TextButton(
                   child: const Text('Нет'),
                   onPressed: () {
+                    vm.dialogCount = 0;
+                    vm.isFirstShowDialog = true;
                     AutoRouter.of(context).pop();
                   },
                 ),
@@ -226,9 +238,8 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     chatFirebaseService
         .offerStream(currentUserId: senderId, acceptId: receiverId)
         .listen((offer) {
-      // if (vm.isFirstSignIn == false)
+
       if (offer != null) {
-        log("Notification: Received a new offer to watch ${offer.animeName}");
         if (offer.isProposed == true &&
             offer.isAccepted == false &&
             senderId == offer.proposedId) {
@@ -236,20 +247,36 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             acceptId: senderId,
             proposedId: receiverId,
           );
-          showInviteDialog(context: vm.context, animeName: offer.animeName, acceptId: senderId, proposedId: receiverId);
-        } else if(offer.isProposed == true && offer.isAccepted == true ) {
-          AutoRouter.of(vm.context).push(PlayerRoute(animeStreamUrl: offer.animeLink));
+          if(vm.isFirstShowDialog == true) {
+            vm.isFirstShowDialog = false;
+            showInviteDialog(
+                animeName: offer.animeName,
+                acceptId: senderId,
+                proposedId: receiverId, vm: vm);
+          } else {
+            if(vm.dialogCount==1){
+              AutoRouter.of(vm.context).pop();
+              vm.dialogCount--;
+              Future.delayed(const Duration(milliseconds: 150), () =>
+                showInviteDialog(
+                  animeName: offer.animeName,
+                  acceptId: senderId,
+                  proposedId: receiverId, vm: vm));
+            }
+
+          }
+        } else if (offer.isProposed == true && offer.isAccepted == true) {
           chatFirebaseService.updateInviteAfterSend(
             acceptId: senderId,
             proposedId: receiverId,
           );
+          AutoRouter.of(vm.context).replace(SharePlayerRoute(
+              animeStreamUrl: offer.animeLink,
+              receiverUsername: receiverUsername,
+              receiverId: receiverId,
+              userModel: userModel));
         }
-      } else {
-        customSnackBarShow(title: "No offers available", isError: true, vm: vm);
-      }
-      // } else {
-      //   vm.isFirstSignIn = false;
-      // }
+      } else {}
     });
   }
 
@@ -299,7 +326,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.more_vert,
+              Icons.tv,
             ),
             onPressed: () {
               AutoRouter.of(vm.context).replace(SendAnimeInviteRoute(

@@ -3,7 +3,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/domain/router/router.gr.dart';
-import '../anime_info_page/anime_info_vm.dart';
 
 class AnimeListBuilderWidget extends StatelessWidget {
   final bool isNotHorizontal;

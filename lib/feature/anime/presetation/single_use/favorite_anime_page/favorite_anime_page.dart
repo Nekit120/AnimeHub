@@ -8,22 +8,21 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../generated/l10n.dart';
-import '../../domain/stateManager/favorites/anime_favorites_notifier.dart';
-import '../widget/anime_list_builder_widget.dart';
-import '../widget/empty_list_widget.dart';
-import '../widget/error_list_widget.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../domain/stateManager/favorites/anime_favorites_notifier.dart';
+import '../../widget/anime_list_builder_widget.dart';
+import '../../widget/empty_list_widget.dart';
+import '../../widget/error_list_widget.dart';
 import 'favorite_anime_vm.dart';
-
 
 @RoutePage()
 class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
-   FavoriteAnimePage({super.key, required  ScrollController controller}): super(
-    vmFactory: (context) => FavoriteAnimeViewModel(
-        context,
-        controller: controller,
-        animeBoardRepository: AppContainer().repositoryScope.animeRepository)
-  );
+  FavoriteAnimePage({super.key, required ScrollController controller})
+      : super(
+            vmFactory: (context) => FavoriteAnimeViewModel(context,
+                controller: controller,
+                animeBoardRepository:
+                    AppContainer().repositoryScope.animeRepository));
 
   void _customAppBarOnPressed({required BuildContext context}) {
     AutoRouter.of(context).push(AnimeFavoritesSearch());
@@ -59,7 +58,8 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
                       isNotHorizontal: isNotHorizontal,
                       controller: vm.controller,
                       animeList: data,
-                      context: vm.context, isFavorite: true,
+                      context: vm.context,
+                      isFavorite: true,
                     );
                   } else {
                     return EmptyListWidget(
