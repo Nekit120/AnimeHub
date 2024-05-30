@@ -4,8 +4,6 @@ import 'router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {
-
-
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
@@ -13,13 +11,15 @@ class AppRouter extends $AppRouter {
           path: "/",
           children: [
             AutoRoute(page: FavoriteAnimeRoute.page),
-            AutoRoute(page: AnimeReleasesRoute.page,),
+            AutoRoute(
+              page: AnimeReleasesRoute.page,
+            ),
             AutoRoute(page: ChatRoute.page),
             AutoRoute(page: AnimeSearch.page)
           ],
         ),
-    AutoRoute(page: PersonalChatRoute.page)
-    ,
+        AutoRoute(page: PersonalChatRoute.page),
+        AutoRoute(page: SendAnimeInviteRoute.page),
         AutoRoute(page: AnimeInfoRoute.page),
         AutoRoute(page: RegistrationRoute.page),
         AutoRoute(page: ProfileRoute.page),

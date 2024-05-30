@@ -21,7 +21,8 @@ import 'anime_search_vm.dart';
 @RoutePage()
 // ignore: must_be_immutable
 class AnimeSearch extends BaseView<AnimeSearchViewModel> {
-  AnimeSearch({super.key})
+  final Future<void> Function()? onTapCallback;
+  AnimeSearch({super.key,required this.onTapCallback})
       : super(
             vmFactory: (context) => AnimeSearchViewModel(context,
                 animeBoardRepository:
@@ -106,7 +107,7 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
                           isNotHorizontal: isNotHorizontal,
                           animeList: animeItemList.data.results,
                           controller: null,
-                          context: vm.context, isFavorite: false, onTapCallback:null,),
+                          context: vm.context, isFavorite: false,),
                     )
                   ]);
                 } else {

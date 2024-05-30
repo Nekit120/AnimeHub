@@ -24,7 +24,7 @@ class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
   );
 
   void _customAppBarOnPressed({required BuildContext context}) {
-      AutoRouter.of(context).push(AnimeSearch());
+      AutoRouter.of(context).push(AnimeSearch(onTapCallback: null));
   }
 
   @override
@@ -50,7 +50,7 @@ class AnimeReleasesPage extends BaseView<AnimeReleasesViewModel> {
                         isNotHorizontal: isNotHorizontal,
                         controller:  vm.controller ,
                         animeList: data.results,
-                        context: vm.context, isFavorite: false, onTapCallback:null,
+                        context: vm.context, isFavorite: false,
                       );
                 case null:
                   return const Center(child: CircularProgressIndicator());

@@ -59,7 +59,7 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
                       isNotHorizontal: isNotHorizontal,
                       controller: vm.controller,
                       animeList: data,
-                      context: vm.context, isFavorite: true, onTapCallback: null,
+                      context: vm.context, isFavorite: true,
                     );
                   } else {
                     return EmptyListWidget(

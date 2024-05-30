@@ -14,6 +14,7 @@ class PersonalChatViewModel extends ViewModel {
   final SendMessageUseCase sendMessageUseCase;
   final SendInviteUseCase sendInviteUseCase;
   var isFirstTime = true;
+  var isFirstSignIn = true;
   final isLoaded = false.rv;
   final myFocusNode = FocusNode();
 

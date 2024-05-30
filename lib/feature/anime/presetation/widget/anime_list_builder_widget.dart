@@ -11,7 +11,6 @@ class AnimeListBuilderWidget extends StatelessWidget {
   final ScrollController? controller;
   final BuildContext context;
   final bool isFavorite;
-  final void Function()? onTapCallback;
 
   const AnimeListBuilderWidget(
       {super.key,
@@ -19,8 +18,7 @@ class AnimeListBuilderWidget extends StatelessWidget {
       required this.controller,
       required this.animeList,
       required this.context,
-      required this.isFavorite,
-      required this.onTapCallback});
+      required this.isFavorite,});
 
   @override
   Widget build(BuildContext context) {
@@ -80,10 +78,8 @@ class AnimeListBuilderWidget extends StatelessWidget {
             ],
           ),
           onTap: () {
-            onTapCallback == null ?
             AutoRouter.of(context)
-                .push(AnimeInfoRoute(animeItem: animeList[index]))
-            : onTapCallback!;
+                .push(AnimeInfoRoute(animeItem: animeList[index]));
           },
         );
       },

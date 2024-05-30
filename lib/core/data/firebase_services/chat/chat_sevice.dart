@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,25 +21,6 @@ class ChatFirebaseService {
     });
   }
 
-// Stream<List<UserModelWithLastMessage>> getUserModelWithLastMessage({required String currentUserUid}) {
-//     return _firestore.collection("Users").snapshots().map((snapshots) {
-//       return snapshots.docs.map((doc) {
-//         final users = UserModel.fromJson(doc.data());
-//         List<String> ids = [currentUserUid, users.uid];
-//         ids.sort();
-//         String chatRoomId = ids.join("_");
-//         final querySnapshot =  _firestore
-//             .collection("chat_rooms")
-//             .doc(chatRoomId)
-//             .collection("messages")
-//             .orderBy("timestamp",descending: false)
-//             .get();
-//
-//          MessageModel.fromJson(querySnapshot.docs.first.data());
-//         return UserModelWithLastMessage(uid: users.uid, email: users.email,username: users.username,phoneNumber: users.phoneNumber, profileImageUrl: users.profileImageUrl, lastMessage: '',);
-//       }).toList();
-//     });
-//   }
   Stream<List<UserModelWithLastMessage>> getUserModelWithLastMessage(
       {required String currentUserUid}) {
     return _firestore
@@ -102,6 +85,7 @@ class ChatFirebaseService {
         .collection("messages")
         .add(newMessage.toJson());
   }
+
   ///////////////////////////////////////////////
 
   Future<void> sendInvite(
@@ -114,7 +98,16 @@ class ChatFirebaseService {
     final String currentUserEmail = _auth.currentUser!.email!;
     final Timestamp timestamp = Timestamp.now();
 
-    final newInvite = OfferToWatchAnime(animeLink: animeLink, animeName: animeName, animePoster: animePoster, proposedId: proposedId, acceptId: acceptId, isProposed: true, isAccepted: false,);
+    final newInvite = OfferToWatchAnime(
+      animeLink: animeLink,
+      animeName: animeName,
+      animePoster: animePoster,
+      proposedId: proposedId,
+      acceptId: acceptId,
+      isProposed: true,
+      isAccepted: false,
+      timestamp: timestamp,
+    );
 
     List<String> ids = [currentUserId, acceptId];
     ids.sort();
@@ -124,10 +117,63 @@ class ChatFirebaseService {
         .collection("chat_rooms")
         .doc(chatRoomId)
         .collection("offers")
-        .add(newInvite.toJson());
+        .doc("offers")
+        .set(newInvite.toJson(), SetOptions(merge: true));
+    // .add(newInvite.toJson());
+  }
+
+  Future<void> updateInviteAfterSend(
+      {required String acceptId, required String proposedId}) async {
+    List<String> ids = [acceptId, proposedId];
+    ids.sort();
+    String chatRoomId = ids.join("_");
+    final docRef = _firestore
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("offers")
+        .doc("offers");
+    await docRef.update({"is_accepted": false, "is_proposed": false});
+    // .add(newInvite.toJson());
+  }
+
+
+  Future<void> updatePositiveInviteAfterSend(
+      {required String acceptId, required String proposedId}) async {
+    List<String> ids = [acceptId, proposedId];
+    ids.sort();
+    String chatRoomId = ids.join("_");
+    final docRef = _firestore
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("offers")
+        .doc("offers");
+    await docRef.update({"is_accepted": true, "is_proposed": true});
+    // .add(newInvite.toJson());
   }
 
 ////////////////////////////////////////////////////
+
+  Stream<OfferToWatchAnime?> offerStream(
+      {required String currentUserId, required String acceptId}) {
+    List<String> ids = [currentUserId, acceptId];
+    ids.sort();
+    String chatRoomId = ids.join("_");
+    return _firestore
+        .collection("chat_rooms")
+        .doc(chatRoomId)
+        .collection("offers")
+        .doc("offers")
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.exists) {
+        return OfferToWatchAnime.fromJson(snapshot.data()!);
+      } else {
+        return null;
+      }
+    });
+  }
+
+
   Stream<QuerySnapshot> getMessage(
       {required String userId, required String otherUserId}) {
     List<String> ids = [userId, otherUserId];

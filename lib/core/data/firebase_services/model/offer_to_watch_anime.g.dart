@@ -15,6 +15,7 @@ OfferToWatchAnime _$OfferToWatchAnimeFromJson(Map<String, dynamic> json) =>
       acceptId: json['accepted_id'] as String?,
       isProposed: json['is_proposed'] as bool,
       isAccepted: json['is_accepted'] as bool,
+      timestamp: const TimestampConverter().fromJson(json['timestamp']),
     );
 
 Map<String, dynamic> _$OfferToWatchAnimeToJson(OfferToWatchAnime instance) =>
@@ -26,4 +27,5 @@ Map<String, dynamic> _$OfferToWatchAnimeToJson(OfferToWatchAnime instance) =>
       'accepted_id': instance.acceptId,
       'is_proposed': instance.isProposed,
       'is_accepted': instance.isAccepted,
+      'timestamp': const TimestampConverter().toJson(instance.timestamp),
     };

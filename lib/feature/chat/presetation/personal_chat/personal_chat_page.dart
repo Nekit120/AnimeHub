@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:anime_hub/core/data/firebase_services/model/user_model.dart';
 import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
+import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/feature/chat/presetation/personal_chat/personal_chat_view_model.dart';
 import 'package:anime_hub/theme/theme_colors.dart';
 import 'package:auto_route/annotations.dart';
@@ -9,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import '../../../../core/data/firebase_services/chat/chat_sevice.dart';
 import '../../../../core/data/firebase_services/model/message_model.dart';
 import '../../../../core/domain/router/router.gr.dart';
 import '../../../../core/presentation/view/view_model.dart';
@@ -95,7 +97,10 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
               descriptionError: S.of(context).no_internet,
             );
           }
-
+          // chatFirebaseService.getUserModelWithLastMessage(currentUserUid: userModel.uid).listen((data) {
+          //   log((data.first.lastMessage).toString() + "suka");
+          //   customSnackBarShow(title:  data.first.lastMessage.toString() + "suka", isError: true, vm: vm);
+          // });
           if (snapshot.connectionState == ConnectionState.waiting &&
               vm.isFirstTime) {
             vm.isFirstTime = false;
@@ -104,8 +109,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             );
           }
           Future.delayed(
-              const Duration(milliseconds: 700),
-                  () => vm.scrollDown());
+              const Duration(milliseconds: 700), () => vm.scrollDown());
 
           return ListView(
             controller: vm.scrollController,
@@ -116,8 +120,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           );
         });
   }
-
-
 
   Widget _myCustomTextWidget(
       {required double maxWidth, required PersonalChatViewModel vm}) {
@@ -158,8 +160,107 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     );
   }
 
+  void customSnackBarShow(
+      {required String title,
+      required bool isError,
+      required PersonalChatViewModel vm}) {
+    ScaffoldMessenger.of(vm.context).showSnackBar(
+      SnackBar(
+        content: Center(child: Text(title)),
+        duration: const Duration(milliseconds: 2000),
+        backgroundColor: isError ? LightThemeColors.seed : Colors.green[500],
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
+  }
+
+  final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
+
+  void showInviteDialog(
+      {required BuildContext context, required String animeName,required String acceptId ,required String proposedId }) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            "Вам пришёл запрос на просмотр",
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [Text("Вы хотите посмотреть ${animeName} ?")],
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton(
+                  child: const Text('Да'),
+                  onPressed: () {
+                    AutoRouter.of(context).pop();
+                    chatFirebaseService.updatePositiveInviteAfterSend(acceptId: acceptId, proposedId: proposedId);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Нет'),
+                  onPressed: () {
+                    AutoRouter.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void listenForOffers(
+      {required String currentUserId,
+      required String acceptId,
+      required PersonalChatViewModel vm}) {
+    String senderId = vm.getCurrentUserUseCase.call()!.uid;
+    chatFirebaseService
+        .offerStream(currentUserId: senderId, acceptId: receiverId)
+        .listen((offer) {
+      // if (vm.isFirstSignIn == false)
+      if (offer != null) {
+        log("Notification: Received a new offer to watch ${offer.animeName}");
+        if (offer.isProposed == true &&
+            offer.isAccepted == false &&
+            senderId == offer.proposedId) {
+          chatFirebaseService.updateInviteAfterSend(
+            acceptId: senderId,
+            proposedId: receiverId,
+          );
+          showInviteDialog(context: vm.context, animeName: offer.animeName, acceptId: senderId, proposedId: receiverId);
+        } else if(offer.isProposed == true && offer.isAccepted == true ) {
+          AutoRouter.of(vm.context).push(PlayerRoute(animeStreamUrl: offer.animeLink));
+          chatFirebaseService.updateInviteAfterSend(
+            acceptId: senderId,
+            proposedId: receiverId,
+          );
+        }
+      } else {
+        customSnackBarShow(title: "No offers available", isError: true, vm: vm);
+      }
+      // } else {
+      //   vm.isFirstSignIn = false;
+      // }
+    });
+  }
+
   @override
   Widget build(PersonalChatViewModel vm) {
+    // userId: userModel.uid, otherUserId: receiverId
+    listenForOffers(
+      currentUserId: userModel.uid,
+      acceptId: receiverId,
+      vm: vm,
+    );
     final maxWidth = MediaQuery.of(vm.context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -167,7 +268,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
         surfaceTintColor: CupertinoColors.white,
         // shadowColor: Colors.white,
         backgroundColor: CupertinoColors.white,
-
         title: Center(
           child: GestureDetector(
             child: Row(
@@ -184,13 +284,16 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8,),
+                const SizedBox(
+                  width: 8,
+                ),
                 Text(receiverUsername),
               ],
             ),
-            onTap: (){
-    AutoRouter.of(vm.context).push(InterlocutorProfileRoute(userModel: userModel));
-    },
+            onTap: () {
+              AutoRouter.of(vm.context)
+                  .push(InterlocutorProfileRoute(userModel: userModel));
+            },
           ),
         ),
         actions: [
@@ -198,7 +301,18 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             icon: const Icon(
               Icons.more_vert,
             ),
-            onPressed: () {},
+            onPressed: () {
+              AutoRouter.of(vm.context).replace(SendAnimeInviteRoute(
+                animeRepository: AppContainer().repositoryScope.animeRepository,
+                chatAndAuthRepository:
+                    AppContainer().repositoryScope.chatAndAuthRepository,
+                acceptId: receiverId,
+                proposedId: userModel.uid,
+                receiverId: receiverId,
+                userModel: userModel,
+                receiverUsername: receiverUsername,
+              ));
+            },
           )
         ],
       ),

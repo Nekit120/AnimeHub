@@ -56,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
         FavoriteAnimeRoute(controller: favoritesController),
         AnimeReleasesRoute(controller: releasesController),
         ChatRoute(chatAndAuthRepository: AppContainer().repositoryScope.chatAndAuthRepository),
-        AnimeSearch()
+        AnimeSearch(onTapCallback: null)
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,

@@ -104,8 +104,11 @@ class ChatPage extends BaseView<ChatViewModel> {
 
   final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
 
+
+
   @override
   Widget build(ChatViewModel vm) {
+
     double maxWidth = MediaQuery.of(vm.context).size.width;
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

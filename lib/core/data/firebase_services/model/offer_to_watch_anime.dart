@@ -1,5 +1,8 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'j-son_converter_timestamp.dart';
 
 part 'offer_to_watch_anime.g.dart';
 
@@ -19,6 +22,9 @@ class OfferToWatchAnime {
   final bool isProposed;
   @JsonKey(name: "is_accepted")
   final bool isAccepted;
+  @TimestampConverter()
+  final Timestamp timestamp;
+
 
 
 
@@ -30,6 +36,7 @@ class OfferToWatchAnime {
     required this.acceptId,
     required this.isProposed,
     required this.isAccepted,
+    required this.timestamp
   });
 
   factory OfferToWatchAnime.fromJson(Map<String, dynamic> json) =>
