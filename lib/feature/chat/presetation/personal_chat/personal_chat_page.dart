@@ -226,6 +226,8 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                 TextButton(
                   child: const Text('Да'),
                   onPressed: () {
+                    vm.dialogCount = 0;
+                    vm.isFirstShowDialog = true;
                     AutoRouter.of(context).pop();
                     Future.delayed(
                         const Duration(milliseconds: 500),
@@ -267,6 +269,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             proposedId: receiverId,
           );
           if(vm.isFirstShowDialog == true) {
+            vm.dialogCount = 0;
             vm.isFirstShowDialog = false;
             showInviteDialog(
                 animeName: offer.animeName,
@@ -274,6 +277,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                 proposedId: receiverId, vm: vm);
           } else {
             if(vm.dialogCount==1){
+              log(vm.dialogCount.toString() + "suka");
               AutoRouter.of(vm.context).pop();
               vm.dialogCount--;
               Future.delayed(const Duration(milliseconds: 150), () =>
@@ -289,6 +293,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             acceptId: senderId,
             proposedId: receiverId,
           );
+          vm.dialogCount--;
           AutoRouter.of(vm.context).replace(SharePlayerRoute(
               animeStreamUrl: offer.animeLink,
               receiverUsername: receiverUsername,
