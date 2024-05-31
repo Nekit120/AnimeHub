@@ -118,7 +118,7 @@ class ChatFirebaseService {
         .doc(chatRoomId)
         .collection("offers")
         .doc("offers")
-        .set(newInvite.toJson(), SetOptions(merge: true));
+        .set(newInvite.toJson(), SetOptions(merge: false));
     // .add(newInvite.toJson());
   }
 
@@ -184,7 +184,7 @@ class ChatFirebaseService {
         .collection("chat_rooms")
         .doc(chatRoomId)
         .collection("messages")
-        .orderBy("timestamp", descending: false)
+        .orderBy("timestamp", descending: true)
         // .limitToLast(140)
         .snapshots();
   }

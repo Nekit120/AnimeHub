@@ -26,5 +26,4 @@ class MessageModel {
       _$MessageModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$MessageModelToJson(this);
-
 }

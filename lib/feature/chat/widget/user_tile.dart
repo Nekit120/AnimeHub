@@ -19,6 +19,7 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: InkWell(
@@ -68,9 +69,12 @@ class UserTile extends StatelessWidget {
                        children: [
                          SizedBox(height: 2,),
                          Text(email,style: Theme.of(context).textTheme.displaySmall),
-                         Text( lastMessageModel!.lastMessage!.isEmpty ? "-" : lastMessageModel!.lastMessage!,style: Theme.of(context).textTheme.titleSmall!.apply(
-                           color: Colors.grey[600]
-                         )),
+                         Container(
+                           width: screenWidth- screenWidth*0.3,
+                           child: Text( lastMessageModel!.lastMessage!.isEmpty ? "-" : lastMessageModel!.lastMessage!,style: Theme.of(context).textTheme.titleSmall!.apply(
+                             color: Colors.grey[600]
+                           ),maxLines: 1,),
+                         ),
                          SizedBox(height: 2,),
                        ],
                         ),

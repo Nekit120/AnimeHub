@@ -60,6 +60,7 @@ dependencies:
   cloud_firestore: ^4.17.4
   firebase_storage: ^11.7.7
   image_picker: ^0.8.4+4
+  emoji_picker_flutter: ^1.0.0
 
 
 

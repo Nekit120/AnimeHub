@@ -109,53 +109,72 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             );
           }
           Future.delayed(
-              const Duration(milliseconds: 700), () => vm.scrollDown());
+              const Duration(milliseconds: 600), () => vm.scrollDown());
 
-          return ListView(
-            controller: vm.scrollController,
-            children: snapshot.data!.docs
-                .map((doc) =>
-                    _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth))
-                .toList(),
+          return ListView.builder(
+            reverse: true,
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var doc = snapshot.data!.docs[index];
+              return _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth);
+            },
           );
-        });
+        },
+    );
   }
 
   Widget _myCustomTextWidget(
       {required double maxWidth, required PersonalChatViewModel vm}) {
-    return Container(
-      color: Colors.grey[100],
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 4, top: 6),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          IconButton(
-            icon: const Icon(
-              Icons.add,
+    return Material(
+      elevation: 30,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey[400]!, // Цвет и толщина линии
+              width: 1.0,
             ),
-            onPressed: () {},
           ),
-          SizedBox(
-              width: maxWidth - 100,
-              height: 50,
-              child: TextField(
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(), hintText: "Сообщение"),
-                focusNode: vm.myFocusNode,
-                textAlignVertical: TextAlignVertical.center,
-                controller: _messageTextController,
-              )),
-          IconButton(
-            icon: const Icon(
-              Icons.send,
-            ),
-            onPressed: () {
-              sendMessage(vm: vm);
-              Future.delayed(
-                  const Duration(milliseconds: 300), () => vm.fastScrollDown());
-            },
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 2, top: 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  Icons.add,
+                ),
+                onPressed: () {},
+              ),
+              SizedBox(
+                width: maxWidth - 100,
+                height: 50,
+                child: TextField(
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Сообщение",
+                  ),
+                  focusNode: vm.myFocusNode,
+                  textAlignVertical: TextAlignVertical.center,
+                  controller: _messageTextController,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.send,
+                ),
+                onPressed: () {
+                  sendMessage(vm: vm);
+                  Future.delayed(
+                    const Duration(milliseconds: 300),
+                        () => vm.fastScrollDown(),
+                  );
+                },
+              ),
+            ],
           ),
-        ]),
+        ),
       ),
     );
   }
