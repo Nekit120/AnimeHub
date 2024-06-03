@@ -53,12 +53,13 @@ class _SinglePlayerPageState extends State<SharePlayerPage> {
   }
 
   Future<bool> _onWillPop() async {
-    AutoRouter.of(context).replace(PersonalChatRoute(
-        receiverUsername: widget.receiverUsername,
-        receiverId: widget.receiverId,
-        userModel: widget.userModel,
-        chatAndAuthRepository:
-            AppContainer().repositoryScope.chatAndAuthRepository));
+    Navigator.of(context).pop();
+    // AutoRouter.of(context).replace(PersonalChatRoute(
+    //     receiverUsername: widget.receiverUsername,
+    //     receiverId: widget.receiverId,
+    //     userModel: widget.userModel,
+    //     chatAndAuthRepository:
+    //         AppContainer().repositoryScope.chatAndAuthRepository));
     return false;
   }
 
