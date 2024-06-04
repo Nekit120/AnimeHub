@@ -26,8 +26,7 @@ class EditingProfileViewModel extends ViewModel {
 
   AppTextEditingController nameTextController = AppTextEditingController();
   AppTextEditingController surnameTextController = AppTextEditingController();
-  AppTextEditingController eMailTextController = AppTextEditingController();
-  AppTextEditingController phoneTextController = AppTextEditingController();
+  AppTextEditingController phoneController = AppTextEditingController();
 
   final changeProfilePossible = false.rv;
 
@@ -39,10 +38,9 @@ class EditingProfileViewModel extends ViewModel {
   @override
   void initState() {
     nameTextController.text = userModel.username;
-    phoneTextController.text = "—";
 
     if(userModel.phoneNumber != null) {
-      phoneTextController.text = userModel.phoneNumber!;
+      phoneController.text = userModel.phoneNumber!;
     }
 
     nameTextController.text = userModel.username;

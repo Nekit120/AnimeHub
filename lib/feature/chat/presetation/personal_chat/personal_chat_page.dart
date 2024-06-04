@@ -73,20 +73,27 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     final MessageModel messageModel = MessageModel.fromJson(data);
     final currentUser = vm.getCurrentUserUseCase.call();
-    bool isCurrentUser = messageModel.senderID == currentUser!.uid;
-    final alignment =
-        isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
-    return Container(
-        alignment: alignment,
-        child: _chatBubble(
-            isCurrentUser: isCurrentUser,
-            message: messageModel.message,
-            maxWidth: maxWidth));
+    if(currentUser != null) {
+      bool isCurrentUser = messageModel.senderID == currentUser!.uid;
+
+      final alignment =
+      isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+      return Container(
+          alignment: alignment,
+          child: _chatBubble(
+              isCurrentUser: isCurrentUser,
+              message: messageModel.message,
+              maxWidth: maxWidth));
+    } else {
+      return Container();
+    }
   }
 
   Widget _messageWidget(
       {required PersonalChatViewModel vm, required double maxWidth}) {
-    String senderId = vm.getCurrentUserUseCase.call()!.uid;
+    final sender = vm.getCurrentUserUseCase.call();
+    if(sender != null) {
+    String senderId = sender.uid;
     return StreamBuilder(
         stream: vm.getMessageUseCase
             .call(userId: senderId, otherUserId: receiverId),
@@ -97,10 +104,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
               descriptionError: S.of(context).no_internet,
             );
           }
-          // chatFirebaseService.getUserModelWithLastMessage(currentUserUid: userModel.uid).listen((data) {
-          //   log((data.first.lastMessage).toString() + "suka");
-          //   customSnackBarShow(title:  data.first.lastMessage.toString() + "suka", isError: true, vm: vm);
-          // });
           if (snapshot.connectionState == ConnectionState.waiting &&
               vm.isFirstTime) {
             vm.isFirstTime = false;
@@ -110,7 +113,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           }
           Future.delayed(
               const Duration(milliseconds: 600), () => vm.scrollDown());
-
+        if(snapshot.data != null){
           return ListView.builder(
             reverse: true,
             itemCount: snapshot.data!.docs.length,
@@ -118,9 +121,13 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
               var doc = snapshot.data!.docs[index];
               return _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth);
             },
-          );
+          );} else {
+          return const Center(child: CircularProgressIndicator(),);
+        }
         },
-    );
+    );} else {
+     return  Container();
+    }
   }
 
   Widget _myCustomTextWidget(

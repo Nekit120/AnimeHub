@@ -46,9 +46,9 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 
-  Widget _phoneNumberTextFieldWidget({required EditingProfileViewModel vm}) =>
+  Widget _phoneNumberTextFieldWidget({required EditingProfileViewModel vm,required TextEditingController phoneController }) =>
       TextField(
-        controller: vm.phoneTextController,
+        controller: phoneController,
         keyboardType: TextInputType.phone,
         inputFormatters: [_maskFormatPhoneNumber],
         decoration: const InputDecoration(
@@ -109,10 +109,7 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
             _customTextField(
                 text: "username", textEditingController: vm.nameTextController),
             const SizedBox(height: 16),
-            _customTextField(
-                text: "phone number",
-                textEditingController: vm.phoneTextController),
-            const SizedBox(height: 16),
+            _phoneNumberTextFieldWidget(vm: vm, phoneController: vm.phoneController),
           ],
         ),
       );
@@ -131,7 +128,10 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
                           onPressed: () async {
                             await vm.updateProfileImageUseCase.call(
                                 uid: vm.userModel.uid,
-                                imageFile: vm.imageFile.value, username: vm.nameTextController.text);
+                                imageFile: vm.imageFile.value,
+                                username: vm.nameTextController.text,
+                                phoneNumber: vm.phoneController.text
+                            );
                             ref.read(profileProvider.notifier).updateProfile(
                                 getAnimeListFunction: vm.getCurrentUserByUid());
                             Navigator.of(vm.context).pop();
