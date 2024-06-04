@@ -217,7 +217,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [Text("Вы хотите посмотреть ${animeName} ?")],
+            children: [Text("Вы хотите посмотреть \"${animeName}\" ?")],
           ),
           actions: <Widget>[
             Row(
