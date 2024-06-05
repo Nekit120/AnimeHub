@@ -1,21 +1,29 @@
 import 'dart:developer';
+import 'dart:ffi';
 
+import 'package:anime_hub/core/data/firebase_services/chat/chat_sevice.dart';
+import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
-import 'package:anime_hub/feature/chat/data/services/model/user_model.dart';
+import 'package:anime_hub/feature/profile/data/repository/profile_repository_impl.dart';
+import 'package:anime_hub/feature/profile/domain/repository/profile_repository.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../theme/svg_image_collection.dart';
 import '../../../../theme/theme_colors.dart';
 import '../../../anime/presetation/widget/error_list_widget.dart';
+import '../../../profile/domain/state_manager/profile/profile_notifier.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
 import '../../widget/custom_filled_button.dart';
 import '../../widget/email_text_field_widget.dart';
@@ -41,9 +49,10 @@ class ChatPage extends BaseView<ChatViewModel> {
     );
   }
 
-  Widget _buildUserList({required ChatViewModel vm}) {
+  Widget _buildUserList({required ChatViewModel vm, required String uid}) {
     return StreamBuilder(
-        stream: vm.getUsersStreamUseCase.call(),
+        stream: vm.getUserWithLastMessageUseCase.call(currentUserUid: uid),
+        // vm.getUsersStreamUseCase.call(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             try {} catch (e) {
@@ -71,41 +80,79 @@ class ChatPage extends BaseView<ChatViewModel> {
   }
 
   Widget _buildUserListItem(
-      {required UserModel userData, required ChatViewModel vm}) {
+      {required UserModelWithLastMessage userData, required ChatViewModel vm}) {
     final currentUser = vm.getCurrentUserUseCase();
     if (userData.email != currentUser!.email) {
+      // vm.getLastMessageModel(userId:userData.uid,otherUserId: currentUser!.uid);
       return UserTile(
         email: userData.username,
         onTap: () {
           AutoRouter.of(vm.context).push(PersonalChatRoute(
-              receiverUsername: userData.username,
-              chatAndAuthRepository:
-                  AppContainer().repositoryScope.chatAndAuthRepository,
-              receiverId: userData.uid));
+            receiverUsername: userData.username,
+            chatAndAuthRepository:
+                AppContainer().repositoryScope.chatAndAuthRepository,
+            receiverId: userData.uid,
+            userModel: userData,
+          ));
         },
+        photoUrl: userData.profileImageUrl, lastMessageModel: userData,
       );
     } else {
       return Container();
     }
   }
 
+  final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
+
+  Future<void> updateProfile ({required WidgetRef ref,required ChatViewModel vm }) async {
+    ref.read(profileProvider.notifier).updateProfile(
+        getAnimeListFunction: await vm.getCurrentUserByUid());
+  }
+
+
   @override
   Widget build(ChatViewModel vm) {
+
     double maxWidth = MediaQuery.of(vm.context).size.width;
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            vm.getUser(uid: snapshot.data!.uid, vm: vm);
             return Scaffold(
               appBar: AppBar(
                 title: const Center(child: Text("Чат")),
                 leading: Container(
                   margin: const EdgeInsets.all(8.0),
-                  child: ClipOval(
-                    child: Image.network(
-                      "https://thumbs.dreamstime.com/b/%D0%B0%D0%B2%D0%B0%D1%82%D0%B0%D1%80-%D0%B7%D0%BD%D0%B0%D1%87%D0%BA%D0%B0-%D0%BF%D1%83%D1%81%D1%82%D0%BE%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE%D1%84%D0%B8%D0%BB%D1%8F-%D1%87%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA%D0%B0-%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B5-%D1%86%D0%B2%D0%B5%D1%82%D0%BE%D0%BC-%D1%87%D0%B5%D1%80%D0%BD%D0%BE%D0%B3%D0%BE-%D1%80%D0%B0%D0%BC%D0%BA%D0%B8-208599975.jpg",
-                      fit: BoxFit.cover,
+                  child: GestureDetector(
+                    child: Consumer(
+                      builder:
+                          (BuildContext context, WidgetRef ref, Widget? child) {
+                     updateProfile(ref: ref, vm: vm);
+                        return Consumer(
+                          builder: (BuildContext context, WidgetRef ref,
+                              Widget? child) {
+                            final currentProfile = ref.watch(profileProvider);
+                            return ClipOval(
+                              child: currentProfile != null
+                                  ? CachedNetworkImage(
+                                  imageUrl: currentProfile!.profileImageUrl == null
+                                          ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
+                                          : currentProfile!.profileImageUrl!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Container(),
+                            );
+                          },
+                        );
+                      },
                     ),
+                    onTap: () {
+                      AutoRouter.of(context).push(ProfileRoute(
+                          profileRepository: AppContainer()
+                              .repositoryScope
+                              .profileRepository));
+                    },
                   ),
                 ),
                 actions: [
@@ -117,7 +164,7 @@ class ChatPage extends BaseView<ChatViewModel> {
                   )
                 ],
               ),
-              body: _buildUserList(vm: vm),
+              body: _buildUserList(vm: vm, uid:snapshot.data!.uid ),
             );
           } else {
             return SingleChildScrollView(

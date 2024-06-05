@@ -11,16 +11,22 @@ class AppRouter extends $AppRouter {
           path: "/",
           children: [
             AutoRoute(page: FavoriteAnimeRoute.page),
-            AutoRoute(page: AnimeReleasesRoute.page,),
+            AutoRoute(
+              page: AnimeReleasesRoute.page,
+            ),
             AutoRoute(page: ChatRoute.page),
             AutoRoute(page: AnimeSearch.page)
           ],
         ),
-    AutoRoute(page: PersonalChatRoute.page)
-    ,
+        AutoRoute(page: PersonalChatRoute.page),
+        AutoRoute(page: SendAnimeInviteRoute.page),
         AutoRoute(page: AnimeInfoRoute.page),
         AutoRoute(page: RegistrationRoute.page),
-        AutoRoute(page: PlayerRoute.page),
+        AutoRoute(page: ProfileRoute.page),
+        AutoRoute(page: InterlocutorProfileRoute.page),
+        AutoRoute(page: EditingProfileRoute.page),
+        AutoRoute(page: SinglePlayerRoute.page),
+        AutoRoute(page: SharePlayerRoute.page),
         AutoRoute(page: AnimeSearch.page),
         AutoRoute(page: AnimeFavoritesSearch.page)
       ];

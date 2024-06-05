@@ -1,34 +1,98 @@
+import 'package:anime_hub/core/data/firebase_services/model/message_model.dart';
+import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
+import 'package:anime_hub/theme/theme_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserTile extends StatelessWidget {
   final String email;
+  final String? photoUrl;
+  final UserModelWithLastMessage? lastMessageModel;
   final void Function()? onTap;
-  const UserTile({super.key, required this.email, this.onTap});
+
+  const UserTile(
+      {super.key,
+      required this.email,
+      required this.photoUrl,
+      required this.onTap,
+      required this.lastMessageModel});
 
   @override
   Widget build(BuildContext context) {
-      return GestureDetector(
-        onTap: onTap,
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 2,horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(24)
-          ),
-          child: ListTile(
-            title: Text(email),
-            // subtitle:const Text("secret") ,
-            leading: const Icon(Icons.person) ,
-          ),
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(34),
+      child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 1.5,),
+              padding:const EdgeInsets.symmetric(vertical: 4,horizontal: 4),
+              decoration: BoxDecoration(
+                  color: LightThemeColors.lightBlue,
+                  borderRadius: BorderRadius.circular(34)),
+              child:
+                  // ListTile(
+                  //   title: Text(email),
+                  //   subtitle: Text( lastMessageModel!.lastMessage!.isEmpty ? "-" : lastMessageModel!.lastMessage!) ,
+                  //   leading: photoUrl == null
+                  //       ?
+                  Row(
+                                  children: [
+                    photoUrl == null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: SizedBox(
+                              height: 56,
+                              width: 56,
+                              child: Image.network(
+                                "https://w7.pngwing.com/pngs/455/105/png-transparent-anonymity-computer-icons-anonymous-user-anonymous-purple-violet-logo.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ))
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: SizedBox(
+                              height: 56,
+                              width: 56,
+                              child: Image.network(
+                                photoUrl!,
+                                fit: BoxFit.cover,
+                              ),
+                            )),
+                    const SizedBox(width: 10,),
+                    SizedBox(
+                      height: 56,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                       children: [
+                         SizedBox(height: 2,),
+                         Text(email,style: Theme.of(context).textTheme.displaySmall),
+                         Container(
+                           width: screenWidth- screenWidth*0.3,
+                           child: Text( lastMessageModel!.lastMessage!.isEmpty ? "-" : lastMessageModel!.lastMessage!,style: Theme.of(context).textTheme.titleSmall!.apply(
+                             color: Colors.grey[600]
+                           ),maxLines: 1,),
+                         ),
+                         SizedBox(height: 2,),
+                       ],
+                        ),
+                    )
+                                  ],
+                                ),
 
-          //   child:  Row(
-          //     children: [
-          //       const Icon(Icons.person),
-          //       Text(email)
-          //     ],
-          //   ),
-        ),
-      );
+
+              // ),
+
+              //   child:  Row(
+              //     children: [
+              //       const Icon(Icons.person),
+              //       Text(email)
+              //     ],
+              //   ),
+              // ),
+      )  ),
+    );
   }
 }
