@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
@@ -21,6 +23,7 @@ class ProfilePage extends BaseView<ProfileViewModel> {
   AppBar _profileAppBar({required ProfileViewModel vm}) {
     return AppBar(
       title: const Text("Профиль"),
+      surfaceTintColor: Colors.white,
       actions: [
         Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
@@ -45,6 +48,9 @@ class ProfilePage extends BaseView<ProfileViewModel> {
       ],
     );
   }
+  Future<void> updateProfile({required ProfileViewModel vm,required WidgetRef ref}) async {
+    await ref.read(profileProvider.notifier).updateProfile(getAnimeListFunction: await vm.getCurrentUserByUid());
+  }
 
   Widget _personalProfileBody({required ProfileViewModel vm}) {
     return vm.currentUser.observer((context, value) => value == null
@@ -52,51 +58,56 @@ class ProfilePage extends BaseView<ProfileViewModel> {
         : Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
               final currentProfile = ref.watch(profileProvider);
-              return Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: SizedBox(
-                          width: 116,
-                          height: 116,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              currentProfile == null
-                                  ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
-                                  : currentProfile.profileImageUrl == null
-                                      ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
-                                      : currentProfile.profileImageUrl!,
-                              fit: BoxFit.cover,
-                            ),
-                          )),
+              return currentProfile == null ? const Center(child: CircularProgressIndicator(),):
+                Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                    await updateProfile(vm: vm,ref: ref);
+                  },
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
+                        Center(
+                          child: SizedBox(
+                              width: 116,
+                              height: 116,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.network(
+                                  currentProfile.profileImageUrl == null
+                                          ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
+                                          : currentProfile.profileImageUrl!,
+                                  fit: BoxFit.cover,
+                                ),
+                              )),
+                        ),
+                        const SizedBox(height: 12),
+                        Center(
+                          child: Text(currentProfile.username,
+                              style: Theme.of(vm.context).textTheme.titleLarge),
+                        ),
+                        const SizedBox(height: 16),
+                        const SizedBox(
+                          width: double.infinity,
+                          child: Divider(),
+                        ),
+                        const SizedBox(height: 16),
+                        Text("E-mail",
+                            style: Theme.of(vm.context).textTheme.labelMedium!),
+                        Text(currentProfile.email,
+                            style: Theme.of(vm.context).textTheme.bodyLarge!),
+                        const SizedBox(height: 16),
+                        Text("Телефон",
+                            style: Theme.of(vm.context).textTheme.labelMedium!),
+                        Text(currentProfile.phoneNumber == null ? "—" : currentProfile.phoneNumber!,
+                            style: Theme.of(vm.context).textTheme.bodyLarge!),
+                        const SizedBox(height: 487),
+                      ],
                     ),
-                    const SizedBox(height: 12),
-                    Center(
-                      child: Text(
-                          currentProfile == null
-                              ? value.username
-                              : currentProfile.username,
-                          style: Theme.of(vm.context).textTheme.titleLarge),
-                    ),
-                    const SizedBox(height: 16),
-                    const SizedBox(
-                      width: double.infinity,
-                      child: Divider(),
-                    ),
-                    const SizedBox(height: 16),
-                    Text("E-mail",
-                        style: Theme.of(vm.context).textTheme.labelMedium!),
-                    Text(value.email,
-                        style: Theme.of(vm.context).textTheme.bodyLarge!),
-                    const SizedBox(height: 16),
-                    Text("Телефон",
-                        style: Theme.of(vm.context).textTheme.labelMedium!),
-                    Text(value.phoneNumber == null ? "—" : value.phoneNumber!,
-                        style: Theme.of(vm.context).textTheme.bodyLarge!),
-                  ],
+                  ),
                 ),
               );
             },
@@ -107,7 +118,7 @@ class ProfilePage extends BaseView<ProfileViewModel> {
   Widget build(ProfileViewModel vm) {
     return Scaffold(
       appBar: _profileAppBar(vm: vm),
-      body: _personalProfileBody(vm: vm),
+      body: _personalProfileBody(vm: vm)
     );
   }
 }

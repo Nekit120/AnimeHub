@@ -20,11 +20,12 @@ class ProfileViewModel extends ViewModel {
   getCurrentUserByUidUseCase = GetCurrentUserByUidUseCase(profileRepository: profileRepository);
 
 
-  Future<UserModel?>  getCurrentUserByUid() async {
-    final User? user = getCurrentUserUseCase.call();
-   return   await getCurrentUserByUidUseCase.call(uid:user!.uid);
+  Future<UserModel?> getCurrentUserByUid() async {
+    return await getCurrentUserByUidUseCase.call(uid:currentUser.value!.uid);
   }
-  getCurrentUserByUid2() async {
+
+
+  getCurrentUserOnStart() async {
     final User? user = getCurrentUserUseCase.call();
     currentUser.value = await getCurrentUserByUidUseCase.call(
         uid:user!.uid);
@@ -32,7 +33,7 @@ class ProfileViewModel extends ViewModel {
 
   @override
   void initState() {
-    getCurrentUserByUid2();
+    getCurrentUserOnStart();
     super.initState();
   }
 }

@@ -31,8 +31,8 @@ class EditingProfileViewModel extends ViewModel {
   final changeProfilePossible = false.rv;
 
   Future<UserModel?>  getCurrentUserByUid() async {
-    final User? user = getCurrentUserUseCase.call();
-    return   await getCurrentUserByUidUseCase.call(uid:user!.uid);
+    final  user =  await getCurrentUserByUidUseCase.call(uid: userModel.uid);
+    return user;
   }
 
   @override

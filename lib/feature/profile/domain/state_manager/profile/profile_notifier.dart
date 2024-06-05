@@ -12,8 +12,8 @@ final profileProvider = StateNotifierProvider<ProfileNotifier, UserModel?>((ref)
 
     ProfileNotifier() : super(null);
 
-  Future<void> updateProfile({required Future<UserModel?> getAnimeListFunction}) async {
-    state = await getAnimeListFunction;
+  Future<void> updateProfile({required UserModel? getAnimeListFunction}) async {
+    state = getAnimeListFunction;
 
   }
 }

@@ -284,7 +284,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                 proposedId: receiverId, vm: vm);
           } else {
             if(vm.dialogCount==1){
-              log(vm.dialogCount.toString() + "suka");
               AutoRouter.of(vm.context).pop();
               vm.dialogCount--;
               Future.delayed(const Duration(milliseconds: 150), () =>

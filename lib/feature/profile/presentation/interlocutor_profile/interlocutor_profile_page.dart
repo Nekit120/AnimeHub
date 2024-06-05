@@ -30,49 +30,52 @@ class InterlocutorProfilePage extends BaseView<InterlocutorProfileViewModel> {
   }
 
   Widget _personalProfileBody({required InterlocutorProfileViewModel vm,required UserModelWithLastMessage userModel}) {
-    return Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: SizedBox(
-                          width: 116,
-                          height: 116,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              userModel.profileImageUrl == null
-                                  ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
-                                  : userModel.profileImageUrl!,
-                              fit: BoxFit.cover,
-                            ),
-                          )),
+    return  userModel == null ?  const Center(child: CircularProgressIndicator(),)
+      :  Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: SizedBox(
+                  width: 116,
+                  height: 116,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.network(
+                      userModel.profileImageUrl == null
+                          ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
+                          : userModel.profileImageUrl!,
+                      fit: BoxFit.cover,
                     ),
-                    const SizedBox(height: 12),
-                    Center(
-                      child: Text(
-                          userModel.username,
-                          style: Theme.of(vm.context).textTheme.titleLarge),
-                    ),
-                    const SizedBox(height: 16),
-                    const SizedBox(
-                      width: double.infinity,
-                      child: Divider(),
-                    ),
-                    const SizedBox(height: 16),
-                    Text("E-mail",
-                        style: Theme.of(vm.context).textTheme.labelMedium!),
-                    Text(userModel.email,
-                        style: Theme.of(vm.context).textTheme.bodyLarge!),
-                    const SizedBox(height: 16),
-                    Text("Телефон",
-                        style: Theme.of(vm.context).textTheme.labelMedium!),
-                    Text(userModel.phoneNumber == null ? "—" : userModel.phoneNumber!,
-                        style: Theme.of(vm.context).textTheme.bodyLarge!),
-                  ],
-                ),
-              );
+                  )),
+            ),
+            const SizedBox(height: 12),
+            Center(
+              child: Text(
+                  userModel.username,
+                  style: Theme.of(vm.context).textTheme.titleLarge),
+            ),
+            const SizedBox(height: 16),
+            const SizedBox(
+              width: double.infinity,
+              child: Divider(),
+            ),
+            const SizedBox(height: 16),
+            Text("E-mail",
+                style: Theme.of(vm.context).textTheme.labelMedium!),
+            Text(userModel.email,
+                style: Theme.of(vm.context).textTheme.bodyLarge!),
+            const SizedBox(height: 16),
+            Text("Телефон",
+                style: Theme.of(vm.context).textTheme.labelMedium!),
+            Text(userModel.phoneNumber == null ? "—" : userModel.phoneNumber!,
+                style: Theme.of(vm.context).textTheme.bodyLarge!),
+          ],
+        ),
+  );
+
+
   }
 
   @override

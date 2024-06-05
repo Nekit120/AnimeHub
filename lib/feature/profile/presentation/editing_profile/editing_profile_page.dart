@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:anime_hub/core/data/firebase_services/model/user_model.dart';
 import 'package:anime_hub/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../../core/presentation/view/view_model.dart';
+import '../../../../theme/theme_colors.dart';
 import '../../domain/repository/profile_repository.dart';
 import '../../domain/state_manager/profile/profile_notifier.dart';
 import 'editing_profile_vm.dart';
@@ -113,6 +115,19 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
           ],
         ),
       );
+  void customSnackBarShow({required String title,required BuildContext context}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(child: Text(title)),
+        duration: const Duration(milliseconds: 2000),
+        backgroundColor:LightThemeColors.seed,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(EditingProfileViewModel vm) {
@@ -132,9 +147,17 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
                                 username: vm.nameTextController.text,
                                 phoneNumber: vm.phoneController.text
                             );
+                            final user =  await vm.getCurrentUserByUid();
                             ref.read(profileProvider.notifier).updateProfile(
-                                getAnimeListFunction: vm.getCurrentUserByUid());
+                                getAnimeListFunction: user);
                             Navigator.of(vm.context).pop();
+                            if(vm.phoneController.text.length != 15 && vm.nameTextController.text.length > 4) {
+                              customSnackBarShow(title: 'Некорректный номер телефона', context: vm.context);
+                            }else if(vm.nameTextController.text.length < 4 && vm.phoneController.text.length == 15) {
+                              customSnackBarShow(title: 'Некорректный username', context: vm.context);
+                            }else if(vm.nameTextController.text.length < 4 && vm.phoneController.text.length != 15 ) {
+                              customSnackBarShow(title: 'Некорректный username и номер телефона', context: vm.context);
+                            }
                           },
                           icon: const Icon(
                             Icons.check,

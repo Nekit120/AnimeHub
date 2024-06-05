@@ -50,23 +50,37 @@ class AuthFirebaseService {
     if (imageFile != null) {
       final String? downloadUrl = await uploadProfileImage(uid: uid, imageFile: imageFile);
       if (downloadUrl != null) {
-        if(phoneNumber.length == 14) {
-          await _firestore.collection('Users').doc(uid).update({
-            'profileImageUrl': downloadUrl,
-            'username': username,
-          });
-        } else {
+        if(phoneNumber.length ==15 && username.length > 4) {
           await _firestore.collection('Users').doc(uid).update({
             'profileImageUrl': downloadUrl,
             'username': username,
             'phoneNumber': phoneNumber
           });
+        } else if (phoneNumber.length ==15 && username.length < 4) {
+          await _firestore.collection('Users').doc(uid).update({
+            'profileImageUrl': downloadUrl,
+            'phoneNumber': phoneNumber
+          });
+        } else if (phoneNumber.length !=15 && username.length > 4) {
+          await _firestore.collection('Users').doc(uid).update({
+            'profileImageUrl': downloadUrl,
+            'username': username,
+          });
+        }else {
+          await _firestore.collection('Users').doc(uid).update({
+            'profileImageUrl': downloadUrl,
+          });
         }
       }
     } else {
-      if(username.isNotEmpty && phoneNumber.length ==15) {
+      if(username.length > 4  && phoneNumber.length ==15) {
         await _firestore.collection('Users').doc(uid).update({
           'username': username,
+          'phoneNumber': phoneNumber
+        });
+      }
+       else if(username.length < 4  && phoneNumber.length ==15) {
+        await _firestore.collection('Users').doc(uid).update({
           'phoneNumber': phoneNumber
         });
       }else {

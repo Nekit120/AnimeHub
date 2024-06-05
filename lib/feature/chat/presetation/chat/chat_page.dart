@@ -104,6 +104,10 @@ class ChatPage extends BaseView<ChatViewModel> {
 
   final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
 
+  Future<void> updateProfile ({required WidgetRef ref,required ChatViewModel vm }) async {
+    ref.read(profileProvider.notifier).updateProfile(
+        getAnimeListFunction: await vm.getCurrentUserByUid());
+  }
 
 
   @override
@@ -124,8 +128,7 @@ class ChatPage extends BaseView<ChatViewModel> {
                     child: Consumer(
                       builder:
                           (BuildContext context, WidgetRef ref, Widget? child) {
-                        ref.read(profileProvider.notifier).updateProfile(
-                            getAnimeListFunction: vm.getCurrentUserByUid());
+                     updateProfile(ref: ref, vm: vm);
                         return Consumer(
                           builder: (BuildContext context, WidgetRef ref,
                               Widget? child) {
