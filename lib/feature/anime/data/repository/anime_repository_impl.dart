@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../../../../core/domain/app_error/app_error.dart';
 import '../../../../core/domain/model/anime_api_item.dart';
 import '../../../../core/domain/model/anime_api_list.dart';
@@ -67,5 +69,13 @@ class AnimeRepositoryImpl implements AnimeRepository {
   @override
   Future<void> deleteItemFromFavorite(String id) async{
     await _animeLocalDataSource.deleteItemFromFavorite(id);
+  }
+
+  @override
+  Future<Result<AnimeApiList>> getNextAnimePage(String url) async {
+    final dio = Dio();
+    final response = await dio.get(url);
+    final result = Result.good(AnimeApiList.fromJson(response.data));
+    return result;
   }
 }

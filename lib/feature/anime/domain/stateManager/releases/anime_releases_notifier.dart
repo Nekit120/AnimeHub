@@ -35,15 +35,12 @@ class AnimeReleasesApiNotifier extends StateNotifier<Result<AnimeApiList>?> {
 
   Future<void> addDataFromApi(
       {required Future<Result<AnimeApiList>> Function(String id)
-      getAnimeListFunction}) async {
-    final dio = Dio();
+      getNextAnimePage}) async {
     switch(state){
       case null:
         log("null dex");
       case GoodUseCaseResult<AnimeApiList>(:final data):
-        final response = await dio.get(data.nextPage!);
-        final result = Result.good(AnimeApiList.fromJson(response.data));
-        state = result;
+        state = await getNextAnimePage(data.nextPage!) ;
       case BadUseCaseResult<AnimeApiList>():
         log("bad dex");
 

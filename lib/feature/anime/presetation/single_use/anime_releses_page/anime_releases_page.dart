@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:anime_hub/feature/anime/domain/useCase/get_next_anime_page_use_case.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,8 +20,7 @@ import '../../widget/error_list_widget.dart';
 class AnimeReleasesPage extends ConsumerStatefulWidget {
   final ScrollController controller;
   final GetAnimeListUseCase getAnimeListUseCase;
-  final FindAnimeByRequestUseCase findAnimeByRequestUseCase;
-  final Rv<List> animeApiList = [].rv;
+  final GetNextAnimePageUseCase getNextAnimePageUseCase;
 
 
   AnimeReleasesPage(
@@ -28,7 +28,7 @@ class AnimeReleasesPage extends ConsumerStatefulWidget {
         required this.controller,
         required AnimeRepository animeBoardRepository})
       : getAnimeListUseCase =
-  GetAnimeListUseCase(animeBoardRepository: animeBoardRepository),findAnimeByRequestUseCase =FindAnimeByRequestUseCase(animeBoardRepository: animeBoardRepository);
+  GetAnimeListUseCase(animeBoardRepository: animeBoardRepository),getNextAnimePageUseCase = GetNextAnimePageUseCase(animeBoardRepository: animeBoardRepository);
 
   @override
   ConsumerState<AnimeReleasesPage> createState() => _AnimeReleasesPageState();
@@ -45,16 +45,22 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
       if (widget.controller.position.maxScrollExtent ==
           widget.controller.offset ) {
         ref.read(animeReleasesApiProvider.notifier).addDataFromApi(
-            getAnimeListFunction: widget.findAnimeByRequestUseCase.call);
+            getNextAnimePage: widget.getNextAnimePageUseCase.call);
       }
     });
   }
    bool isFirstSignIn = true;
   int countSingIns = 1;
+  final Rv<List> animeApiListPage = [].rv;
 
 
   @override
   Widget build(BuildContext context) {
+    if(countSingIns == 1 ) {
+      countSingIns++;
+      ref.read(animeReleasesApiProvider.notifier).getDataFromApi(
+          getAnimeListFunction: widget.getAnimeListUseCase.call);
+    }
     final isNotHorizontal =
         MediaQuery.of(context).orientation != Orientation.landscape;
     return Scaffold(
@@ -67,30 +73,21 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
         },
       )
           : null,
-      body: Consumer(
-        builder: (BuildContext context, WidgetRef ref, Widget? child) {
-          if(countSingIns == 1 ) {
-            log("i'm here") ;
-            countSingIns++;
-          ref.read(animeReleasesApiProvider.notifier).getDataFromApi(
-              getAnimeListFunction: widget.getAnimeListUseCase.call);
-          }
-          return Consumer(
+      body:  Consumer(
             builder: (BuildContext context, WidgetRef ref, Widget? child) {
               final animeApiList = ref.watch(animeReleasesApiProvider);
               switch (animeApiList) {
                 case GoodUseCaseResult<AnimeApiList>(:final data):
 
                   if(isFirstSignIn == false ) {
-                    List<AnimeApiItem> animeItems = List.from(widget.animeApiList.value)..addAll(data.results);
-                    widget.animeApiList.value = animeItems;
-                    widget.animeApiList.refresh();
-                    log(widget.animeApiList.value.length.toString() + "hui");
+                    List<AnimeApiItem> animeItems = List.from(animeApiListPage.value)..addAll(data.results);
+                    animeApiListPage.value = animeItems;
                   } else {
-                    widget.animeApiList.value = data.results;
+                    animeApiListPage.value = data.results;
                     isFirstSignIn = false;
                   }
-                  return widget.animeApiList.observer((context, value) =>
+
+                  return animeApiListPage.observer((context, value) =>
                   value.isEmpty == true? Container()
                       :GridView.builder(
                     controller: widget.controller,
@@ -107,7 +104,7 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
                       mainAxisSpacing: 0.1,
                       childAspectRatio: 0.67,
                     ),
-                    itemCount: widget.animeApiList.value.length,
+                    itemCount: animeApiListPage.value.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         child: Column(
@@ -121,7 +118,7 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(12)),
                                     child: Image.network(
-                                      widget.animeApiList.value[index]
+                                      animeApiListPage.value[index]
                                           .materialData
                                           ?.posterUrl ??
                                           "https://shikimori.one/system/animes/original/56838.jpg",
@@ -131,20 +128,19 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
                                     )),
                               ),
                             ),
-                            Text(widget.animeApiList.value[index].title,
+                            Text(animeApiListPage.value[index].title,
                                 maxLines: 1, textAlign: TextAlign.center)
                           ],
                         ),
                         onTap: () {
                           AutoRouter.of(context).push(
-                              AnimeInfoRoute(animeItem: widget.animeApiList
+                              AnimeInfoRoute(animeItem: animeApiListPage
                                   .value[index]));
                         },
                       );
                     },
                   )
                   );
-
                 case null:
                   return const Center(child: CircularProgressIndicator());
                 case BadUseCaseResult<AnimeApiList>():
@@ -156,8 +152,6 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
                   return const Center(child: CircularProgressIndicator());
               }
             },
-          );
-        },
       ),
     );
   }
