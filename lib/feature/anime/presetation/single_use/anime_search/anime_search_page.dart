@@ -84,13 +84,15 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
             final animeApiList = ref.watch(animeSearchApiProvider);
             switch (animeApiList) {
               case AnimeSearchState(result: null, loading: false):
-                return Column(children: [
-                  _customTextField(
-                    isNotHorizontal: isNotHorizontal,
-                    ref: ref,
-                    vm: vm,
-                  )
-                ]);
+                return SingleChildScrollView(
+                  child: Column(children: [
+                    _customTextField(
+                      isNotHorizontal: isNotHorizontal,
+                      ref: ref,
+                      vm: vm,
+                    )
+                  ]),
+                );
               case AnimeSearchState(
                   result: GoodUseCaseResult<AnimeApiList> animeItemList,
                   loading: false
