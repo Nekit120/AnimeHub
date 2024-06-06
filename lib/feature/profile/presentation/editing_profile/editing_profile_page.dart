@@ -151,7 +151,7 @@ class EditingProfilePage extends BaseView<EditingProfileViewModel> {
                             ref.read(profileProvider.notifier).updateProfile(
                                 getAnimeListFunction: user);
                             Navigator.of(vm.context).pop();
-                            if(vm.phoneController.text.length != 15 && vm.nameTextController.text.length > 4) {
+                            if(vm.phoneController.text.isNotEmpty && vm.nameTextController.text.length > 4) {
                               customSnackBarShow(title: 'Некорректный номер телефона', context: vm.context);
                             }else if(vm.nameTextController.text.length < 4 && vm.phoneController.text.length == 15) {
                               customSnackBarShow(title: 'Некорректный username', context: vm.context);

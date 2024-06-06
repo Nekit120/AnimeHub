@@ -25,7 +25,7 @@ class AuthFirebaseService {
         .doc(userCredential.user!.uid)
         .set(
 
-        UserModel(uid: userCredential.user!.uid, email: email, username: username,profileImageUrl: null,phoneNumber: null, friends: []).toJson()
+        UserModel(uid: userCredential.user!.uid, email: email, username: username,profileImageUrl: null,phoneNumber: null, friends: [], usernameLowerCase: username.toLowerCase()).toJson()
     );
 
     await _auth.signOut();
@@ -54,6 +54,7 @@ class AuthFirebaseService {
           await _firestore.collection('Users').doc(uid).update({
             'profileImageUrl': downloadUrl,
             'username': username,
+            'usernameLowerCase': username.toLowerCase(),
             'phoneNumber': phoneNumber
           });
         } else if (phoneNumber.length ==15 && username.length < 4) {
@@ -65,6 +66,7 @@ class AuthFirebaseService {
           await _firestore.collection('Users').doc(uid).update({
             'profileImageUrl': downloadUrl,
             'username': username,
+            'usernameLowerCase': username.toLowerCase(),
           });
         }else {
           await _firestore.collection('Users').doc(uid).update({
@@ -76,6 +78,7 @@ class AuthFirebaseService {
       if(username.length > 4  && phoneNumber.length ==15) {
         await _firestore.collection('Users').doc(uid).update({
           'username': username,
+          'usernameLowerCase': username.toLowerCase(),
           'phoneNumber': phoneNumber
         });
       }
@@ -86,6 +89,8 @@ class AuthFirebaseService {
       }else {
         await _firestore.collection('Users').doc(uid).update({
           'username': username,
+          'usernameLowerCase': username.toLowerCase(),
+
         });
       }
 
@@ -129,7 +134,7 @@ class AuthFirebaseService {
     _firestore
         .collection("Users")
         .doc(userCredential.user!.uid)
-        .set(  UserModel(uid: userCredential.user!.uid, email: email, username: username, friends: []).toJson()
+        .set(  UserModel(uid: userCredential.user!.uid, email: email, username: username, friends: [], usernameLowerCase: username.toLowerCase()).toJson()
     );
 
     return userCredential;

@@ -50,6 +50,7 @@ class ChatPage extends BaseView<ChatViewModel> {
     );
   }
 
+
   Widget _buildUserList({required ChatViewModel vm, required String uid}) {
     return StreamBuilder(
         stream: vm.getUserWithLastMessageUseCase.call(currentUserUid: uid),

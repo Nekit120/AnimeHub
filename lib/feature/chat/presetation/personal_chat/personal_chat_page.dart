@@ -359,6 +359,9 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             size: 25,
             ),
             onPressed: () {
+              final sender = vm.getCurrentUserUseCase.call();
+
+              chatFirebaseService.addFriend(userId: sender!.uid, friendUid: receiverId);
             },
           ),
           IconButton(

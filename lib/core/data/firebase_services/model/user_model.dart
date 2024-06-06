@@ -7,6 +7,7 @@ class UserModel {
   final String uid;
   final String email;
   final String username;
+  final String usernameLowerCase;
   final String? profileImageUrl;
   final String? phoneNumber;
   final List<String>? friends;
@@ -16,6 +17,7 @@ class UserModel {
       required this.email,
       required this.username,
       required this.friends,
+      required this.usernameLowerCase,
       this.profileImageUrl,
       this.phoneNumber});
 
