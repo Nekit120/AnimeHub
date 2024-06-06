@@ -95,8 +95,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     if(sender != null) {
     String senderId = sender.uid;
     return StreamBuilder(
-        stream: vm.getMessageUseCase
-            .call(userId: senderId, otherUserId: receiverId),
+        stream: vm.getMessageUseCase.call(userId: senderId, otherUserId: receiverId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return ErrorListWidget(

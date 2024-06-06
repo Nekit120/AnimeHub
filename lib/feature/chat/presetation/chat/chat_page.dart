@@ -6,6 +6,7 @@ import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
+import 'package:anime_hub/feature/chat/presetation/search_profile/search_profile_vm.dart';
 import 'package:anime_hub/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:anime_hub/feature/profile/domain/repository/profile_repository.dart';
 import 'package:auto_route/annotations.dart';
@@ -95,7 +96,8 @@ class ChatPage extends BaseView<ChatViewModel> {
             userModel: userData,
           ));
         },
-        photoUrl: userData.profileImageUrl, lastMessageModel: userData,
+        photoUrl: userData.profileImageUrl,
+        lastMessageModel: userData,
       );
     } else {
       return Container();
@@ -104,15 +106,15 @@ class ChatPage extends BaseView<ChatViewModel> {
 
   final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
 
-  Future<void> updateProfile ({required WidgetRef ref,required ChatViewModel vm }) async {
-    ref.read(profileProvider.notifier).updateProfile(
-        getAnimeListFunction: await vm.getCurrentUserByUid());
+  Future<void> updateProfile(
+      {required WidgetRef ref, required ChatViewModel vm}) async {
+    ref
+        .read(profileProvider.notifier)
+        .updateProfile(getAnimeListFunction: await vm.getCurrentUserByUid());
   }
-
 
   @override
   Widget build(ChatViewModel vm) {
-
     double maxWidth = MediaQuery.of(vm.context).size.width;
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -128,7 +130,7 @@ class ChatPage extends BaseView<ChatViewModel> {
                     child: Consumer(
                       builder:
                           (BuildContext context, WidgetRef ref, Widget? child) {
-                     updateProfile(ref: ref, vm: vm);
+                        updateProfile(ref: ref, vm: vm);
                         return Consumer(
                           builder: (BuildContext context, WidgetRef ref,
                               Widget? child) {
@@ -136,7 +138,9 @@ class ChatPage extends BaseView<ChatViewModel> {
                             return ClipOval(
                               child: currentProfile != null
                                   ? CachedNetworkImage(
-                                  imageUrl: currentProfile!.profileImageUrl == null
+                                      imageUrl: currentProfile!
+                                                  .profileImageUrl ==
+                                              null
                                           ? "https://www.wild-pro.ru/wp-content/uploads/2023/04/no-profile-min.png"
                                           : currentProfile!.profileImageUrl!,
                                       fit: BoxFit.cover,
@@ -157,6 +161,15 @@ class ChatPage extends BaseView<ChatViewModel> {
                 ),
                 actions: [
                   IconButton(
+                      icon: const Icon(
+                        Icons.search,
+                      ),
+                      onPressed: () {
+                        AutoRouter.of(context).push(SearchProfileRoute(
+                            vmFactory: (context) =>
+                                SearchProfilePageViewModel(context, chatAndAuthRepository: AppContainer().repositoryScope.chatAndAuthRepository), currentUid: snapshot.data!.uid));
+                      }),
+                  IconButton(
                     icon: const Icon(
                       Icons.logout,
                     ),
@@ -164,7 +177,7 @@ class ChatPage extends BaseView<ChatViewModel> {
                   )
                 ],
               ),
-              body: _buildUserList(vm: vm, uid:snapshot.data!.uid ),
+              body: _buildUserList(vm: vm, uid: snapshot.data!.uid),
             );
           } else {
             return SingleChildScrollView(

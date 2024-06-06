@@ -14,7 +14,7 @@ FindAnimeByRequestQuery _$FindAnimeByRequestQueryFromJson(
       types: json['types'] as String? ?? "anime-serial,anime",
       withEpisodes: json['with_episodes'] as bool? ?? true,
       withMaterialData: json['with_material_data'] as bool? ?? true,
-      limit: (json['limit'] as num?)?.toInt() ?? 30,
+      limit: (json['limit'] as num?)?.toInt() ?? 100,
       translationType: json['translation_type'] as String? ?? "subtitles",
     );
 

@@ -62,6 +62,88 @@ class ChatFirebaseService {
       return userModelWithLastMessages;
     });
   }
+  Future<List<UserModelWithLastMessage>> getUserModelWithLastMessageByName({
+    required String currentUserUid,
+    required String searchTerm,
+  }) async {
+    final userSnapshots = await _firestore
+        .collection("Users")
+        .where("username", isGreaterThanOrEqualTo: searchTerm)
+        .where("username", isLessThanOrEqualTo: searchTerm + '\uf8ff')
+        .get();
+
+    List<UserModelWithLastMessage> userModelWithLastMessages = [];
+
+    for (var doc in userSnapshots.docs) {
+      final users = UserModel.fromJson(doc.data());
+      List<String> ids = [currentUserUid, users.uid];
+      ids.sort();
+      String chatRoomId = ids.join("_");
+
+      final querySnapshot = await _firestore
+          .collection("chat_rooms")
+          .doc(chatRoomId)
+          .collection("messages")
+          .orderBy("timestamp", descending: true)
+          .limit(1)
+          .get();
+
+      String lastMessage = "";
+      if (querySnapshot.docs.isNotEmpty) {
+        lastMessage =
+            MessageModel.fromJson(querySnapshot.docs.first.data()).message;
+      }
+
+      userModelWithLastMessages.add(UserModelWithLastMessage(
+        uid: users.uid,
+        email: users.email,
+        username: users.username,
+        phoneNumber: users.phoneNumber,
+        profileImageUrl: users.profileImageUrl,
+        lastMessage: lastMessage,
+      ));
+    }
+
+    return userModelWithLastMessages;
+  }
+
+  // Future<List<UserModelWithLastMessage>> getUserModelWithLastMessageSingle(
+  //     {required String currentUserUid}) async {
+  //   final userSnapshots = await _firestore.collection("Users").get();
+  //   List<UserModelWithLastMessage> userModelWithLastMessages = [];
+  //
+  //   for (var doc in userSnapshots.docs) {
+  //     final users = UserModel.fromJson(doc.data());
+  //     List<String> ids = [currentUserUid, users.uid];
+  //     ids.sort();
+  //     String chatRoomId = ids.join("_");
+  //
+  //     final querySnapshot = await _firestore
+  //         .collection("chat_rooms")
+  //         .doc(chatRoomId)
+  //         .collection("messages")
+  //         .orderBy("timestamp", descending: true)
+  //         .limit(1)
+  //         .get();
+  //
+  //     String lastMessage = "";
+  //     if (querySnapshot.docs.isNotEmpty) {
+  //       lastMessage =
+  //           MessageModel.fromJson(querySnapshot.docs.first.data()).message;
+  //     }
+  //
+  //     userModelWithLastMessages.add(UserModelWithLastMessage(
+  //       uid: users.uid,
+  //       email: users.email,
+  //       username: users.username,
+  //       phoneNumber: users.phoneNumber,
+  //       profileImageUrl: users.profileImageUrl,
+  //       lastMessage: lastMessage,
+  //     ));
+  //   }
+  //
+  //   return userModelWithLastMessages;
+  // }
 
   Future<void> sendMessage(
       {required String receiverID, required String message}) async {

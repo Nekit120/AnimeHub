@@ -28,6 +28,7 @@ class ChatViewModel extends ViewModel {
   final GetUserWithLastMessageUseCase getUserWithLastMessageUseCase;
   // MessageModel? lastMessageModel;
   final Rv<UserModel?> currentUserModel = null.rv();
+  final Rv<bool> isCheckSearch = false.rv;
 
   ChatViewModel(super.context,
       {required ChatAndAuthRepository chatAndAuthRepository})
