@@ -20,7 +20,7 @@ class FindAnimeByRequestQuery {
     this.types = "anime-serial,anime",
     this.withEpisodes = true,
     this. withMaterialData = true,
-    this.limit = 30,
+    this.limit = 100,
     this.translationType = "subtitles",
   });
 

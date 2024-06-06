@@ -62,17 +62,21 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
                       isFavorite: true,
                     );
                   } else {
-                    return EmptyListWidget(
-                      iconData: Icons.list_alt,
-                      titleEmptyList: S.of(context).empty_favorites_title,
-                      descriptionEmptyList:
-                          S.of(context).empty_favorites_description,
+                    return SingleChildScrollView(
+                      child: EmptyListWidget(
+                        iconData: Icons.list_alt,
+                        titleEmptyList: S.of(context).empty_favorites_title,
+                        descriptionEmptyList:
+                            S.of(context).empty_favorites_description,
+                      ),
                     );
                   }
                 case BadUseCaseResult<List<AnimeApiItem>>():
-                  return ErrorListWidget(
-                    titleError: S.of(context).title_error,
-                    descriptionError: S.of(context).favorites_error,
+                  return SingleChildScrollView(
+                    child: ErrorListWidget(
+                      titleError: S.of(context).title_error,
+                      descriptionError: S.of(context).favorites_error,
+                    ),
                   );
                 default:
                   return const Center(child: CircularProgressIndicator());

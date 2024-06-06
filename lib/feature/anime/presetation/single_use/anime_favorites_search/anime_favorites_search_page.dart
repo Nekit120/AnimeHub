@@ -140,9 +140,11 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
                       ref: ref,
                       vm: vm,
                     ),
-                    ErrorListWidget(
-                        titleError: S.of(context).title_error,
-                        descriptionError: S.of(context).no_internet),
+                    SingleChildScrollView(
+                      child: ErrorListWidget(
+                          titleError: S.of(context).title_error,
+                          descriptionError: S.of(context).no_internet),
+                    ),
                   ],
                 );
               case AnimeSearchFavoriteState(loading: true):

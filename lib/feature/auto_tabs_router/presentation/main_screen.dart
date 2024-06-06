@@ -48,7 +48,7 @@ class _MainScreenState extends State<MainScreen> {
     if (isNotHorizontal && selectIndex.value > 2) {
       selectIndex.value = 1;
       AutoRouter.of(context).pushAndPopUntil(
-          AnimeReleasesRoute(controller: releasesController),
+          AnimeReleasesRoute(controller: releasesController, animeBoardRepository: AppContainer().repositoryScope.animeRepository),
           predicate: (route) => false);
     }
   }
@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
     return AutoTabsRouter(
       routes: [
         FavoriteAnimeRoute(controller: favoritesController),
-        AnimeReleasesRoute(controller: releasesController),
+        AnimeReleasesRoute(controller: releasesController, animeBoardRepository: AppContainer().repositoryScope.animeRepository),
         ChatRoute(
             chatAndAuthRepository:
                 AppContainer().repositoryScope.chatAndAuthRepository),
@@ -72,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
         child: initialRouteObs.observer((context, value) => value
             ? child
             : AnimeReleasesPage(
-                controller: releasesController,
+                controller: releasesController, animeBoardRepository: AppContainer().repositoryScope.animeRepository,
               )),
       ),
       builder: (context, child) {

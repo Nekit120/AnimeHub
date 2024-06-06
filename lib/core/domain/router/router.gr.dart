@@ -8,15 +8,15 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i20;
+import 'dart:async' as _i21;
 
 import 'package:anime_hub/core/data/firebase_services/model/user_model.dart'
-    as _i23;
-import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart'
     as _i24;
+import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart'
+    as _i25;
 import 'package:anime_hub/core/domain/model/anime_api_item.dart' as _i18;
 import 'package:anime_hub/feature/anime/domain/repository/anime_repository.dart'
-    as _i25;
+    as _i20;
 import 'package:anime_hub/feature/anime/presetation/share_use/anime_send_invite_search/send_anime_search_page.dart'
     as _i13;
 import 'package:anime_hub/feature/anime/presetation/single_use/anime_favorites_search/anime_favorites_search_page.dart'
@@ -32,7 +32,7 @@ import 'package:anime_hub/feature/anime/presetation/single_use/favorite_anime_pa
 import 'package:anime_hub/feature/auto_tabs_router/presentation/main_screen.dart'
     as _i9;
 import 'package:anime_hub/feature/chat/domain/repository/chat_and_auth_repository.dart'
-    as _i21;
+    as _i22;
 import 'package:anime_hub/feature/chat/presetation/chat/chat_page.dart' as _i5;
 import 'package:anime_hub/feature/chat/presetation/personal_chat/personal_chat_page.dart'
     as _i10;
@@ -43,7 +43,7 @@ import 'package:anime_hub/feature/player/presentation/share_payer_page.dart'
 import 'package:anime_hub/feature/player/presentation/single_payer_page.dart'
     as _i15;
 import 'package:anime_hub/feature/profile/domain/repository/profile_repository.dart'
-    as _i22;
+    as _i23;
 import 'package:anime_hub/feature/profile/presentation/editing_profile/editing_profile_page.dart'
     as _i6;
 import 'package:anime_hub/feature/profile/presentation/interlocutor_profile/interlocutor_profile_page.dart'
@@ -84,6 +84,7 @@ abstract class $AppRouter extends _i16.RootStackRouter {
         child: _i3.AnimeReleasesPage(
           key: args.key,
           controller: args.controller,
+          animeBoardRepository: args.animeBoardRepository,
         ),
       );
     },
@@ -293,12 +294,14 @@ class AnimeReleasesRoute extends _i16.PageRouteInfo<AnimeReleasesRouteArgs> {
   AnimeReleasesRoute({
     _i19.Key? key,
     required _i19.ScrollController controller,
+    required _i20.AnimeRepository animeBoardRepository,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           AnimeReleasesRoute.name,
           args: AnimeReleasesRouteArgs(
             key: key,
             controller: controller,
+            animeBoardRepository: animeBoardRepository,
           ),
           initialChildren: children,
         );
@@ -313,15 +316,18 @@ class AnimeReleasesRouteArgs {
   const AnimeReleasesRouteArgs({
     this.key,
     required this.controller,
+    required this.animeBoardRepository,
   });
 
   final _i19.Key? key;
 
   final _i19.ScrollController controller;
 
+  final _i20.AnimeRepository animeBoardRepository;
+
   @override
   String toString() {
-    return 'AnimeReleasesRouteArgs{key: $key, controller: $controller}';
+    return 'AnimeReleasesRouteArgs{key: $key, controller: $controller, animeBoardRepository: $animeBoardRepository}';
   }
 }
 
@@ -330,7 +336,7 @@ class AnimeReleasesRouteArgs {
 class AnimeSearch extends _i16.PageRouteInfo<AnimeSearchArgs> {
   AnimeSearch({
     _i17.Key? key,
-    required _i20.Future<void> Function()? onTapCallback,
+    required _i21.Future<void> Function()? onTapCallback,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           AnimeSearch.name,
@@ -355,7 +361,7 @@ class AnimeSearchArgs {
 
   final _i17.Key? key;
 
-  final _i20.Future<void> Function()? onTapCallback;
+  final _i21.Future<void> Function()? onTapCallback;
 
   @override
   String toString() {
@@ -368,7 +374,7 @@ class AnimeSearchArgs {
 class ChatRoute extends _i16.PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
     _i17.Key? key,
-    required _i21.ChatAndAuthRepository chatAndAuthRepository,
+    required _i22.ChatAndAuthRepository chatAndAuthRepository,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           ChatRoute.name,
@@ -393,7 +399,7 @@ class ChatRouteArgs {
 
   final _i17.Key? key;
 
-  final _i21.ChatAndAuthRepository chatAndAuthRepository;
+  final _i22.ChatAndAuthRepository chatAndAuthRepository;
 
   @override
   String toString() {
@@ -405,9 +411,9 @@ class ChatRouteArgs {
 /// [_i6.EditingProfilePage]
 class EditingProfileRoute extends _i16.PageRouteInfo<EditingProfileRouteArgs> {
   EditingProfileRoute({
-    _i19.Key? key,
-    required _i22.ProfileRepository profileRepository,
-    required _i23.UserModel userModel,
+    _i17.Key? key,
+    required _i23.ProfileRepository profileRepository,
+    required _i24.UserModel userModel,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           EditingProfileRoute.name,
@@ -432,11 +438,11 @@ class EditingProfileRouteArgs {
     required this.userModel,
   });
 
-  final _i19.Key? key;
+  final _i17.Key? key;
 
-  final _i22.ProfileRepository profileRepository;
+  final _i23.ProfileRepository profileRepository;
 
-  final _i23.UserModel userModel;
+  final _i24.UserModel userModel;
 
   @override
   String toString() {
@@ -488,7 +494,7 @@ class InterlocutorProfileRoute
     extends _i16.PageRouteInfo<InterlocutorProfileRouteArgs> {
   InterlocutorProfileRoute({
     _i17.Key? key,
-    required _i24.UserModelWithLastMessage userModel,
+    required _i25.UserModelWithLastMessage userModel,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           InterlocutorProfileRoute.name,
@@ -513,7 +519,7 @@ class InterlocutorProfileRouteArgs {
 
   final _i17.Key? key;
 
-  final _i24.UserModelWithLastMessage userModel;
+  final _i25.UserModelWithLastMessage userModel;
 
   @override
   String toString() {
@@ -541,9 +547,9 @@ class PersonalChatRoute extends _i16.PageRouteInfo<PersonalChatRouteArgs> {
   PersonalChatRoute({
     _i17.Key? key,
     required String receiverUsername,
-    required _i21.ChatAndAuthRepository chatAndAuthRepository,
+    required _i22.ChatAndAuthRepository chatAndAuthRepository,
     required String receiverId,
-    required _i24.UserModelWithLastMessage userModel,
+    required _i25.UserModelWithLastMessage userModel,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           PersonalChatRoute.name,
@@ -576,11 +582,11 @@ class PersonalChatRouteArgs {
 
   final String receiverUsername;
 
-  final _i21.ChatAndAuthRepository chatAndAuthRepository;
+  final _i22.ChatAndAuthRepository chatAndAuthRepository;
 
   final String receiverId;
 
-  final _i24.UserModelWithLastMessage userModel;
+  final _i25.UserModelWithLastMessage userModel;
 
   @override
   String toString() {
@@ -593,7 +599,7 @@ class PersonalChatRouteArgs {
 class ProfileRoute extends _i16.PageRouteInfo<ProfileRouteArgs> {
   ProfileRoute({
     _i17.Key? key,
-    required _i22.ProfileRepository profileRepository,
+    required _i23.ProfileRepository profileRepository,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           ProfileRoute.name,
@@ -618,7 +624,7 @@ class ProfileRouteArgs {
 
   final _i17.Key? key;
 
-  final _i22.ProfileRepository profileRepository;
+  final _i23.ProfileRepository profileRepository;
 
   @override
   String toString() {
@@ -631,7 +637,7 @@ class ProfileRouteArgs {
 class RegistrationRoute extends _i16.PageRouteInfo<RegistrationRouteArgs> {
   RegistrationRoute({
     _i19.Key? key,
-    required _i21.ChatAndAuthRepository chatAndAuthRepository,
+    required _i22.ChatAndAuthRepository chatAndAuthRepository,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           RegistrationRoute.name,
@@ -656,7 +662,7 @@ class RegistrationRouteArgs {
 
   final _i19.Key? key;
 
-  final _i21.ChatAndAuthRepository chatAndAuthRepository;
+  final _i22.ChatAndAuthRepository chatAndAuthRepository;
 
   @override
   String toString() {
@@ -670,12 +676,12 @@ class SendAnimeInviteRoute
     extends _i16.PageRouteInfo<SendAnimeInviteRouteArgs> {
   SendAnimeInviteRoute({
     _i17.Key? key,
-    required _i25.AnimeRepository animeRepository,
-    required _i21.ChatAndAuthRepository chatAndAuthRepository,
+    required _i20.AnimeRepository animeRepository,
+    required _i22.ChatAndAuthRepository chatAndAuthRepository,
     required String acceptId,
     required String proposedId,
     required String receiverId,
-    required _i24.UserModelWithLastMessage userModel,
+    required _i25.UserModelWithLastMessage userModel,
     required String receiverUsername,
     List<_i16.PageRouteInfo>? children,
   }) : super(
@@ -713,9 +719,9 @@ class SendAnimeInviteRouteArgs {
 
   final _i17.Key? key;
 
-  final _i25.AnimeRepository animeRepository;
+  final _i20.AnimeRepository animeRepository;
 
-  final _i21.ChatAndAuthRepository chatAndAuthRepository;
+  final _i22.ChatAndAuthRepository chatAndAuthRepository;
 
   final String acceptId;
 
@@ -723,7 +729,7 @@ class SendAnimeInviteRouteArgs {
 
   final String receiverId;
 
-  final _i24.UserModelWithLastMessage userModel;
+  final _i25.UserModelWithLastMessage userModel;
 
   final String receiverUsername;
 
@@ -741,7 +747,7 @@ class SharePlayerRoute extends _i16.PageRouteInfo<SharePlayerRouteArgs> {
     required String animeStreamUrl,
     required String receiverUsername,
     required String receiverId,
-    required _i24.UserModelWithLastMessage userModel,
+    required _i25.UserModelWithLastMessage userModel,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           SharePlayerRoute.name,
@@ -778,7 +784,7 @@ class SharePlayerRouteArgs {
 
   final String receiverId;
 
-  final _i24.UserModelWithLastMessage userModel;
+  final _i25.UserModelWithLastMessage userModel;
 
   @override
   String toString() {
