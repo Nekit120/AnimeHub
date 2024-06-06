@@ -355,6 +355,14 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
         actions: [
           IconButton(
             icon: const Icon(
+              Icons.person_outline,
+            size: 25,
+            ),
+            onPressed: () {
+            },
+          ),
+          IconButton(
+            icon: const Icon(
               Icons.tv,
             ),
             onPressed: () {

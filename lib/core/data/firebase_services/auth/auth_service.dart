@@ -25,7 +25,7 @@ class AuthFirebaseService {
         .doc(userCredential.user!.uid)
         .set(
 
-        UserModel(uid: userCredential.user!.uid, email: email, username: username,profileImageUrl: null,phoneNumber: null).toJson()
+        UserModel(uid: userCredential.user!.uid, email: email, username: username,profileImageUrl: null,phoneNumber: null, friends: []).toJson()
     );
 
     await _auth.signOut();
@@ -129,7 +129,7 @@ class AuthFirebaseService {
     _firestore
         .collection("Users")
         .doc(userCredential.user!.uid)
-        .set(  UserModel(uid: userCredential.user!.uid, email: email, username: username).toJson()
+        .set(  UserModel(uid: userCredential.user!.uid, email: email, username: username, friends: []).toJson()
     );
 
     return userCredential;

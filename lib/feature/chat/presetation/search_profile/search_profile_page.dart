@@ -64,7 +64,7 @@ class SearchProfilePage extends BaseView<SearchProfilePageViewModel> {
   AppBar _customAppBarSearch({required SearchProfilePageViewModel vm}) {
     return AppBar(
       elevation: 1.0,
-      shadowColor: Colors.black,
+      shadowColor: Colors.grey[100],
       title: Container(
         padding: const EdgeInsets.symmetric(
           vertical: 4,

@@ -45,6 +45,7 @@ class RegistrationViewModel extends ViewModel {
       case GoodUseCaseResult<bool>():
         {
           customSnackBarShow(title: "Письмо с подтверждением отправлена на E-mail", isError: false);
+          Navigator.of(context).pop();
         }
       case BadUseCaseResult<bool>():
         {
