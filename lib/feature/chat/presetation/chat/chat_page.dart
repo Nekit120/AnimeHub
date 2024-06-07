@@ -124,7 +124,12 @@ class ChatPage extends BaseView<ChatViewModel> {
             vm.getUser(uid: snapshot.data!.uid, vm: vm);
             return Scaffold(
               appBar: AppBar(
-                title: const Center(child: Text("Чат")),
+                title:  Center(child: Row(
+                  children: [
+                    SizedBox(width: maxWidth/3.7),
+                    const Text("Чат"),
+                  ],
+                )),
                 leading: Container(
                   margin: const EdgeInsets.all(8.0),
                   child: GestureDetector(

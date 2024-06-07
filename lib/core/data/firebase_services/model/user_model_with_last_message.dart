@@ -8,9 +8,10 @@ class UserModelWithLastMessage {
   final String email;
   final String username;
   final String? profileImageUrl;
+  final List<String>? friends;
   final String? phoneNumber;
   final String? lastMessage;
-  UserModelWithLastMessage ( {required this.uid,required this.email,required this.username, this.profileImageUrl,this.phoneNumber,required this.lastMessage,});
+  UserModelWithLastMessage ( {required this.uid,required this.email,required this.username, this.profileImageUrl,this.phoneNumber,required this.lastMessage,required this.friends });
 
   factory UserModelWithLastMessage.fromJson(Map<String, dynamic> json) =>
       _$UserModelWithLastMessageFromJson(json);

@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reactive_variables/reactive_variables.dart';
 import '../../../../core/data/firebase_services/chat/chat_sevice.dart';
 import '../../../../core/data/firebase_services/model/user_model_with_last_message.dart';
 import '../../../../core/domain/container/app_container.dart';
@@ -80,15 +81,18 @@ class SearchProfilePage extends BaseView<SearchProfilePageViewModel> {
                 controller: vm.appBarController,
                 onChanged: (value) {
                   _debounceTimer.cancel();
-                  if (value.length > 1) {
+                  if(value.isNotEmpty) {
                     _debounceTimer =
                         Timer(const Duration(seconds: 1), () async {
-                      vm.usersModelWithLastMessage.value =
+                          vm.isLoading.value = true;
+                          vm.usersModelWithLastMessage.value =
                           await chatFirebaseService
                               .getUserModelWithLastMessageByName(
-                                  currentUserUid: currentUid,
-                                  searchTerm: value);
-                    });
+                              currentUserUid: currentUid, searchTerm: value);
+                          vm.isLoading.value = false;
+                        });
+                  } else {
+                    vm.usersModelWithLastMessage.value = null;
                   }
                 },
                 decoration: const InputDecoration(
@@ -117,31 +121,34 @@ class SearchProfilePage extends BaseView<SearchProfilePageViewModel> {
   Widget _buildUserList(
       {required SearchProfilePageViewModel vm,
       required String uid,
+      required bool isLoaded,
       required List<UserModelWithLastMessage>? usersModel}) {
-    return usersModel != null
-        ? usersModel.isNotEmpty
-            ? ListView(
-                children: usersModel!
-                    .map<Widget>((userData) => _buildUserListItem(
-                          userData: userData,
-                          vm: vm,
-                        ))
-                    .toList(),
-              )
+    return isLoaded == false
+        ? usersModel != null
+            ? usersModel.isNotEmpty
+                ? ListView(
+                    children: usersModel
+                        .map<Widget>((userData) => _buildUserListItem(
+                              userData: userData,
+                              vm: vm,
+                            ))
+                        .toList(),
+                  )
+                : _searchInfoWidget(
+                    context: vm.context,
+                    title: "Пользователь не найден",
+                    decription:
+                        "Попробуйте сохранить регистры ввода и попытаться снова.",
+                    iconData: Icons.search_off,
+                    color: LightThemeColors.mdThemeLightError)
             : _searchInfoWidget(
                 context: vm.context,
-                title: "Пользователь не найден",
+                title: "Поиск пользователей",
                 decription:
-                    "Попробуйте сохранить регистры ввода и попытаться снова.",
-                iconData: Icons.search_off,
-                color: LightThemeColors.mdThemeLightError)
-        : _searchInfoWidget(
-            context: vm.context,
-            title: "Поиск пользователей",
-            decription:
-                "Тут вы можете найти пользователей и добавить в свои контакты!",
-            iconData: Icons.search_rounded,
-            color: LightThemeColors.positiveCheck);
+                    "Тут вы можете найти пользователей и добавить в свои контакты!",
+                iconData: Icons.search_rounded,
+                color: LightThemeColors.positiveCheck)
+        : const Center(child: CircularProgressIndicator(),);
   }
 
   Widget _buildUserListItem(
@@ -187,11 +194,16 @@ class SearchProfilePage extends BaseView<SearchProfilePageViewModel> {
               appBar: _customAppBarSearch(vm: vm),
               body: Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: vm.usersModelWithLastMessage.observer(
-                      (context, value) => _buildUserList(
+                  child: Obs(
+                    rvList: [vm.usersModelWithLastMessage, vm.isLoading],
+                    builder: (BuildContext context) {
+                      return _buildUserList(
                           vm: vm,
                           uid: snapshot.data!.uid,
-                          usersModel: value))));
+                          usersModel: vm.usersModelWithLastMessage.value,
+                          isLoaded: vm.isLoading.value);
+                    },
+                  )));
         });
   }
 }

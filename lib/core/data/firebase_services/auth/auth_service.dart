@@ -82,10 +82,11 @@ class AuthFirebaseService {
           'phoneNumber': phoneNumber
         });
       }
-       else if(username.length < 4  && phoneNumber.length ==15) {
+      else if(username.length < 4  && phoneNumber.length ==15) {
         await _firestore.collection('Users').doc(uid).update({
           'phoneNumber': phoneNumber
         });
+      }  else if(username.length < 4  && phoneNumber.length !=15) {
       }else {
         await _firestore.collection('Users').doc(uid).update({
           'username': username,

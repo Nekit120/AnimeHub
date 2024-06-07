@@ -157,8 +157,8 @@ abstract class $AppRouter extends _i17.RootStackRouter {
           key: args.key,
           receiverUsername: args.receiverUsername,
           chatAndAuthRepository: args.chatAndAuthRepository,
-          receiverId: args.receiverId,
           userModel: args.userModel,
+          receiverId: args.receiverId,
         ),
       );
     },
@@ -563,8 +563,8 @@ class PersonalChatRoute extends _i17.PageRouteInfo<PersonalChatRouteArgs> {
     _i18.Key? key,
     required String receiverUsername,
     required _i23.ChatAndAuthRepository chatAndAuthRepository,
-    required String receiverId,
     required _i26.UserModelWithLastMessage userModel,
+    required String receiverId,
     List<_i17.PageRouteInfo>? children,
   }) : super(
           PersonalChatRoute.name,
@@ -572,8 +572,8 @@ class PersonalChatRoute extends _i17.PageRouteInfo<PersonalChatRouteArgs> {
             key: key,
             receiverUsername: receiverUsername,
             chatAndAuthRepository: chatAndAuthRepository,
-            receiverId: receiverId,
             userModel: userModel,
+            receiverId: receiverId,
           ),
           initialChildren: children,
         );
@@ -589,8 +589,8 @@ class PersonalChatRouteArgs {
     this.key,
     required this.receiverUsername,
     required this.chatAndAuthRepository,
-    required this.receiverId,
     required this.userModel,
+    required this.receiverId,
   });
 
   final _i18.Key? key;
@@ -599,13 +599,13 @@ class PersonalChatRouteArgs {
 
   final _i23.ChatAndAuthRepository chatAndAuthRepository;
 
-  final String receiverId;
-
   final _i26.UserModelWithLastMessage userModel;
+
+  final String receiverId;
 
   @override
   String toString() {
-    return 'PersonalChatRouteArgs{key: $key, receiverUsername: $receiverUsername, chatAndAuthRepository: $chatAndAuthRepository, receiverId: $receiverId, userModel: $userModel}';
+    return 'PersonalChatRouteArgs{key: $key, receiverUsername: $receiverUsername, chatAndAuthRepository: $chatAndAuthRepository, userModel: $userModel, receiverId: $receiverId}';
   }
 }
 

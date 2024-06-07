@@ -8,6 +8,7 @@ import '../../domain/useCase/get_current_user_use_case.dart';
 
 class SearchProfilePageViewModel extends ViewModel {
   final GetCurrentUserUseCase getCurrentUserUseCase;
+  final Rv<bool> isLoading = false.rv;
   final Rv<List<UserModelWithLastMessage>?> usersModelWithLastMessage = null.rv();
   SearchProfilePageViewModel(super.context,{required ChatAndAuthRepository chatAndAuthRepository}):
   getCurrentUserUseCase = GetCurrentUserUseCase(chatAndAuthRepository: chatAndAuthRepository);
