@@ -97,11 +97,12 @@ class SendAnimeInvitePage extends BaseView<SendAnimeSearchViewModel> {
           backgroundColor: Colors.transparent,
           leading: IconButton(
               onPressed: () {
-                AutoRouter.of(vm.context).replace(PersonalChatRoute(
-                    receiverUsername: receiverUsername,
-                    chatAndAuthRepository: vm.chatAndAuthRepository,
-                    receiverId: receiverId,
-                    userModel: userModel));
+                Navigator.of(vm.context).pop();
+                // AutoRouter.of(vm.context).replace(PersonalChatRoute(
+                //     receiverUsername: receiverUsername,
+                //     chatAndAuthRepository: vm.chatAndAuthRepository,
+                //     receiverId: receiverId,
+                //     userModel: userModel));
               },
               icon: const Icon(Icons.arrow_back_outlined)),
         ) : null,

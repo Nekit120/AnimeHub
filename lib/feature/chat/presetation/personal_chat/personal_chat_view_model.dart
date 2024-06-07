@@ -29,7 +29,6 @@ class PersonalChatViewModel extends ViewModel {
   BuildContext? currentContext;
   final isLoaded = false.rv;
   final isActive = false.rv;
-  int dialogCount = 1;
   final myFocusNode = FocusNode();
   final Rv<bool?> isFriend = null.rv();
 

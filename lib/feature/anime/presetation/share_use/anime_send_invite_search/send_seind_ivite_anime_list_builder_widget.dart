@@ -96,11 +96,12 @@ class SendAnimeListBuilderWidget extends StatelessWidget {
                 animePoster: animeList[index].materialData!.posterUrl!,
                 proposedId: proposedId,
                 acceptId: acceptId);
-                AutoRouter.of(context).replace(PersonalChatRoute(
-                receiverUsername: receiverUsername,
-                chatAndAuthRepository: chatAndAuthRepository,
-                receiverId: receiverId,
-                userModel: userModel));
+                 Navigator.of(context).pop();
+                // AutoRouter.of(context).replace(PersonalChatRoute(
+                // receiverUsername: receiverUsername,
+                // chatAndAuthRepository: chatAndAuthRepository,
+                // receiverId: receiverId,
+                // userModel: userModel));
           },
         );
       },
