@@ -15,6 +15,8 @@ UserModelWithLastMessage _$UserModelWithLastMessageFromJson(
       profileImageUrl: json['profileImageUrl'] as String?,
       phoneNumber: json['phoneNumber'] as String?,
       lastMessage: json['lastMessage'] as String?,
+      friends:
+          (json['friends'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$UserModelWithLastMessageToJson(
@@ -24,6 +26,7 @@ Map<String, dynamic> _$UserModelWithLastMessageToJson(
       'email': instance.email,
       'username': instance.username,
       'profileImageUrl': instance.profileImageUrl,
+      'friends': instance.friends,
       'phoneNumber': instance.phoneNumber,
       'lastMessage': instance.lastMessage,
     };

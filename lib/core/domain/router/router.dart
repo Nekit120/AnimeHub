@@ -28,6 +28,7 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: SinglePlayerRoute.page),
         AutoRoute(page: SharePlayerRoute.page),
         AutoRoute(page: AnimeSearch.page),
-        AutoRoute(page: AnimeFavoritesSearch.page)
+        AutoRoute(page: AnimeFavoritesSearch.page),
+        AutoRoute(page: SearchProfileRoute.page),
       ];
 }

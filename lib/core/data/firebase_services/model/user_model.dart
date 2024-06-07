@@ -7,9 +7,19 @@ class UserModel {
   final String uid;
   final String email;
   final String username;
+  final String usernameLowerCase;
   final String? profileImageUrl;
   final String? phoneNumber;
-  UserModel ({required this.uid,required this.email,required this.username, this.profileImageUrl,this.phoneNumber});
+  final List<String>? friends;
+
+  UserModel(
+      {required this.uid,
+      required this.email,
+      required this.username,
+      required this.friends,
+      required this.usernameLowerCase,
+      this.profileImageUrl,
+      this.phoneNumber});
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

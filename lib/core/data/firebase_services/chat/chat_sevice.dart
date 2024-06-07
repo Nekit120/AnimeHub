@@ -21,6 +21,34 @@ class ChatFirebaseService {
     });
   }
 
+  Future<void> addFriend(
+      {required String userId, required String friendUid}) async {
+    await _firestore.collection('Users').doc(userId).update({
+      'friends': FieldValue.arrayUnion([friendUid])
+    });
+  }
+  Future<void> removeFriend(
+      {required String userId, required String friendUid}) async {
+    await _firestore.collection('Users').doc(userId).update({
+      'friends': FieldValue.arrayRemove([friendUid])
+    });
+  }
+
+  Future<UserModel?> getUserByUid({required String uid}) async {
+    try {
+      var userDoc =
+          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+      if (userDoc.exists) {
+        return UserModel.fromJson(userDoc.data()!);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print("Error getting user by UID: $e");
+      return null;
+    }
+  }
+
   Stream<List<UserModelWithLastMessage>> getUserModelWithLastMessage(
       {required String currentUserUid}) {
     return _firestore
@@ -28,40 +56,138 @@ class ChatFirebaseService {
         .snapshots()
         .asyncMap((snapshots) async {
       List<UserModelWithLastMessage> userModelWithLastMessages = [];
+      final currentUser = await getUserByUid(uid: currentUserUid);
+      if (currentUser != null &&
+          currentUser.friends != null &&
+          currentUser.friends!.isNotEmpty) {
+        for (var doc in snapshots.docs) {
+          final users = UserModel.fromJson(doc.data());
+          for (var otherUid in currentUser.friends!) {
+            if (users.uid == otherUid) {
+              List<String> ids = [currentUserUid, users.uid];
+              ids.sort();
+              String chatRoomId = ids.join("_");
 
-      for (var doc in snapshots.docs) {
-        final users = UserModel.fromJson(doc.data());
-        List<String> ids = [currentUserUid, users.uid];
-        ids.sort();
-        String chatRoomId = ids.join("_");
+              final querySnapshot = await _firestore
+                  .collection("chat_rooms")
+                  .doc(chatRoomId)
+                  .collection("messages")
+                  .orderBy("timestamp", descending: true)
+                  .limit(1)
+                  .get();
 
-        final querySnapshot = await _firestore
-            .collection("chat_rooms")
-            .doc(chatRoomId)
-            .collection("messages")
-            .orderBy("timestamp", descending: true)
-            .limit(1)
-            .get();
+              String lastMessage = "";
+              if (querySnapshot.docs.isNotEmpty) {
+                lastMessage =
+                    MessageModel.fromJson(querySnapshot.docs.first.data())
+                        .message;
+              }
 
-        String lastMessage = "";
-        if (querySnapshot.docs.isNotEmpty) {
-          lastMessage =
-              MessageModel.fromJson(querySnapshot.docs.first.data()).message;
+              userModelWithLastMessages.add(UserModelWithLastMessage(
+                uid: users.uid,
+                email: users.email,
+                username: users.username,
+                phoneNumber: users.phoneNumber,
+                profileImageUrl: users.profileImageUrl,
+                lastMessage: lastMessage,
+                friends: users.friends,
+              ));
+            }
+          }
         }
 
-        userModelWithLastMessages.add(UserModelWithLastMessage(
-          uid: users.uid,
-          email: users.email,
-          username: users.username,
-          phoneNumber: users.phoneNumber,
-          profileImageUrl: users.profileImageUrl,
-          lastMessage: lastMessage,
-        ));
+        return userModelWithLastMessages;
+      } else {
+        return [];
       }
-
-      return userModelWithLastMessages;
     });
   }
+
+  Future<List<UserModelWithLastMessage>> getUserModelWithLastMessageByName({
+    required String currentUserUid,
+    required String searchTerm,
+  }) async {
+    final userSnapshots = await _firestore
+        .collection("Users")
+        .where("usernameLowerCase",
+            isGreaterThanOrEqualTo: searchTerm.toLowerCase())
+        .where("usernameLowerCase",
+            isLessThanOrEqualTo: searchTerm.toLowerCase() + '\uf8ff')
+        .get();
+
+    List<UserModelWithLastMessage> userModelWithLastMessages = [];
+
+    for (var doc in userSnapshots.docs) {
+      final users = UserModel.fromJson(doc.data());
+      List<String> ids = [currentUserUid, users.uid];
+      ids.sort();
+      String chatRoomId = ids.join("_");
+
+      final querySnapshot = await _firestore
+          .collection("chat_rooms")
+          .doc(chatRoomId)
+          .collection("messages")
+          .orderBy("timestamp", descending: true)
+          .limit(1)
+          .get();
+
+      String lastMessage = "";
+      if (querySnapshot.docs.isNotEmpty) {
+        lastMessage =
+            MessageModel.fromJson(querySnapshot.docs.first.data()).message;
+      }
+
+      userModelWithLastMessages.add(UserModelWithLastMessage(
+        uid: users.uid,
+        email: users.email,
+        username: users.username,
+        phoneNumber: users.phoneNumber,
+        profileImageUrl: users.profileImageUrl,
+        lastMessage: lastMessage,
+        friends: users.friends,
+      ));
+    }
+
+    return userModelWithLastMessages;
+  }
+
+  // Future<List<UserModelWithLastMessage>> getUserModelWithLastMessageSingle(
+  //     {required String currentUserUid}) async {
+  //   final userSnapshots = await _firestore.collection("Users").get();
+  //   List<UserModelWithLastMessage> userModelWithLastMessages = [];
+  //
+  //   for (var doc in userSnapshots.docs) {
+  //     final users = UserModel.fromJson(doc.data());
+  //     List<String> ids = [currentUserUid, users.uid];
+  //     ids.sort();
+  //     String chatRoomId = ids.join("_");
+  //
+  //     final querySnapshot = await _firestore
+  //         .collection("chat_rooms")
+  //         .doc(chatRoomId)
+  //         .collection("messages")
+  //         .orderBy("timestamp", descending: true)
+  //         .limit(1)
+  //         .get();
+  //
+  //     String lastMessage = "";
+  //     if (querySnapshot.docs.isNotEmpty) {
+  //       lastMessage =
+  //           MessageModel.fromJson(querySnapshot.docs.first.data()).message;
+  //     }
+  //
+  //     userModelWithLastMessages.add(UserModelWithLastMessage(
+  //       uid: users.uid,
+  //       email: users.email,
+  //       username: users.username,
+  //       phoneNumber: users.phoneNumber,
+  //       profileImageUrl: users.profileImageUrl,
+  //       lastMessage: lastMessage,
+  //     ));
+  //   }
+  //
+  //   return userModelWithLastMessages;
+  // }
 
   Future<void> sendMessage(
       {required String receiverID, required String message}) async {
@@ -136,7 +262,6 @@ class ChatFirebaseService {
     // .add(newInvite.toJson());
   }
 
-
   Future<void> updatePositiveInviteAfterSend(
       {required String acceptId, required String proposedId}) async {
     List<String> ids = [acceptId, proposedId];
@@ -172,7 +297,6 @@ class ChatFirebaseService {
       }
     });
   }
-
 
   Stream<QuerySnapshot> getMessage(
       {required String userId, required String otherUserId}) {

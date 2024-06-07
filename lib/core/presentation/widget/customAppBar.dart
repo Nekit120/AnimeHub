@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends AppBar {
   final String titleAppBar;
   final BuildContext context;
+  final bool filter;
   final VoidCallback onPressesCallBack;
 
   @override
@@ -12,6 +13,7 @@ class CustomAppBar extends AppBar {
       {super.key,
       required this.titleAppBar,
       required this.context,
+      required this.filter,
       required this.onPressesCallBack,
       this.leading})
       : super(
@@ -30,14 +32,16 @@ class CustomAppBar extends AppBar {
                 icon: const Icon(
                   Icons.search,
                 ),
-                onPressed: (){
+                onPressed: () {
                   onPressesCallBack();
-                } ),
+                }),
+            filter ==true ?
             IconButton(
                 icon: const Icon(
-                  Icons.settings,
+                  Icons.menu,
                 ),
-                onPressed: () {}),
+                onPressed: () {})
+                : Container()
           ],
         );
 }

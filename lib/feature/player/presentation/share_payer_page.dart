@@ -52,16 +52,7 @@ class _SinglePlayerPageState extends State<SharePlayerPage> {
     super.dispose();
   }
 
-  Future<bool> _onWillPop() async {
-    Navigator.of(context).pop();
-    // AutoRouter.of(context).replace(PersonalChatRoute(
-    //     receiverUsername: widget.receiverUsername,
-    //     receiverId: widget.receiverId,
-    //     userModel: widget.userModel,
-    //     chatAndAuthRepository:
-    //         AppContainer().repositoryScope.chatAndAuthRepository));
-    return false;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,16 +66,13 @@ class _SinglePlayerPageState extends State<SharePlayerPage> {
       encoding: Encoding.getByName('utf-8'),
     ).toString();
 
-    return WillPopScope(
-        onWillPop: _onWillPop,
-        child: Scaffold(
+    return  Scaffold(
           body: GestureDetector(
             child: WebView(
               backgroundColor: CupertinoColors.black,
               initialUrl: encodedHtml,
               javascriptMode: JavascriptMode.unrestricted,
             ),
-          ),
         ));
   }
 }

@@ -28,11 +28,15 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     super.key,
     required this.receiverUsername,
     required ChatAndAuthRepository chatAndAuthRepository,
-    required this.receiverId,
-    required this.userModel,
-  }) : super(
+    required UserModelWithLastMessage userModel,
+    required String receiverId,
+  })  : userModel = userModel,
+        receiverId = receiverId,
+        super(
             vmFactory: (context) => PersonalChatViewModel(context,
-                chatAndAuthRepository: chatAndAuthRepository));
+                chatAndAuthRepository: chatAndAuthRepository,
+                otherUserModel: userModel,
+                receiverId: receiverId));
 
   final TextEditingController _messageTextController = TextEditingController();
 
@@ -73,11 +77,11 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     final MessageModel messageModel = MessageModel.fromJson(data);
     final currentUser = vm.getCurrentUserUseCase.call();
-    if(currentUser != null) {
+    if (currentUser != null) {
       bool isCurrentUser = messageModel.senderID == currentUser!.uid;
 
       final alignment =
-      isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
+          isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
       return Container(
           alignment: alignment,
           child: _chatBubble(
@@ -92,9 +96,9 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
   Widget _messageWidget(
       {required PersonalChatViewModel vm, required double maxWidth}) {
     final sender = vm.getCurrentUserUseCase.call();
-    if(sender != null) {
-    String senderId = sender.uid;
-    return StreamBuilder(
+    if (sender != null) {
+      String senderId = sender.uid;
+      return StreamBuilder(
         stream: vm.getMessageUseCase
             .call(userId: senderId, otherUserId: receiverId),
         builder: (context, snapshot) {
@@ -113,20 +117,24 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           }
           Future.delayed(
               const Duration(milliseconds: 600), () => vm.scrollDown());
-        if(snapshot.data != null){
-          return ListView.builder(
-            reverse: true,
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              var doc = snapshot.data!.docs[index];
-              return _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth);
-            },
-          );} else {
-          return const Center(child: CircularProgressIndicator(),);
-        }
+          if (snapshot.data != null) {
+            return ListView.builder(
+              reverse: true,
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                var doc = snapshot.data!.docs[index];
+                return _messageItemWidget(doc: doc, vm: vm, maxWidth: maxWidth);
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
         },
-    );} else {
-     return  Container();
+      );
+    } else {
+      return Container();
     }
   }
 
@@ -172,10 +180,11 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                   Icons.send,
                 ),
                 onPressed: () {
+                  vm.isFirstShowDialog = true;
                   sendMessage(vm: vm);
                   Future.delayed(
                     const Duration(milliseconds: 300),
-                        () => vm.fastScrollDown(),
+                    () => vm.fastScrollDown(),
                   );
                 },
               ),
@@ -206,12 +215,10 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
   final ChatFirebaseService chatFirebaseService = ChatFirebaseService();
 
   void showInviteDialog(
-      {
-      required String animeName,
+      {required String animeName,
       required String acceptId,
       required String proposedId,
       required PersonalChatViewModel vm}) {
-    vm.dialogCount++;
     vm.isFirstShowDialog = false;
     showDialog(
       context: vm.context,
@@ -233,7 +240,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                 TextButton(
                   child: const Text('Да'),
                   onPressed: () {
-                    vm.dialogCount = 0;
                     vm.isFirstShowDialog = true;
                     AutoRouter.of(context).pop();
                     Future.delayed(
@@ -245,7 +251,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
                 TextButton(
                   child: const Text('Нет'),
                   onPressed: () {
-                    vm.dialogCount = 0;
                     vm.isFirstShowDialog = true;
                     AutoRouter.of(context).pop();
                   },
@@ -258,6 +263,9 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     );
   }
 
+  String lastChoise = " ";
+  int cuntSingIn = 0;
+
   void listenForOffers(
       {required String currentUserId,
       required String acceptId,
@@ -266,7 +274,6 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
     chatFirebaseService
         .offerStream(currentUserId: senderId, acceptId: receiverId)
         .listen((offer) {
-
       if (offer != null) {
         if (offer.isProposed == true &&
             offer.isAccepted == false &&
@@ -275,36 +282,42 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
             acceptId: senderId,
             proposedId: receiverId,
           );
-          if(vm.isFirstShowDialog == true) {
-            vm.dialogCount = 0;
+          if (vm.isFirstShowDialog == false) {
+            if (lastChoise == offer.animeLink) {
+            } else {
+              AutoRouter.of(vm.context).pop();
+              Future.delayed(
+                  const Duration(milliseconds: 150),
+                  () => showInviteDialog(
+                      animeName: offer.animeName,
+                      acceptId: senderId,
+                      proposedId: receiverId,
+                      vm: vm));
+              lastChoise = offer.animeLink;
+            }
+          } else {
             vm.isFirstShowDialog = false;
+            lastChoise = offer.animeLink;
             showInviteDialog(
                 animeName: offer.animeName,
                 acceptId: senderId,
-                proposedId: receiverId, vm: vm);
-          } else {
-            if(vm.dialogCount==1){
-              AutoRouter.of(vm.context).pop();
-              vm.dialogCount--;
-              Future.delayed(const Duration(milliseconds: 150), () =>
-                showInviteDialog(
-                  animeName: offer.animeName,
-                  acceptId: senderId,
-                  proposedId: receiverId, vm: vm));
-            }
-
+                proposedId: receiverId,
+                vm: vm);
           }
-        } else if (offer.isProposed == true && offer.isAccepted == true) {
+        } else if (offer.isProposed == true &&
+            offer.isAccepted == true && cuntSingIn == 0) {
+          cuntSingIn++;
           chatFirebaseService.updateInviteAfterSend(
             acceptId: senderId,
             proposedId: receiverId,
           );
-          vm.dialogCount--;
-          AutoRouter.of(vm.context).replace(SharePlayerRoute(
+          AutoRouter.of(vm.context).push(SharePlayerRoute(
               animeStreamUrl: offer.animeLink,
               receiverUsername: receiverUsername,
               receiverId: receiverId,
               userModel: userModel));
+              lastChoise = "";
+          Future.delayed(const Duration(milliseconds: 800), () => {cuntSingIn = 0});
         }
       } else {}
     });
@@ -354,12 +367,39 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
           ),
         ),
         actions: [
+          vm.isFriend.observer((context, value) => value != null
+              ? value == false
+                  ? IconButton(
+                      icon: const Icon(
+                        Icons.person,
+                        size: 25,
+                      ),
+                      onPressed: () {
+                        final sender = vm.getCurrentUserUseCase.call();
+                        chatFirebaseService.removeFriend(
+                            userId: sender!.uid, friendUid: receiverId);
+                        vm.isFriend.value = true;
+                      },
+                    )
+                  : IconButton(
+                      icon: const Icon(
+                        Icons.person_outline,
+                        size: 25,
+                      ),
+                      onPressed: () {
+                        final sender = vm.getCurrentUserUseCase.call();
+                        chatFirebaseService.addFriend(
+                            userId: sender!.uid, friendUid: receiverId);
+                        vm.isFriend.value = false;
+                      },
+                    )
+              : Container()),
           IconButton(
             icon: const Icon(
               Icons.tv,
             ),
             onPressed: () {
-              AutoRouter.of(vm.context).replace(SendAnimeInviteRoute(
+              AutoRouter.of(vm.context).push(SendAnimeInviteRoute(
                 animeRepository: AppContainer().repositoryScope.animeRepository,
                 chatAndAuthRepository:
                     AppContainer().repositoryScope.chatAndAuthRepository,

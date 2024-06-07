@@ -32,6 +32,19 @@ class SendAnimeListBuilderWidget extends StatelessWidget {
     required this.userModel,
     required this.receiverUsername,
   });
+  void customSnackBarShow() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Center(child: Text("Запрос на просмотр был отправлен.")),
+        duration: const Duration(milliseconds: 800),
+        backgroundColor: Colors.green[500],
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,11 +109,13 @@ class SendAnimeListBuilderWidget extends StatelessWidget {
                 animePoster: animeList[index].materialData!.posterUrl!,
                 proposedId: proposedId,
                 acceptId: acceptId);
-                AutoRouter.of(context).replace(PersonalChatRoute(
-                receiverUsername: receiverUsername,
-                chatAndAuthRepository: chatAndAuthRepository,
-                receiverId: receiverId,
-                userModel: userModel));
+                customSnackBarShow();
+                Navigator.of(context).pop();
+                // AutoRouter.of(context).replace(PersonalChatRoute(
+                // receiverUsername: receiverUsername,
+                // chatAndAuthRepository: chatAndAuthRepository,
+                // receiverId: receiverId,
+                // userModel: userModel));
           },
         );
       },

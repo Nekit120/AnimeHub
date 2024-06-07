@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/domain/container/app_container.dart';
-import '../../../../../core/presentation/widget/searchCustomAppBar.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../domain/stateManager/favoritesSearch/anime_search_favorites_notifier.dart';
 import '../../../domain/stateManager/state/anime_search_favorite_state.dart';
@@ -73,13 +72,20 @@ class AnimeFavoritesSearch extends BaseView<AnimeFavoritesSearchViewModel> {
   Widget build(AnimeFavoritesSearchViewModel vm) {
     final isNotHorizontal =
         MediaQuery.of(vm.context).orientation != Orientation.landscape;
+        final maxWidth = MediaQuery.of(vm.context).size.width;
+
     return Scaffold(
         appBar: isNotHorizontal
-            ? SearchCustomAppBar(
-                titleAppBar: "Поиск по любимым",
-                context: vm.context,
-                onPressesCallBack: () {},
-              )
+            ?AppBar(
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          title: Row(
+            children: [
+              SizedBox(width: maxWidth/12.5,),
+              Text("Поиск по любимым", style: Theme.of(vm.context).textTheme.titleLarge),
+            ],
+          ),
+        )
             : null,
         body: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {
