@@ -39,7 +39,7 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
                 context: vm.context,
                 onPressesCallBack: () {
                   _customAppBarOnPressed(context: vm.context);
-                },
+                }, filter: false,
               )
             : null,
         body: Consumer(

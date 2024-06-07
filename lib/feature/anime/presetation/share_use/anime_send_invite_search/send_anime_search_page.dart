@@ -16,7 +16,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/data/firebase_services/model/user_model_with_last_message.dart';
 import '../../../../../core/domain/model/anime_api_list.dart';
 import '../../../../../core/domain/router/router.gr.dart';
-import '../../../../../core/presentation/widget/searchCustomAppBar.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../domain/stateManager/search/anime_search_notifier.dart';
 import '../../../domain/stateManager/state/anime_search_state.dart';
@@ -95,6 +94,11 @@ class SendAnimeInvitePage extends BaseView<SendAnimeSearchViewModel> {
             ? AppBar(
           surfaceTintColor: Colors.transparent,
           backgroundColor: Colors.transparent,
+          title: Row(
+            children: [
+              Text("Предложение на просмотр")
+            ],
+          ),
           leading: IconButton(
               onPressed: () {
                 Navigator.of(vm.context).pop();

@@ -317,7 +317,7 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
               receiverId: receiverId,
               userModel: userModel));
               lastChoise = "";
-          Future.delayed(const Duration(seconds: 3), () => {cuntSingIn = 0});
+          Future.delayed(const Duration(milliseconds: 800), () => {cuntSingIn = 0});
         }
       } else {}
     });

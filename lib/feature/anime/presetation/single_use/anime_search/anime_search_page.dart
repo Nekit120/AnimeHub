@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/domain/model/anime_api_list.dart';
-import '../../../../../core/presentation/widget/searchCustomAppBar.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../domain/stateManager/search/anime_search_notifier.dart';
 import '../../../domain/stateManager/state/anime_search_state.dart';
@@ -71,13 +70,20 @@ class AnimeSearch extends BaseView<AnimeSearchViewModel> {
   Widget build(AnimeSearchViewModel vm) {
     final isNotHorizontal =
         MediaQuery.of(vm.context).orientation != Orientation.landscape;
+    final maxWidth = MediaQuery.of(vm.context).size.width;
+
     return Scaffold(
         appBar: isNotHorizontal
-            ? SearchCustomAppBar(
-                titleAppBar: S.of(vm.context).title_search,
-                context: vm.context,
-                onPressesCallBack: () {},
-              )
+            ?AppBar(
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          title: Row(
+            children: [
+              SizedBox(width: maxWidth/4),
+              Text(S.of(vm.context).title_search, style: Theme.of(vm.context).textTheme.titleLarge),
+            ],
+          ),
+        )
             : null,
         body: Consumer(
           builder: (BuildContext context, WidgetRef ref, Widget? child) {

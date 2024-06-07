@@ -71,7 +71,7 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
               context: context,
               onPressesCallBack: () {
                 _customAppBarOnPressed(context: context);
-              },
+              }, filter: false,
             )
           : null,
       body: Consumer(
