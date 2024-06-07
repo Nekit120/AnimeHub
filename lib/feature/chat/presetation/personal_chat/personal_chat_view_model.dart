@@ -21,11 +21,14 @@ class PersonalChatViewModel extends ViewModel {
   final SendInviteUseCase sendInviteUseCase;
   final GetCurrentUserByUidUseCase getCurrentUserByUidUseCase;
   final UserModelWithLastMessage otherUserModel;
+
   final String receiverId;
   var isFirstTime = true;
+  bool isDialogShowing = false;
   var isFirstShowDialog = true;
   BuildContext? currentContext;
   final isLoaded = false.rv;
+  final isActive = false.rv;
   int dialogCount = 1;
   final myFocusNode = FocusNode();
   final Rv<bool?> isFriend = null.rv();
