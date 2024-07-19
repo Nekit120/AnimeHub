@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/get_current_user_use_case.dart';
 import 'package:anime_hub/feature/chat/domain/useCase/send_invite_use_case.dart';
@@ -7,7 +6,6 @@ import 'package:anime_hub/feature/chat/domain/useCase/send_message_use_case.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:reactive_variables/reactive_variables.dart';
-
 import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../core/data/firebase_services/model/user_model_with_last_message.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
@@ -77,16 +75,16 @@ class PersonalChatViewModel extends ViewModel {
   Future<void> checkIsFriend() async {
     final user = await getCurrentUserByUid();
     if (user != null && user.friends != null) {
-      log ("i'm here 1");
+      log("i'm here 1");
       if (user.friends!.contains(receiverId)) {
-        log ("i'm here 2");
-        isFriend.value =false ;
+        log("i'm here 2");
+        isFriend.value = false;
       } else {
-        log ("i'm here 3");
+        log("i'm here 3");
         isFriend.value = true;
       }
     } else {
-      log ("i'm here 4");
+      log("i'm here 4");
       isFriend.value = true;
     }
   }

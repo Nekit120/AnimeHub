@@ -7,8 +7,6 @@ import 'package:anime_hub/feature/chat/domain/useCase/sign_out_use_case.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_variables/reactive_variables.dart';
-
-import '../../../../core/data/firebase_services/model/message_model.dart';
 import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../core/presentation/controllers/app_text_editing_controller.dart';
 import '../../../../core/presentation/controllers/password_text_editing_controller.dart';

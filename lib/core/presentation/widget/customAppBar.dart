@@ -1,4 +1,8 @@
+import 'package:anime_hub/core/domain/container/app_container.dart';
+import 'package:anime_hub/feature/anime/presetation/widget/filter_item/filter_vm.dart';
 import 'package:flutter/material.dart';
+
+import '../../../feature/anime/presetation/widget/filter_item/filter_Item_bottom_sheet.dart';
 
 class CustomAppBar extends AppBar {
   final String titleAppBar;
@@ -28,6 +32,20 @@ class CustomAppBar extends AppBar {
           title:
               Text(titleAppBar, style: Theme.of(context).textTheme.titleLarge),
           actions: [
+            filter ==true ?
+            IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                ),
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => FilterItemBottomSheet(vmFactory: (BuildContext context) => FilterViewModel(context, animeBoardRepository: AppContainer().repositoryScope.animeRepository ),),
+                    showDragHandle: true,
+                  );
+
+                })
+                : Container(),
             IconButton(
                 icon: const Icon(
                   Icons.search,
@@ -35,13 +53,7 @@ class CustomAppBar extends AppBar {
                 onPressed: () {
                   onPressesCallBack();
                 }),
-            filter ==true ?
-            IconButton(
-                icon: const Icon(
-                  Icons.menu,
-                ),
-                onPressed: () {})
-                : Container()
+
           ],
         );
 }

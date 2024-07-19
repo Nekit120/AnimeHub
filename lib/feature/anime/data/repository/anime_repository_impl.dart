@@ -1,5 +1,5 @@
+import 'package:anime_hub/feature/anime/data/data_source/model/get_anime_list_by_filters_query.dart';
 import 'package:dio/dio.dart';
-
 import '../../../../core/domain/app_error/app_error.dart';
 import '../../../../core/domain/model/anime_api_item.dart';
 import '../../../../core/domain/model/anime_api_list.dart';
@@ -23,6 +23,18 @@ class AnimeRepositoryImpl implements AnimeRepository {
   Future<Result<AnimeApiList>> getAnimeList() async {
     try{
         final animeApiList = await _remoteDataProvider.getAnimeList();
+
+        return Result.good(animeApiList);
+
+      }catch (e) {
+        return Result.bad([SpecificError('Server access error')]);
+      }
+  }
+  @override
+  // Future<Result<AnimeApiList>> getAnimeListByFilters({required String genres}) async {
+  Future<Result<AnimeApiList>> getAnimeListByFilters() async {
+    try{
+        final animeApiList = await _remoteDataProvider.getAnimeListByFilters(query: const GetAnimeListByFiltersQuery(genres: "Комедия"));
 
         return Result.good(animeApiList);
 

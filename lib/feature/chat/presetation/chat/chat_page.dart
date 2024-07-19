@@ -1,14 +1,11 @@
 import 'dart:developer';
 import 'dart:ffi';
-
 import 'package:anime_hub/core/data/firebase_services/chat/chat_sevice.dart';
 import 'package:anime_hub/core/data/firebase_services/model/user_model_with_last_message.dart';
 import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/router/router.gr.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:anime_hub/feature/chat/presetation/search_profile/search_profile_vm.dart';
-import 'package:anime_hub/feature/profile/data/repository/profile_repository_impl.dart';
-import 'package:anime_hub/feature/profile/domain/repository/profile_repository.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -19,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../../core/data/firebase_services/model/user_model.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../theme/svg_image_collection.dart';
 import '../../../../theme/theme_colors.dart';
@@ -50,8 +46,7 @@ class ChatPage extends BaseView<ChatViewModel> {
     );
   }
 
-
-  Widget _buildUserList({required ChatViewModel vm, required String uid}) {
+  Widget _buildUserList({required ChatViewModel vm, required String uid, required double screenWidth}) {
     return StreamBuilder(
         stream: vm.getUserWithLastMessageUseCase.call(currentUserUid: uid),
         // vm.getUsersStreamUseCase.call(),
@@ -70,13 +65,36 @@ class ChatPage extends BaseView<ChatViewModel> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return ListView(
-            children: snapshot.data!
-                .map<Widget>((userData) => _buildUserListItem(
-                      userData: userData,
-                      vm: vm,
-                    ))
-                .toList(),
+          return  ListView.separated(
+              itemCount: snapshot.data!.length,
+              separatorBuilder: (context, index) =>
+                  Row(
+                  children: [
+                    SizedBox(width: screenWidth* 0.19,),
+                    Expanded(
+                      child: Container(
+                        height: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+              ),
+              itemBuilder: (context, index) =>
+              index !=  snapshot.data!.length-1 ?   _buildUserListItem(
+                userData: snapshot.data![index],
+                vm: vm,
+              ) : Column(
+                children: [
+                  _buildUserListItem(
+                    userData: snapshot.data![index],
+                    vm: vm,
+                  ),
+                 Container(
+                      height: 0.5,
+                      color: Colors.grey[400],
+                    ),
+                ],
+              )
           );
         });
   }
@@ -124,9 +142,10 @@ class ChatPage extends BaseView<ChatViewModel> {
             vm.getUser(uid: snapshot.data!.uid, vm: vm);
             return Scaffold(
               appBar: AppBar(
-                title:  Center(child: Row(
+                title: Center(
+                    child: Row(
                   children: [
-                    SizedBox(width: maxWidth/3.7),
+                    SizedBox(width: maxWidth / 3.7),
                     const Text("Чат"),
                   ],
                 )),
@@ -172,8 +191,12 @@ class ChatPage extends BaseView<ChatViewModel> {
                       ),
                       onPressed: () {
                         AutoRouter.of(context).push(SearchProfileRoute(
-                            vmFactory: (context) =>
-                                SearchProfilePageViewModel(context, chatAndAuthRepository: AppContainer().repositoryScope.chatAndAuthRepository), currentUid: snapshot.data!.uid));
+                            vmFactory: (context) => SearchProfilePageViewModel(
+                                context,
+                                chatAndAuthRepository: AppContainer()
+                                    .repositoryScope
+                                    .chatAndAuthRepository),
+                            currentUid: snapshot.data!.uid));
                       }),
                   IconButton(
                     icon: const Icon(
@@ -183,7 +206,7 @@ class ChatPage extends BaseView<ChatViewModel> {
                   )
                 ],
               ),
-              body: _buildUserList(vm: vm, uid: snapshot.data!.uid),
+              body: _buildUserList(vm: vm, uid: snapshot.data!.uid,screenWidth: maxWidth),
             );
           } else {
             return SingleChildScrollView(

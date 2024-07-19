@@ -50,6 +50,36 @@ class _AnimeRemoteDataSource implements AnimeRemoteDataSource {
   }
 
   @override
+  Future<AnimeApiList> getAnimeListByFilters(
+      {GetAnimeListByFiltersQuery query =
+          const GetAnimeListByFiltersQuery(genres: '')}) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(query.toJson());
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<AnimeApiList>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              'list',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = AnimeApiList.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<AnimeApiList> findAnimeByRequest(
       {required FindAnimeByRequestQuery query}) async {
     final _extra = <String, dynamic>{};

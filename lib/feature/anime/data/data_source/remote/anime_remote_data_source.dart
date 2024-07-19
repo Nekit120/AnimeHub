@@ -1,4 +1,5 @@
-  import 'package:dio/dio.dart';
+  import 'package:anime_hub/feature/anime/data/data_source/model/get_anime_list_by_filters_query.dart';
+import 'package:dio/dio.dart';
   import 'package:retrofit/http.dart';
   import '../../../../../core/domain/model/anime_api_list.dart';
 import '../model/find_anime_by_request_query.dart';
@@ -13,6 +14,11 @@ import '../model/get_anime_list_query.dart';
     @GET("list")
     Future<AnimeApiList> getAnimeList({
       @Queries()  GetAnimeListQuery query = const GetAnimeListQuery(),
+    });
+
+    @GET("list")
+    Future<AnimeApiList> getAnimeListByFilters({
+      @Queries() GetAnimeListByFiltersQuery query = const GetAnimeListByFiltersQuery(genres: ''),
     });
 
     @GET("search")

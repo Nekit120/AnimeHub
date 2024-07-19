@@ -28,6 +28,7 @@ class FavoriteAnimePage extends BaseView<FavoriteAnimeViewModel> {
     AutoRouter.of(context).push(AnimeFavoritesSearch());
   }
 
+
   @override
   Widget build(FavoriteAnimeViewModel vm) {
     final isNotHorizontal =
