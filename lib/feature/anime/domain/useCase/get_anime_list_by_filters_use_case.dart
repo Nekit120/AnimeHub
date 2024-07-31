@@ -8,8 +8,8 @@ class GetAnimeListByFiltersUseCase{
 
   GetAnimeListByFiltersUseCase({required AnimeRepository animeBoardRepository}): _animeBoardRepository = animeBoardRepository;
 
-  Future<Result<AnimeApiList>> call() async {
-    return _animeBoardRepository.getAnimeListByFilters();
+  Future<Result<AnimeApiList>> call({required List<String> genres,required String? year,required double rait}) async {
+    return _animeBoardRepository.getAnimeListByFilters(genres: genres, year:year,rait: rait);
   }
 
 }

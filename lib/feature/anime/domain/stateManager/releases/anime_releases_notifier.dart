@@ -21,6 +21,7 @@ class AnimeReleasesApiNotifier extends StateNotifier<Result<AnimeApiList>?> {
   Future<void> getDataFromApi(
       {required Future<Result<AnimeApiList>> Function()
           getAnimeListFunction}) async {
+    var r = await getAnimeListFunction();
     state = await getAnimeListFunction();
     // switch (data) {
     //   case GoodUseCaseResult<AnimeApiList>(:final data) : {
@@ -31,6 +32,13 @@ class AnimeReleasesApiNotifier extends StateNotifier<Result<AnimeApiList>?> {
     //     state = Result.bad([SpecificError('Server access error')]);
     //     break;
     // }
+  }
+  Future<void> getDataWithFilterFromApi(
+      {required Future<Result<AnimeApiList>> Function({required List<String> genres,required String? year,required double rait})
+          getAnimeListFunction, required List<String> genres,required String? year,  required double rait}) async {
+    state = null;
+    state = await getAnimeListFunction(genres: genres,year: year,rait: rait);
+
   }
 
   Future<void> addDataFromApi(

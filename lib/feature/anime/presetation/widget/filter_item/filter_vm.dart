@@ -1,5 +1,6 @@
 import 'package:anime_hub/feature/anime/domain/useCase/find_anime_by_request_use_case.dart';
 import 'package:anime_hub/feature/anime/domain/useCase/get_anime_list_by_filters_use_case.dart';
+import 'package:flutter/material.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 
 import '../../../../../core/presentation/controllers/app_text_editing_controller.dart';
@@ -19,25 +20,28 @@ class FilterViewModel extends ViewModel {
       AppTextEditingController();
   final AppTextEditingController toCostController = AppTextEditingController();
   final controllers =
-      List.generate(LocalityList.values.length, (index) => false.rv);
+      List.generate(AnimeGenresList.values.length, (index) => false.rv);
 
-  final cityNamesList = <int, String>{}.rv;
+  final animeNamesList = <int, String>{}.rv;
 
   void updateCityList(int cityId, String cityName, bool isSelected) {
     if (isSelected) {
-      cityNamesList[cityId] = cityName;
+      animeNamesList[cityId] = cityName;
     } else {
-      cityNamesList.remove(cityId);
+      animeNamesList.remove(cityId);
     }
   }
+  var isRangeCheck = false;
+  final Rv<RangeValues> currentRangeValues = Rv( RangeValues(1960, 2024));
 
+  var rating = 0.0.rv;
   void removeControllerAndItemCityNames(int cityId) {
-    cityNamesList.remove(cityId);
+    animeNamesList.remove(cityId);
     controllers[cityId].value = false;
   }
 
   void clearCityListNames() {
-    cityNamesList.clear();
+    animeNamesList.clear();
     for (var controller in controllers) {
       controller(false);
     }

@@ -226,12 +226,12 @@ class PersonalChatPage extends BaseView<PersonalChatViewModel> {
         vm.currentContext = context;
         return AlertDialog(
           title: const Text(
-            "Вам пришёл запрос на просмотр",
+            "Удаление рабочего профиля",
             textAlign: TextAlign.center,
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [Text("Вы хотите посмотреть \"${animeName}\" ?")],
+            children: [Text("Вы действительно хотите удалить ?")],
           ),
           actions: <Widget>[
             Row(

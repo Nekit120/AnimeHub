@@ -13,7 +13,7 @@ class GetAnimeListQuery {
   @JsonKey(name: "limit")
   final int limit;
 
-  const GetAnimeListQuery({
+  const  GetAnimeListQuery({
     this.token = "405c66c107c8a27b0064e1506d2ded9f",
     this.types = "anime-serial,anime",
     this.withEpisodes = true,

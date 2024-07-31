@@ -1,7 +1,6 @@
 import 'package:anime_hub/core/presentation/view/view_model.dart';
 import 'package:reactive_variables/reactive_variables.dart';
-
-import '../../../../core/data/firebase_services/model/user_model_with_last_message.dart';
+ import '../../../../core/data/firebase_services/model/user_model_with_last_message.dart';
 import '../../../../core/presentation/controllers/app_text_editing_controller.dart';
 import '../../domain/repository/chat_and_auth_repository.dart';
 import '../../domain/useCase/get_current_user_use_case.dart';

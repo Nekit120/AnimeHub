@@ -6,7 +6,7 @@ import '../../../../core/domain/model/anime_api_list.dart';
 abstract interface class AnimeRepository {
    Future<Result<AnimeApiList>> getAnimeList();
 
-   Future<Result<AnimeApiList>> getAnimeListByFilters();
+   Future<Result<AnimeApiList>> getAnimeListByFilters({required List<String> genres,required String? year,required double rait});
 
    Future<Result<AnimeApiList>> getNextAnimePage(String url);
 

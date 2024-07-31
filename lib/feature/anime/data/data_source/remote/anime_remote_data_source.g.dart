@@ -52,7 +52,7 @@ class _AnimeRemoteDataSource implements AnimeRemoteDataSource {
   @override
   Future<AnimeApiList> getAnimeListByFilters(
       {GetAnimeListByFiltersQuery query =
-          const GetAnimeListByFiltersQuery(genres: '')}) async {
+          const GetAnimeListByFiltersQuery(genres: ["Романтика"])}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.addAll(query.toJson());

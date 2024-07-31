@@ -7,19 +7,26 @@ abstract class Locality {
   const Locality(this.name);
 }
 
-enum LocalityList implements Locality {
+enum AnimeGenresList implements Locality {
   romance("Романтика"),
   adventures("Приключения"),
   fantastic("Фантастика"),
   comedy("Комедия"),
   school("Школа"),
   melodrama("Мелодрама"),
+  detect("Детектив"),
+  tril("Триллер"),
+  scare("Ужасы"),
   fantasy("Фэнтези"),
   combatMovie("Боевик"),
   action("Экшен"),
-  ;
+  sen("Сёнен"),
+  supPower("Супер сила"),
+  dram("Драма"),
+  dzen("Дзёсей"),
+  vamp("Вампиры");
 
-  const LocalityList(this.name);
+  const AnimeGenresList(this.name);
 
   @override
   final String name;

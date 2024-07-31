@@ -31,16 +31,15 @@ class AnimeRepositoryImpl implements AnimeRepository {
       }
   }
   @override
-  // Future<Result<AnimeApiList>> getAnimeListByFilters({required String genres}) async {
-  Future<Result<AnimeApiList>> getAnimeListByFilters() async {
-    try{
-        final animeApiList = await _remoteDataProvider.getAnimeListByFilters(query: const GetAnimeListByFiltersQuery(genres: "Комедия"));
-
-        return Result.good(animeApiList);
-
-      }catch (e) {
-        return Result.bad([SpecificError('Server access error')]);
-      }
+  Future<Result<AnimeApiList>> getAnimeListByFilters({required List<String> genres,required String? year,required double rait}) async {
+    try {
+      final AnimeApiList animeApiList = await _remoteDataProvider.getAnimeListByFilters(
+              query: GetAnimeListByFiltersQuery(genres: genres.isNotEmpty ? genres : null,rating: rait == 0.0 ? null : "${rait-0.35}-$rait",year: year
+              ));
+      return Result.good(animeApiList);
+    } catch (e) {
+      return Result.bad([SpecificError('Server access error')]);
+    }
   }
 
   @override

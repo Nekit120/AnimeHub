@@ -1,10 +1,12 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pannable_rating_bar/flutter_pannable_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_variables/reactive_variables.dart';
+
 import '../../../../../core/presentation/controllers/app_text_editing_controller.dart';
 import '../../../../../core/presentation/view/view_model.dart';
-import '../../../../../theme/theme_colors.dart';
 import '../../../domain/entity/locality.dart';
 import '../../../domain/stateManager/releases/anime_releases_notifier.dart';
 import 'filter_vm.dart';
@@ -49,22 +51,19 @@ class FilterItemBottomSheet extends BaseView<FilterViewModel> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: SingleChildScrollView(
         child: Consumer(
-            builder:
-                (BuildContext context, WidgetRef ref, Widget? child) {
-         return  Column(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+          return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               _showCityList.observer((context, value) => value
                   ? _cityListBuilder(
                       vm: vm,
                     )
-                  : _filterHeaderBuilder(
-                      vm: vm, ref: ref
-                    )),
+                  : _filterHeaderBuilder(vm: vm, ref: ref)),
               const SizedBox(height: 16),
             ],
-          );}
-        ),
+          );
+        }),
       ),
     );
   }
@@ -99,9 +98,9 @@ class FilterItemBottomSheet extends BaseView<FilterViewModel> {
           height: 330,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: LocalityList.values.length,
+            itemCount: AnimeGenresList.values.length,
             itemBuilder: (context, index) => localityItem(
-              locality: LocalityList.values[index],
+              locality: AnimeGenresList.values[index],
               index: index,
               vm: vm,
             ),
@@ -144,7 +143,8 @@ class FilterItemBottomSheet extends BaseView<FilterViewModel> {
     );
   }
 
-  Widget _filterHeaderBuilder({required FilterViewModel vm,required WidgetRef ref}) {
+  Widget _filterHeaderBuilder(
+      {required FilterViewModel vm, required WidgetRef ref}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14),
       child: Column(
@@ -160,8 +160,22 @@ class FilterItemBottomSheet extends BaseView<FilterViewModel> {
               ),
               TextButton(
                 onPressed: () async {
-                  await ref.read(animeReleasesApiProvider.notifier).getDataFromApi(
-                      getAnimeListFunction: ( ) async {return await vm.findAnimeByRequestUseCase.call();}  );
+                  vm.context.popRoute();
+                    String rangeString = List.generate(
+                        (vm.currentRangeValues.value.end -
+                                vm.currentRangeValues.value.start + 1)
+                            .toInt(),
+                        (index) => (vm.currentRangeValues.value.start + index)
+                            .toInt()).join(',');
+
+                    await ref
+                        .read(animeReleasesApiProvider.notifier)
+                        .getDataWithFilterFromApi(
+                            getAnimeListFunction:
+                                vm.findAnimeByRequestUseCase.call,
+                            genres: vm.animeNamesList.value.values.toList(),
+                            year: vm.isRangeCheck == false ? null : rangeString,
+                            rait: vm.rating.value);
                 },
                 child: const Text("Применить"),
               ),
@@ -172,12 +186,12 @@ class FilterItemBottomSheet extends BaseView<FilterViewModel> {
             "Жанры",
             style: Theme.of(vm.context).textTheme.titleMedium,
           ),
-          vm.cityNamesList.observer(
+          vm.animeNamesList.observer(
             (context, value) => Column(
               children: [
-                if(value.isNotEmpty) const SizedBox(height: 12),
+                if (value.isNotEmpty) const SizedBox(height: 12),
                 SizedBox(
-                    height: value.isNotEmpty?  35 : 0,
+                    height: value.isNotEmpty ? 35 : 0,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: List.generate(
@@ -200,6 +214,52 @@ class FilterItemBottomSheet extends BaseView<FilterViewModel> {
             onPressed: () => _showCityList.trigger(true),
             child: Text("Добавить жанр"),
           ),
+          SizedBox(
+            height: 16,
+          ),
+
+          Text(
+            "Года выпуска",
+            style: Theme.of(vm.context).textTheme.titleMedium,
+          ),
+          vm.currentRangeValues.observer(
+            (context, value) => RangeSlider(
+                values: value,
+                min: 1960,
+                max: 2024,
+                divisions: 2024 - 1960,
+                labels: RangeLabels(
+                  vm.currentRangeValues.value.start.round().toString(),
+                  vm.currentRangeValues.value.end.round().toString(),
+                ),
+                onChanged: (RangeValues values) {
+                  vm.currentRangeValues.value = values;
+                  vm.isRangeCheck = true;
+                }),
+          ),
+          Text(
+            "Рейтинг",
+            style: Theme.of(vm.context).textTheme.titleMedium,
+          ),
+
+          vm.rating.observer((context, value) => PannableRatingBar(
+                rate: value,
+                items: List.generate(
+                    10,
+                    (index) => const RatingWidget(
+                          selectedColor: Colors.yellow,
+                          unSelectedColor: Colors.grey,
+                          child: Icon(
+                            Icons.star,
+                            size: 32,
+                          ),
+                        )),
+                onChanged: (newValue) {
+                  // value = newValue;
+                  vm.rating.value = newValue;
+                },
+              )),
+
           // const SizedBox(height: 24),
           // Text(
           //   "S.of(vm.context).adPrice",

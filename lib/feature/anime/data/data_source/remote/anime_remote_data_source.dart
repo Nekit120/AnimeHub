@@ -18,7 +18,7 @@ import '../model/get_anime_list_query.dart';
 
     @GET("list")
     Future<AnimeApiList> getAnimeListByFilters({
-      @Queries() GetAnimeListByFiltersQuery query = const GetAnimeListByFiltersQuery(genres: ''),
+      @Queries() GetAnimeListByFiltersQuery query = const GetAnimeListByFiltersQuery(genres: ["Романтика"]),
     });
 
     @GET("search")

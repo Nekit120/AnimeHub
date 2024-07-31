@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'package:anime_hub/core/data/firebase_services/chat/chat_sevice.dart';
-import 'package:anime_hub/core/domain/container/app_container.dart';
 import 'package:anime_hub/core/domain/use_case_result/use_case_result.dart';
 import 'package:anime_hub/core/presentation/view/view_model.dart';
-import 'package:anime_hub/core/presentation/widget/customAppBar.dart';
 import 'package:anime_hub/feature/anime/domain/repository/anime_repository.dart';
 import 'package:anime_hub/feature/anime/presetation/share_use/anime_send_invite_search/send_seind_ivite_anime_list_builder_widget.dart';
 import 'package:anime_hub/feature/chat/domain/repository/chat_and_auth_repository.dart';
@@ -15,7 +12,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../../core/data/firebase_services/model/user_model_with_last_message.dart';
 import '../../../../../core/domain/model/anime_api_list.dart';
-import '../../../../../core/domain/router/router.gr.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../domain/stateManager/search/anime_search_notifier.dart';
 import '../../../domain/stateManager/state/anime_search_state.dart';

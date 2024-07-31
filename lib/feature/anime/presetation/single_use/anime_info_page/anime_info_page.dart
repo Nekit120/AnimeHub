@@ -6,6 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_pannable_rating_bar/flutter_pannable_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_variables/reactive_variables.dart';
 import '../../../../../core/domain/container/app_container.dart';
@@ -28,7 +29,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
           ),
         );
 
-  Widget _citiItem({required String citiName, required BuildContext context}) {
+  Widget _generesItem({required String generesName, required BuildContext context}) {
     return Container(
       margin: const EdgeInsets.only(right: 8),
       alignment: Alignment.center,
@@ -46,7 +47,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
         child: Row(
           children: [
             Text(
-              citiName,
+              generesName,
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ],
@@ -64,7 +65,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
           children: List.generate(
             genres.length,
             (index) => GestureDetector(
-              child: _citiItem(citiName: genres[index], context: vm.context),
+              child: _generesItem(generesName: genres[index], context: vm.context),
             ),
           ),
         ));
@@ -219,7 +220,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                         SizedBox(
                             child: _genresItem(
                                 genres:
-                                    vm.animeItem.materialData?.allGenres ?? [],
+                                    vm.animeItem.materialData?.animeGenres ?? [],
                                 vm: vm))
                       ],
                     ),
@@ -304,7 +305,7 @@ class AnimeInfoPage extends BaseView<AnimeInfoViewModel> {
                 //   fontStyle: FontStyle.italic
                 // ),
               ),
-            )
+            ),
           ],
         ),
       ),

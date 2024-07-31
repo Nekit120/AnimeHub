@@ -79,7 +79,7 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
           final animeApiList = ref.watch(animeReleasesApiProvider);
           switch (animeApiList) {
             case GoodUseCaseResult<AnimeApiList>(:final data):
-              if (isFirstSignIn == false) {
+              if (isFirstSignIn == false && animeApiListPage.value.isNotEmpty) {
                 if (animeApiListPage.value.last.id != data.results.last.id) {
                   List<AnimeApiItem> animeItems =
                       List.from(animeApiListPage.value)..addAll(data.results);
@@ -157,6 +157,7 @@ class _AnimeReleasesPageState extends ConsumerState<AnimeReleasesPage> {
                           )),
               );
             case null:
+              animeApiListPage.value.clear();
               return const Center(child: CircularProgressIndicator());
             case BadUseCaseResult<AnimeApiList>():
               return RefreshIndicator(

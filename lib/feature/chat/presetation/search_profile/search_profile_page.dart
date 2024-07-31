@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:anime_hub/feature/chat/presetation/search_profile/search_profile_vm.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';

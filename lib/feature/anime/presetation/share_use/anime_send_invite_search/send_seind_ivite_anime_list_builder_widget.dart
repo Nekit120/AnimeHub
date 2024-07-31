@@ -1,5 +1,4 @@
 import 'package:anime_hub/core/domain/model/anime_api_item.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 

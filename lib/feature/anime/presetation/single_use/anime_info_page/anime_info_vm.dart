@@ -16,7 +16,6 @@ class AnimeInfoViewModel extends ViewModel {
   final isFavorite = false.rv;
   final checkRequest = false.rv;
   final AnimeApiItem animeItem;
-
   AnimeInfoViewModel(super.context,
       {required AnimeRepository animeRepository, required this.animeItem})
       : insertAnimeItemInUseCase =
