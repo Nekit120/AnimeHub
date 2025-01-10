@@ -1,0 +1,908 @@
+﻿{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Documents service, v. 1.0",
+    "version": "1.0"
+  },
+  "paths": {
+    "/v{version}/Document/Add": {
+      "post": {
+        "tags": [
+          "Document"
+        ],
+        "summary": "Добавление нового документа",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "description": "Загружаемый файл",
+                    "format": "binary"
+                  },
+                  "Tag": {
+                    "type": "string",
+                    "description": "Тэг документа при загрузке"
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                },
+                "Tag": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Файл успешно загружен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddDocumentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Не аутентифицирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Не авторизован, нет прав для операции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v{version}/Document/GetAll": {
+      "get": {
+        "tags": [
+          "Document"
+        ],
+        "summary": "Получение всех документов",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Документы предоставлены",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllDocumentsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Не аутентифицирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Не авторизован, нет прав для операции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v{version}/Document/Download": {
+      "get": {
+        "tags": [
+          "Document"
+        ],
+        "summary": "Загрузка документа",
+        "parameters": [
+          {
+            "name": "DocumentId",
+            "in": "query",
+            "description": "Айди документа",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "OfflinePassword",
+            "in": "query",
+            "description": "Оффлайн пароль DSS (при наличии)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Файл отправлен пользователю"
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Не аутентифицирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Не авторизован, нет прав для операции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v{version}/Document/Remove": {
+      "delete": {
+        "tags": [
+          "Document"
+        ],
+        "summary": "Удаление документа",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Айди документа",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveDocumentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveDocumentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Файл успешно удалён"
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Не аутентифицирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Не авторизован, нет прав для операции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v{version}/Document/Share": {
+      "post": {
+        "tags": [
+          "Document"
+        ],
+        "summary": "Предоставление доступа в системе другим юзерам",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Информация о документе, пользователях и правах",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShareDocumentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShareDocumentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShareDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Доступ к файлу предоставлен указанным пользователям"
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Не аутентифицирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Не авторизован, нет прав для операции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v{version}/Document/SharePublic": {
+      "post": {
+        "tags": [
+          "Document"
+        ],
+        "summary": "Предоставление доступа по публичной ссылке",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Айди документа, пароль",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharePublicDocumentRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharePublicDocumentRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharePublicDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Доступ к файлу предоставлен по публичной ссылке",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SharePublicDocumentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Не аутентифицирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Не авторизован, нет прав для операции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/v{version}/Document/DownloadPublic": {
+      "get": {
+        "tags": [
+          "Document"
+        ],
+        "summary": "Скачивание по публичной ссылке",
+        "parameters": [
+          {
+            "name": "DownloadPassword",
+            "in": "query",
+            "description": "Пароль, уставновленный на ссылку",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Файл отправлен пользователю"
+          },
+          "400": {
+            "description": "Некорректный запрос",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Не аутентифицирован",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Не авторизован, нет прав для операции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ошибка сервера",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "Айди документа",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Респонс добавления документа"
+      },
+      "EncryptType": {
+        "enum": [
+          "None",
+          "Online",
+          "Offline"
+        ],
+        "type": "string",
+        "description": "Тип шифрования в DSS"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "stackTrace": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {},
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAllDocumentsResponse": {
+        "type": "object",
+        "properties": {
+          "documents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetDocumentResponse"
+            },
+            "description": "Список всех документов",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Респонс получения всех документов"
+      },
+      "GetDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "Айди документа",
+            "format": "uuid"
+          },
+          "createdUtc": {
+            "type": "string",
+            "description": "Время добавления документа",
+            "format": "date-time"
+          },
+          "fileName": {
+            "type": "string",
+            "description": "Название файла",
+            "nullable": true
+          },
+          "contentType": {
+            "type": "string",
+            "description": "Тип контента",
+            "nullable": true
+          },
+          "sizeInBytes": {
+            "type": "integer",
+            "description": "Размер (байты)",
+            "format": "int64"
+          },
+          "ownerId": {
+            "type": "integer",
+            "description": "Айди юзера-владельца",
+            "format": "int64"
+          },
+          "permittedUserIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Список юзеров с доступом к документам",
+            "nullable": true
+          },
+          "publicLink": {
+            "$ref": "#/components/schemas/PublicLink"
+          },
+          "tag": {
+            "type": "string",
+            "description": "Тэг",
+            "nullable": true
+          },
+          "label": {
+            "type": "string",
+            "description": "Метка",
+            "nullable": true
+          },
+          "encrypt": {
+            "$ref": "#/components/schemas/EncryptType"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Респонс одного документа"
+      },
+      "PublicLink": {
+        "type": "object",
+        "properties": {
+          "link": {
+            "type": "string",
+            "description": "Публичная ссылка на скачивание",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль для скачивания",
+            "nullable": true
+          },
+          "createdUtc": {
+            "type": "string",
+            "description": "Время создания ссылки",
+            "format": "date-time"
+          },
+          "expireInSeconds": {
+            "type": "integer",
+            "description": "Время жизни ссылки (секунды)",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Информация о публичной ссылке"
+      },
+      "RemoveDocumentRequest": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "Айди документа",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Реквест для удаления документа"
+      },
+      "ShareDocumentRequest": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "Айди документа",
+            "format": "uuid"
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Список айди юзеров, кому предоставляется доступ",
+            "nullable": true
+          },
+          "isPdf": {
+            "type": "boolean",
+            "description": "Отправляется в виде Pdf или нет"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Реквест для предоставления доступа к документу внутри системы"
+      },
+      "SharePublicDocumentRequest": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "Айди документа",
+            "format": "uuid"
+          },
+          "offlinePassword": {
+            "type": "string",
+            "description": "Оффлайн пароль DSS (при наличии)",
+            "nullable": true
+          },
+          "downloadPassword": {
+            "type": "string",
+            "description": "Пароль, который будет установлен на ссылку",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Реквест для предоставления доступа по публичной ссылке"
+      },
+      "SharePublicDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "downloadUrl": {
+            "type": "string",
+            "description": "Ссылка на скачивание",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Респонс предоставления доступа по публичной ссылке"
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ValidationErrorEntry"
+              }
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ValidationErrorEntry": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "params": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT/Reference"
+      }
+    }
+  }
+}
